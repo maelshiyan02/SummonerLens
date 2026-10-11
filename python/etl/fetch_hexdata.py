@@ -146,8 +146,15 @@ def main() -> None:
     raw_dir.mkdir(parents=True, exist_ok=True)
 
     summary_file = out_dir / "top_heroes.csv"
+    citation = {}
     if summary_file.exists() and not force:
         print(f"[hexdata] 快照已存在，跳过：{build_id}（--force 可强制重抓）")
+        cit_fp = out_dir / "citation.json"
+        if cit_fp.exists():
+            try:
+                citation = json.loads(cit_fp.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                pass
     else:
         (raw_dir / "ai-summary.json").write_text(
             json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
