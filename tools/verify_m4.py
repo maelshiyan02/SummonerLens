@@ -120,9 +120,22 @@ def sec_a(env: Env):
         raw = env.html_path.read_bytes()
         check("index.html 无外部 http(s) 脚本/链接", EXT_URL.search(raw) is None,
               "发现 CDN 外链")
-        check("index.html 引用了本地 core.js 与 app.js",
-              b"js/core.js" in raw and b"js/app.js" in raw)
-        check("index.html 引用了本地 echarts", b"vendor/echarts.min.js" in raw)
+    check("index.html 引用了本地 core.js 与 app.js",
+          b"js/core.js" in raw and b"js/app.js" in raw)
+    check("index.html 引用了本地 echarts", b"vendor/echarts.min.js" in raw)
+    check("index.html 引用内联数据束（file:// 双击可用）", b"data/dashboard.js" in raw)
+
+    js_bundle = WEB / "data" / "dashboard.js"
+    check("内联数据束 data/dashboard.js 存在", js_bundle.exists())
+    if js_bundle.exists():
+        txt = js_bundle.read_text(encoding="utf-8")
+        check("内联数据束定义 window.__SL_BUNDLE__", "__SL_BUNDLE__" in txt)
+        try:
+            payload = txt.split("=", 1)[1].strip().rstrip(";")
+            check("内联数据束与 JSON 数据束内容一致（防陈旧）",
+                  json.loads(payload) == env.bundle())
+        except (ValueError, json.JSONDecodeError) as e:
+            check("内联数据束可解析", False, str(e))
     for js in ("core.js", "app.js"):
         p = WEB / "js" / js
         check(f"js/{js} 存在", p.exists())

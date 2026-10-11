@@ -7,6 +7,9 @@
 <!-- 离线约束：仅本地资源，禁止任何 CDN 外链（tools/verify_m4.py 会断言） -->
 <link rel="stylesheet" href="css/style.css" />
 <script src="vendor/echarts.min.js"></script>
+<!-- 离线回退：构建期生成的内联数据束（file:// 双击打开时 fetch 会被 CORS 拦，脚本不受限）。
+     以本地服务打开时 app.js 优先走 fetch 取最新；此处缺失不影响（404 静默）。 -->
+<script src="data/dashboard.js"></script>
 </head>
 <body>
 <div class="app">

@@ -60,11 +60,19 @@
   }
 
   // ---------------------------------------------------------------- 取数
+  // 离线优先：构建期生成的内联数据束（data/dashboard.js）在 file:// 下也能用（脚本不受 CORS 限制）。
+  // 以本地服务打开时优先 fetch 取最新（刷新/重建后生效），失败再退回内联。
   function loadBundle(force) {
+    if (!force && window.__SL_BUNDLE__) {
+      return Promise.resolve(window.__SL_BUNDLE__);
+    }
     var url = BUNDLE_URL + (force ? ('?t=' + Date.now()) : '');
     return fetch(url, { cache: 'no-store' }).then(function (r) {
       if (!r.ok) { throw new Error('HTTP ' + r.status); }
       return r.json();
+    }).catch(function (e) {
+      if (window.__SL_BUNDLE__) { return window.__SL_BUNDLE__; }
+      throw e;
     });
   }
 

@@ -399,8 +399,12 @@ def write_bundle(bundle: dict, root: Path = None) -> Path:
     root = root or project_root()
     out = root / BUNDLE_REL
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(bundle, ensure_ascii=False, separators=(",", ":")),
-                   encoding="utf-8")
+    payload = json.dumps(bundle, ensure_ascii=False, separators=(",", ":"))
+    out.write_text(payload, encoding="utf-8")
+    # 内联回退：同一份数据另存为 JS，供 <script src> 加载。
+    # 目的：以 file:// 双击 index.html 打开时 fetch 会被 CORS 拦，走脚本标签则不受限 → 真正「打开即用」。
+    js = out.with_suffix(".js")
+    js.write_text("window.__SL_BUNDLE__=" + payload + ";\n", encoding="utf-8")
     return out
 
 
