@@ -363,6 +363,93 @@
     };
   }
 
+  // ---------------------------------------------------------------- 版本化趋势 / 变更
+  /** 在指定 meta 版本的英雄字典中取名称（离线切换版本用）。未命中返回 null。 */
+  function heroNameInMeta(bundle, key, ver) {
+    var metas = bundle.metas || {};
+    var m = metas[ver];
+    if (!m || !m.heroes) { return null; }
+    for (var i = 0; i < m.heroes.length; i++) {
+      if (m.heroes[i].key === key) { return m.heroes[i].name; }
+    }
+    return null;
+  }
+
+  /** 版本变更摘要：新增/移除/变更 计数条形图。 */
+  function buildChangesSummaryOption(summary) {
+    var cats = ['英雄新增', '英雄移除', '英雄变更', '装备新增', '装备移除'];
+    var vals = [summary.champions_added || 0, summary.champions_removed || 0,
+                summary.champions_changed || 0, summary.items_added || 0,
+                summary.items_removed || 0];
+    var colors = ['#3fc76a', '#ff5b5b', '#e8b23a', '#3fc76a', '#ff5b5b'];
+    return {
+      backgroundColor: 'transparent',
+      grid: { left: 70, right: 24, top: 20, bottom: 28 },
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' },
+        formatter: function (ps) { return ps[0].name + '：' + ps[0].data + ' 项'; } },
+      xAxis: { type: 'category', data: cats, axisLabel: { color: '#c8d0de', fontSize: 11 },
+        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } } },
+      yAxis: { type: 'value', minInterval: 1, axisLabel: { color: '#8a93a6' },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } } },
+      series: [{
+        type: 'bar', barWidth: '46%',
+        data: vals.map(function (v, i) { return { value: v, itemStyle: { color: colors[i] } }; }),
+        label: { show: true, position: 'top', color: '#c8d0de', fontSize: 12 }
+      }]
+    };
+  }
+
+  /** 聚合趋势：多英雄胜率跨 build 折线。trend={kind,builds:[{id,patch,report_date,series:{key:wr}}]}
+   *  nameMap：{key:name} 用于图例。synthetic 时由调用方显示声明横幅，图表照常绘制。 */
+  function buildTrendOption(trend, nameMap) {
+    var builds = (trend && trend.builds) || [];
+    if (!builds.length) {
+      return emptyOption('无趋势数据');
+    }
+    var labels = builds.map(function (b) { return b.report_date || b.id; });
+    // 取「最后一个 build 中胜率最高的前 N 名」作为折线（跨 build 共享 key）
+    var last = builds[builds.length - 1].series || {};
+    var keys = Object.keys(last).map(Number).sort(function (a, b) { return last[b] - last[a]; }).slice(0, 8);
+    var palette = ['#ff5b5b', '#4a9eff', '#e8b23a', '#3fc76a', '#a06cf0',
+                   '#e07a3f', '#5fc76a', '#8ab4f8'];
+    var series = keys.map(function (k, i) {
+      var name = (nameMap && nameMap[k]) || ('#' + k);
+      return {
+        name: name, type: 'line', smooth: true, symbol: 'circle', symbolSize: 7,
+        lineStyle: { width: 2 }, itemStyle: { color: palette[i % palette.length] },
+        data: builds.map(function (b) {
+          var v = (b.series || {})[k];
+          return v == null ? null : +v;
+        })
+      };
+    });
+    return {
+      backgroundColor: 'transparent',
+      grid: { left: 56, right: 24, top: 40, bottom: 30 },
+      legend: { top: 4, textStyle: { color: '#c8d0de' }, type: 'scroll' },
+      tooltip: {
+        trigger: 'axis',
+        formatter: function (ps) {
+          var s = ps[0].axisValue + '<br/>';
+          ps.forEach(function (p) {
+            s += p.marker + p.seriesName + '：' + (p.value == null ? '—' : pct(p.value)) + '<br/>';
+          });
+          return s;
+        }
+      },
+      xAxis: {
+        type: 'category', data: labels, boundaryGap: false,
+        axisLabel: { color: '#c8d0de' }, axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } }
+      },
+      yAxis: {
+        type: 'value', min: 0.45, max: 0.65,
+        axisLabel: { formatter: function (v) { return (v * 100).toFixed(0) + '%'; }, color: '#8a93a6' },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }
+      },
+      series: series
+    };
+  }
+
   // ---------------------------------------------------------------- 汇总 / KPI
   function kpis(bundle) {
     var heroRows = (bundle.datasets.hero_ranking || { rows: [] }).rows;
@@ -415,6 +502,16 @@
   function tierZh(t) { return { high: '高样本', medium: '中样本', low: '低样本' }[t] || t; }
   function recZh(r) { return { strong: '强力推荐', recommend: '可参考', none: '样本不足' }[r] || r; }
 
+  /** 空图表占位（无数据 / 不可用）。core.js 独立可用（headless 单测）。 */
+  function emptyOption(text) {
+    return {
+      backgroundColor: 'transparent',
+      title: { text: text, left: 'center', top: 'middle',
+        textStyle: { color: '#8a93a6', fontSize: 14, fontWeight: 'normal' } },
+      xAxis: { show: false }, yAxis: { show: false }, series: []
+    };
+  }
+
   return {
     VERSION: VERSION,
     RANK_METHOD: RANK_METHOD,
@@ -439,6 +536,10 @@
     buildSynergyHeatmapOption: buildSynergyHeatmapOption,
     buildSynergyCompareOption: buildSynergyCompareOption,
     buildMmrHistogramOption: buildMmrHistogramOption,
+    heroNameInMeta: heroNameInMeta,
+    buildChangesSummaryOption: buildChangesSummaryOption,
+    buildTrendOption: buildTrendOption,
+    emptyOption: emptyOption,
     kpis: kpis,
     realHeroRows: realHeroRows,
     fixtureHeroRows: fixtureHeroRows,

@@ -26,6 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # python/
 from stats import wilson  # noqa: E402
+from stats import trend as trend_core  # noqa: E402
 
 SCHEMA = "summonerlens.dashboard.v1"
 BUNDLE_REL = Path("app") / "web" / "data" / "dashboard.json"
@@ -88,7 +89,8 @@ def norm_alias(s: str) -> str:
 def load_hero_meta(root: Path, ver: Path) -> dict:
     """champions.csv + aliases.csv → {key:int -> {name,title,tags,roles,aliases:[...]}}"""
     champs = read_csv(root / "data" / "meta" / ver / "champions.csv")
-    aliases = read_csv(root / "data" / "meta" / ver / "aliases.csv")
+    aliases = read_csv(root / "data" / "meta" / ver / "aliases.csv") if \
+        (root / "data" / "meta" / ver / "aliases.csv").exists() else []
     out = {}
     for c in champs:
         key = int(c["key"])
@@ -159,6 +161,145 @@ def load_item_meta(root: Path, ver: str) -> dict:
         except (ValueError, TypeError):
             continue
     return out
+
+
+# ----------------------------------------------------------------------------- M5 版本化维度
+def load_versions(root: Path) -> dict:
+    """读取版本注册表（M5-1 产物）。缺失时返回空壳（避免崩溃）。"""
+    p = root / "data" / "versions.json"
+    if p.exists():
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            pass
+    return {"schema": None, "snapshots": [], "latest": {}, "counts": {"meta": 0, "agg": 0}}
+
+
+def _ver_tuple(v: str):
+    out = []
+    for x in str(v).split("."):
+        try:
+            out.append(int(x))
+        except ValueError:
+            out.append(-1)
+    return tuple(out)
+
+
+def meta_ids_of(root: Path) -> list:
+    idx = load_versions(root)
+    ids = [s["id"] for s in idx.get("snapshots", []) if s.get("kind") == "meta"]
+    return sorted(ids, key=_ver_tuple)
+
+
+def agg_ids_of(root: Path) -> list:
+    idx = load_versions(root)
+    ids = [s["id"] for s in idx.get("snapshots", []) if s.get("kind") == "agg"]
+    return sorted(ids)
+
+
+def build_metas_embed(root: Path) -> dict:
+    """把**全部** meta 版本的英雄字典嵌进 bundle，供前端离线切换名称/别名。
+    结构：{ver: {heroes:[{key,name,title,roles,aliases}]}}。"""
+    out = {}
+    for v in meta_ids_of(root):
+        adir = root / "data" / "meta" / v
+        if not (adir / "champions.csv").exists():
+            continue
+        hm = load_hero_meta(root, v)
+        out[v] = {"heroes": [
+            {"key": k, "name": i["name"], "title": i["title"],
+             "roles": i["roles"], "aliases": i["aliases"]}
+            for k, i in sorted(hm.items())
+        ]}
+    return out
+
+
+def build_version_changes(root: Path) -> list:
+    """相邻 meta 版本两两 diff（真实数据）。返回 trend.diff_meta 结果列表。"""
+    metas = meta_ids_of(root)
+    out = []
+    for i in range(1, len(metas)):
+        try:
+            res = trend_core.diff_meta(root, metas[i - 1], metas[i])
+        except Exception as e:  # 单对异常不应拖垮整束
+            res = {"status": "error", "kind": "meta", "from": metas[i - 1],
+                   "to": metas[i], "detail": str(e)}
+        out.append(res)
+    return out
+
+
+def _shift_date(date_str: str, days: int) -> str:
+    try:
+        from datetime import date, timedelta
+        d = date.fromisoformat(date_str)
+        return (d + timedelta(days=days)).isoformat()
+    except (ValueError, TypeError):
+        return date_str
+
+
+def _synthesize_trend(real_build: dict, n: int = 3) -> list:
+    """聚合快照不足 2 份时：依据单份真实数据合成**多 build 演示序列**。
+    明确标注 synthetic_fixture，仅用于开发/验收图表机制，绝非真实趋势。"""
+    import hashlib
+    base = real_build.get("series", {})
+    out = []
+    base_date = real_build.get("report_date") or "2026-09-27"
+    for i in range(n):
+        series = {}
+        for k, v in base.items():
+            h = int(hashlib.md5(("%s-%d" % (k, i)).encode("utf-8")).hexdigest(), 16)
+            delta = ((h % 6000) / 6000.0 - 0.3) * 0.1  # 确定性 ±0.03
+            series[k] = round(max(0.30, min(0.80, v + delta)), 6)
+        out.append({
+            "id": "synthetic-trend-%d" % (i + 1),
+            "patch": real_build.get("patch"),
+            "report_date": _shift_date(base_date, 30 * i),
+            "series": series,
+            "synthetic": True,
+        })
+    return out
+
+
+def build_aggregate_trend(root: Path) -> dict:
+    """英雄胜率跨 build 序列。≥2 份 agg 快照 → real_aggregate；否则 → synthetic_fixture。"""
+    agg = root / "data" / "agg"
+    idx = load_versions(root)
+    builds = []
+    for s in [x for x in idx.get("snapshots", []) if x.get("kind") == "agg"]:
+        adir = agg / s["id"]
+        hp = adir / "top_heroes.csv"
+        if not hp.exists():
+            continue
+        series = {int(r["id"]): float(r["winRate"]) for r in read_csv(hp)}
+        builds.append({"id": s["id"], "patch": s.get("patch"),
+                       "report_date": s.get("report_date"), "series": series})
+    if len(builds) >= 2:
+        return {"kind": "real_aggregate", "insufficient": False, "builds": builds,
+                "current": len(builds)}
+    if builds:
+        synth = _synthesize_trend(builds[0])
+        return {"kind": "synthetic_fixture", "insufficient": True,
+                "reason": "agg 仅 1 份快照：依据单份真实数据合成演示序列，非真实趋势",
+                "builds": synth, "current": 1}
+    return {"kind": "unavailable", "insufficient": True,
+            "reason": "无 agg 快照", "builds": [], "current": 0}
+
+
+def load_risk_notes(root: Path) -> list:
+    """hexdata methodology.json 的 riskNotes（已抓未展示维度，规划 M5-4 顺带接入）。"""
+    mf = root / "data" / "agg"
+    if not (mf / "LATEST").exists():
+        return []
+    adir = mf / (mf / "LATEST").read_text(encoding="utf-8").strip()
+    mj = adir / "methodology.json"
+    if not mj.exists():
+        return []
+    try:
+        d = json.loads(mj.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return []
+    rn = d.get("riskNotes")
+    return rn if isinstance(rn, list) else []
 
 
 # ----------------------------------------------------------------------------- real（hexdata 聚合）
@@ -353,9 +494,18 @@ def build_bundle(root: Path = None, ver: str = None, ensure: bool = True) -> dic
     datasets.update(real)
     datasets.update({k: v for k, v in fixture.items() if not k.startswith("__")})
 
+    # ---- M5 版本化维度（离线直接消费，不依赖运行时扫目录）----
+    versions = load_versions(root)
+    metas_embed = build_metas_embed(root)
+    version_changes = build_version_changes(root)
+    agg_trend = build_aggregate_trend(root)
+    risk_notes = load_risk_notes(root)
+
     warnings = [
         "hexdata 聚合为群体样本关联，非因果；引用须标注来源+buildId+patch+日期。",
         "fixture_* 为合成夹具（synthetic_fixture），仅用于引擎校验，绝非真实数据，不得用于对外结论。",
+        "聚合趋势（trend）在 agg 快照不足 2 份时以 synthetic_fixture 合成演示序列展示，非真实趋势；"
+        "真实趋势随定时抓取积累后自动替换。",
     ]
 
     bundle = {
@@ -378,6 +528,12 @@ def build_bundle(root: Path = None, ver: str = None, ensure: bool = True) -> dic
             "attribution_text": citation.get("attribution_text"),
             "required_context": citation.get("required_context"),
         },
+        # M5：版本注册表 + 各版本英雄字典（离线切换名/别名）
+        "versions": versions,
+        "metas": metas_embed,
+        "version_changes": version_changes,
+        "trend": agg_trend,
+        "risk_notes": risk_notes,
         "alias_index": build_alias_index(hero_meta, hex_pool),
         "heroes": [{"key": k, "name": v["name"], "title": v["title"],
                     "roles": v["roles"], "aliases": v["aliases"]}

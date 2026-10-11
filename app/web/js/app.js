@@ -19,11 +19,13 @@
     query: '',
     pinnedHero: null,
     tab: 'overview',
+    metaVersion: null,    // 当前选定元数据版本（版本选择器驱动）
     autoTimer: null
   };
 
   var charts = {};
   var roleMap = {};
+  var metaHeroMap = {};   // {key: {name,title,roles,aliases}} —— 选定版本的英雄字典
 
   function $(id) { return document.getElementById(id); }
 
@@ -82,6 +84,24 @@
       .catch(function () { return { ok: false }; });
   }
 
+  // ---------------------------------------------------------------- 版本 / 名称解析
+  /** 选定 meta 版本下某英雄 key 的显示名（离线切换版本用）。 */
+  function nameOf(key) {
+    if (metaHeroMap[key]) { return metaHeroMap[key].name; }
+    var h = (state.bundle.heroes || []).filter(function (x) { return x.key === key; })[0];
+    return h ? h.name : ('#' + key);
+  }
+
+  /** 由 bundle.metas[ver] 构建 key→hero 字典。 */
+  function buildMetaMap(ver) {
+    var m = (state.bundle.metas || {})[ver];
+    var map = {};
+    if (m && m.heroes) {
+      m.heroes.forEach(function (h) { map[h.key] = h; });
+    }
+    return map;
+  }
+
   // ---------------------------------------------------------------- 筛选
   function filteredHeroRows() {
     var b = state.bundle;
@@ -92,6 +112,8 @@
     if (state.pinnedHero != null) {
       rows = rows.filter(function (r) { return r.key === state.pinnedHero; });
     }
+    // 用选定 meta 版本的正式名覆盖（离线版本切换）
+    rows.forEach(function (r) { r.name = nameOf(r.key); });
     return rows;
   }
 
@@ -136,7 +158,7 @@
   function renderChrome() {
     var b = state.bundle;
     var k = C.kpis(b);
-    $('pill-meta').textContent = '版本 ' + (b.meta_version || '—');
+    $('pill-meta').textContent = '版本 ' + (state.metaVersion || b.meta_version || '—');
     $('pill-updated').textContent = '更新于 ' + (b.generated_at || '—').replace('T', ' ');
 
     var isReal = state.dataset === 'real';
@@ -195,6 +217,24 @@
     } else {
       draw('chart-ov-rank', C.buildRankingOption(rows, { topN: 8 }));
     }
+
+    // 经济强度榜 + 风险备注（已抓未展示维度，M5-4 顺带接入）
+    var econ = b.economy_leaders || [];
+    var ehead = '<thead><tr><th>#</th><th>英雄</th><th>经济关联/百局</th><th>推荐占比</th><th>对局</th></tr></thead>';
+    var ebody = econ.length
+      ? econ.map(function (e) {
+          return '<tr><td class="num">' + (e.rank || '') + '</td><td><b>' + (e.name || e.heroId || '') + '</b></td>' +
+            '<td class="num">' + (e.winAssociationPerHundred != null ? C.fmtInt(Math.round(e.winAssociationPerHundred * 100) / 100) : '—') + '</td>' +
+            '<td class="num">' + (e.recommendedShare != null ? C.pct(e.recommendedShare) : '—') + '</td>' +
+            '<td class="num">' + (e.games != null ? C.fmtInt(e.games) : '—') + '</td></tr>';
+        }).join('')
+      : '<tr><td colspan="5" class="hint">无数据</td></tr>';
+    $('tbl-econ').innerHTML = ehead + '<tbody>' + ebody + '</tbody>';
+
+    var rn = b.risk_notes || [];
+    $('ov-risk').innerHTML = rn.length
+      ? rn.map(function (t) { return '<li>' + t + '</li>'; }).join('')
+      : '<li class="hint">无</li>';
   }
 
   function emptyOption(text) {
@@ -344,6 +384,73 @@
     void c;
   }
 
+  // ---------------------------------------------------------------- 版本 / 趋势
+  function renderVersion() {
+    var b = state.bundle;
+    var vc = (b.version_changes || []).filter(function (p) { return p.to === state.metaVersion; })[0];
+
+    // ---- 版本变更（元数据，真实数据）----
+    if (!vc) {
+      $('vc-title').textContent = '版本变更 · ' + state.metaVersion;
+      $('vc-summary-tag').textContent = '最早快照 · 无更早版本可对比';
+      drawEmpty('chart-vc', '该版本是最早快照，无更早版本可对比');
+      $('tbl-vc').innerHTML = '';
+      renderBanner('vc-banner', false, ' 当前选定 ' + state.metaVersion + ' 为最早快照。');
+      $('tr-tag').textContent = '—';
+      drawEmpty('chart-trend', '无趋势数据');
+      return;
+    }
+    var s = vc.summary || {};
+    $('vc-title').textContent = '版本变更 · ' + vc.from + ' → ' + vc.to;
+    $('vc-summary-tag').textContent = '英雄 +' + (s.champions_added || 0) + ' / -' +
+      (s.champions_removed || 0) + ' / ~' + (s.champions_changed || 0) +
+      '｜装备 +' + (s.items_added || 0) + ' / -' + (s.items_removed || 0);
+    if (vc.status === 'ok') {
+      draw('chart-vc', C.buildChangesSummaryOption(s));
+    } else {
+      drawEmpty('chart-vc', '版本对比不可用：' + (vc.detail || vc.status));
+    }
+
+    var changed = (vc.champions && vc.champions.changed) || [];
+    var added = (vc.champions && vc.champions.added) || [];
+    var removed = (vc.champions && vc.champions.removed) || [];
+    var rows = changed.map(function (c) {
+      return { cls: 'chg-changed', kind: '变更', name: c.name, fields: c.fields || [] };
+    }).concat(added.map(function (c) { return { cls: 'chg-added', kind: '新增', name: c.name, fields: [] }; }))
+      .concat(removed.map(function (c) { return { cls: 'chg-removed', kind: '移除', name: c.name, fields: [] }; }));
+    var head = '<thead><tr><th>类型</th><th>英雄</th><th>改动字段</th></tr></thead>';
+    var body = rows.length
+      ? rows.map(function (r) {
+          var tags = (r.fields || []).map(function (f) { return '<span class="field-tag">' + f + '</span>'; }).join('');
+          return '<tr><td><span class="' + r.cls + '">' + r.kind + '</span></td>' +
+            '<td><b>' + r.name + '</b></td><td><div class="field-tags">' + tags + '</div></td></tr>';
+        }).join('')
+      : '<tr><td colspan="3" class="hint">本版本无英雄/装备变更</td></tr>';
+    $('tbl-vc').innerHTML = head + '<tbody>' + body + '</tbody>';
+
+    // ---- 聚合趋势（英雄胜率跨版本）----
+    var tr = b.trend || {};
+    var trTag = $('tr-tag');
+    if (tr.kind === 'synthetic_fixture') {
+      trTag.textContent = '演示（合成）· 当前 ' + (tr.current || 0) + '/2 真实快照';
+      renderBanner('vc-banner', true,
+        ' 元数据对比 ' + vc.from + ' → ' + vc.to + '（真实数据）。⚠️ 聚合趋势仅 1 份真实快照，' +
+        '下图为依据单份真实数据合成的演示序列，非真实趋势；真实趋势随定时抓取积累后自动替换。');
+    } else if (tr.kind === 'real_aggregate') {
+      trTag.textContent = '真实聚合 · ' + (tr.current || 0) + ' 份快照';
+      renderBanner('vc-banner', false,
+        ' 元数据对比 ' + vc.from + ' → ' + vc.to + '（真实数据）；聚合趋势含 ' + (tr.current || 0) + ' 份真实快照。');
+    } else {
+      trTag.textContent = '不可用';
+      renderBanner('vc-banner', false, ' 元数据对比 ' + vc.from + ' → ' + vc.to + '（真实数据）。');
+    }
+    if (tr.kind === 'unavailable') {
+      drawEmpty('chart-trend', '无趋势数据');
+    } else {
+      draw('chart-trend', C.buildTrendOption(tr, metaHeroMap));
+    }
+  }
+
   // ---------------------------------------------------------------- 搜索
   function renderSearch() {
     var el = $('search-result');
@@ -374,7 +481,8 @@
   function apply() {
     renderChrome();
     renderSearch();
-    var fn = { overview: renderOverview, ranking: renderRanking, synergy: renderSynergy, strata: renderStrata }[state.tab];
+    var fn = { overview: renderOverview, ranking: renderRanking, synergy: renderSynergy,
+      strata: renderStrata, version: renderVersion }[state.tab];
     if (fn) { fn(); }
     // 概览/排名依赖同一批筛选：切换 tab 时已重绘当前面板
   }
@@ -384,7 +492,7 @@
     Array.prototype.forEach.call($('tabs').children, function (b) {
       b.classList.toggle('active', b.getAttribute('data-tab') === name);
     });
-    ['overview', 'ranking', 'synergy', 'strata'].forEach(function (p) {
+    ['overview', 'ranking', 'synergy', 'strata', 'version'].forEach(function (p) {
       $('panel-' + p).classList.toggle('active', p === name);
     });
     // 面板从 display:none 变可见后容器才有尺寸：强制回流 → 立即绘制 → 再兜一次 resize
@@ -494,6 +602,28 @@
     $('btn-auto').addEventListener('click', toggleAuto);
     window.addEventListener('resize', resizeAll);
 
+    // 版本选择器（M5-4）
+    var selVer = $('sel-ver');
+    var metas = ((state.bundle.versions && state.bundle.versions.snapshots) || [])
+      .filter(function (s) { return s.kind === 'meta'; });
+    selVer.innerHTML = metas.map(function (s) {
+      return '<option value="' + s.id + '">' + s.id + (s.is_latest ? '（最新）' : '') + '</option>';
+    }).join('');
+    if (!state.metaVersion) {
+      state.metaVersion = state.bundle.meta_version ||
+        (metas.length ? metas[metas.length - 1].id : null);
+    }
+    selVer.value = state.metaVersion;
+    metaHeroMap = buildMetaMap(state.metaVersion);
+    selVer.addEventListener('change', function () {
+      state.metaVersion = selVer.value;
+      metaHeroMap = buildMetaMap(state.metaVersion);
+      var qs = new URLSearchParams(window.location.search);
+      qs.set('ver', state.metaVersion);
+      history.replaceState(null, '', '?' + qs.toString());
+      apply();
+    });
+
     document.addEventListener('keydown', function (e) {
       if (e.key === '/' && document.activeElement !== $('search')) {
         e.preventDefault(); $('search').focus();
@@ -516,6 +646,13 @@
     if (q) { state.query = q; }
     var pin = qs.get('pin');
     if (pin) { state.pinnedHero = Number(pin); }
+    var ver = qs.get('ver');
+    if (ver) {
+      state.metaVersion = ver;
+      var sv = $('sel-ver');
+      if (sv) { sv.value = ver; }
+      metaHeroMap = buildMetaMap(state.metaVersion);
+    }
 
     // 同步 UI 高亮
     function sync(sel, attr, val) {

@@ -99,6 +99,8 @@ class Env:
             # 篡改 5：篡改名次数值（应被 Wilson 独立重算抓到）
             if "augment_ranking" in b["datasets"]:
                 b["datasets"]["augment_ranking"]["rows"][0]["wilson_lower"] += 0.5
+            # 篡改 7：删掉版本注册表（M5 字段，应被 schema 断言抓到）—— 须在写盘前
+            b.pop("versions", None)
             self.bundle_path = self.tmp / "dashboard.json"
             self.bundle_path.write_text(json.dumps(b, ensure_ascii=False), encoding="utf-8")
             # 篡改 6：HTML 混入 CDN 外链
@@ -195,6 +197,21 @@ def sec_b(env: Env):
     check("hexdata 引用四字段齐备",
           all(cit.get(k) for k in ("buildId", "reportPatch", "reportDate")),
           str(cit.get("buildId")))
+
+    # M5 版本化维度（前端离线消费）
+    vidx = b.get("versions") or {}
+    check("bundle.versions 注册表存在且有快照",
+          bool(vidx.get("snapshots")), str(vidx.get("counts")))
+    check("bundle.metas 含 ≥2 版本英雄字典（离线切换）",
+          len((b.get("metas") or {}).keys()) >= 2, str(list((b.get("metas") or {}).keys())))
+    vc = b.get("version_changes") or []
+    check("bundle.version_changes 非空（相邻 meta 对）", len(vc) >= 1)
+    check("version_changes 含真实 diff（status=ok）",
+          any(x.get("status") == "ok" for x in vc))
+    tr = b.get("trend") or {}
+    check("bundle.trend 含 kind 与 builds 字段",
+          bool(tr.get("kind")) and isinstance(tr.get("builds"), list))
+    check("bundle.risk_notes 为列表", isinstance(b.get("risk_notes") or [], list))
 
 
 # ---------------------------------------------------------------------------- C 内容一致性
@@ -356,10 +373,16 @@ def sec_e(env: Env):
         "const C=require(process.argv[1]);"
         "const b=JSON.parse(require('fs').readFileSync(process.argv[2],'utf8'));"
         "const api=['decodeAlias','searchHeroes','filterByTier','buildRankingOption',"
-        "'buildSynergyHeatmapOption','buildMmrHistogramOption','kpis','rowLabel'];"
+        "'buildSynergyHeatmapOption','buildMmrHistogramOption','kpis','rowLabel',"
+        "'heroNameInMeta','buildChangesSummaryOption','buildTrendOption'];"
         "const miss=api.filter(k=>typeof C[k]!=='function');"
         "const r={missing:miss,alias:C.decodeAlias(b.alias_index,'快乐风男'),"
-        "coreVersion:C.VERSION};"
+        "coreVersion:C.VERSION,"
+        "trend:C.buildTrendOption(b.trend,{}).series.length,"
+        "chg:C.buildChangesSummaryOption((b.version_changes[0]||{}).summary||{}).xAxis.data.length,"
+        "name:(function(){var ks=Object.keys(b.metas||{});if(!ks.length)return null;"
+        "var vk=ks[0];var hk=b.metas[vk].heroes[0].key;"
+        "return C.heroNameInMeta(b,hk,vk);})()};"
         "console.log(JSON.stringify(r));"
     )
     r = subprocess.run([node, "-e", script, str(WEB / "js" / "core.js"),
@@ -374,6 +397,11 @@ def sec_e(env: Env):
     check("core.js 导出关键 API 齐备", not out["missing"], str(out["missing"]))
     check("core.js 声明版本", bool(out.get("coreVersion")))
     check("别名链路（node 侧）快乐风男 → 157", out.get("alias") == 157, str(out.get("alias")))
+    check("core.js 导出 M5 API（趋势/变更/名解析）齐备", not out.get("missing"),
+          str(out.get("missing")))
+    check("buildTrendOption 返回多序列（序列数>0）", (out.get("trend") or 0) > 0, str(out.get("trend")))
+    check("buildChangesSummaryOption 返回 5 类目", out.get("chg") == 5, str(out.get("chg")))
+    check("heroNameInMeta 解析真实英雄名", bool(out.get("name")), str(out.get("name")))
 
     ut = subprocess.run([node, str(ROOT / "tools" / "test_m4_unit.js")],
                         capture_output=True, text=True, encoding="utf-8", errors="replace")
@@ -410,6 +438,21 @@ def sec_f(env: Env, with_flutter: bool):
               all(k in s for k in ("概览", "排名", "协同", "分层")))
     testf = ROOT / "app" / "test" / "summonerlens_test.dart"
     check("存在 dart 单测文件", testf.exists())
+
+    # M5-4 前端：版本选择器 + 「版本/趋势」标签页 + ?ver= 深链
+    web_idx = WEB / "index.html"
+    if web_idx.exists():
+        wi = web_idx.read_text(encoding="utf-8")
+        check("前端含版本选择器 sel-ver", 'id="sel-ver"' in wi)
+        check("前端含「版本/趋势」标签页", 'data-tab="version"' in wi)
+        check("前端含版本变更面板 panel-version", 'id="panel-version"' in wi)
+        check("前端含聚合趋势图位 chart-trend", 'id="chart-trend"' in wi)
+    ajs = WEB / "js" / "app.js"
+    if ajs.exists():
+        a = ajs.read_text(encoding="utf-8")
+        check("app.js 实现版本选择器与渲染（metaVersion/sel-ver/renderVersion）",
+              all(k in a for k in ("metaVersion", "sel-ver", "renderVersion")))
+        check("app.js 支持 ?ver= 深链参数", "'ver'" in a)
 
     ft = ROOT / "tools" / "flutter_task.py"
     check("存在 flutter 任务入口（禁止裸跑 flutter/dart）", ft.exists())

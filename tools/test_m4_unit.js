@@ -55,6 +55,12 @@ if (SELF) {
   pairs.pop();                                   // 破坏热力/对比矩阵行数
   slices.splice(0, slices.length,
     ...slices.filter(function (r) { return r.stratum === 'top40'; }));    // 破坏分层筛选前提
+  // M5 故障注入：破坏版本字典 / 版本变更 / 趋势
+  if (bundle.metas) {
+    Object.keys(bundle.metas).forEach(function (v) { bundle.metas[v].heroes = []; });
+  }
+  bundle.version_changes = [];
+  bundle.trend = { kind: 'unavailable', builds: [], insufficient: true, current: 0 };
 }
 
 // ---------------------------------------------------------------- A. 别名归一 / 搜索
@@ -225,6 +231,50 @@ check('hexdata 引用四字段齐备', (function () {
 })());
 check('别名索引非空且为数值映射', Object.keys(bundle.alias_index).length > 100 &&
   Object.keys(bundle.alias_index).every(function (kk) { return typeof bundle.alias_index[kk] === 'number'; }));
+
+// ---------------------------------------------------------------- G. 版本化（M5）
+group('G. 版本化与跨版本趋势（M5-4）');
+const metasG = bundle.metas || {};
+const metaKeys = Object.keys(metasG);
+const verKeyG = metaKeys.length ? metaKeys[metaKeys.length - 1] : null;
+check('bundle.metas 含 ≥2 个版本', metaKeys.length >= 2);
+check('heroNameInMeta 解析真实英雄名', (function () {
+  if (!verKeyG || !metasG[verKeyG].heroes.length) { return false; }
+  var h0 = metasG[verKeyG].heroes[0];
+  return C.heroNameInMeta(bundle, h0.key, verKeyG) === h0.name;
+})());
+check('heroNameInMeta 未命中 → null', C.heroNameInMeta(bundle, 999999, verKeyG) === null);
+check('heroNameInMeta 未知版本 → null', (function () {
+  if (!verKeyG || !metasG[verKeyG].heroes.length) { return true; } // 空字典下该断言无意义
+  return C.heroNameInMeta(bundle, metasG[verKeyG].heroes[0].key, '9.9.9') === null;
+})());
+
+const vcG = (bundle.version_changes || [])[0];
+check('version_changes 含相邻 meta 对', !!vcG && vcG.status === 'ok');
+check('version_changes 真实产出英雄变更', !!vcG && vcG.summary && vcG.summary.champions_changed >= 1);
+
+const sumG = (vcG && vcG.summary) || {};
+const chgOpt = C.buildChangesSummaryOption(sumG);
+check('变更摘要条形图 5 个类目', chgOpt.xAxis.data.length === 5);
+check('变更摘要条形图值 = 摘要计数', (function () {
+  var v = chgOpt.series[0].data.map(function (d) { return d.value; });
+  return v[0] === sumG.champions_added && v[2] === sumG.champions_changed && v[4] === sumG.items_removed;
+})());
+check('变更摘要条形图末位（装备移除）着红', chgOpt.series[0].data[4].itemStyle.color === '#ff5b5b');
+
+const trendG = bundle.trend || {};
+check('trend 字段齐备(kind / builds)', !!trendG.kind && Array.isArray(trendG.builds));
+const nameMapG = {};
+if (verKeyG) { metasG[verKeyG].heroes.forEach(function (h) { nameMapG[h.key] = h.name; }); }
+const trOpt = C.buildTrendOption(trendG, nameMapG);
+check('趋势折线 x 轴点数 = build 数', trendG.builds.length
+  ? trOpt.xAxis.data.length === trendG.builds.length : true);
+check('趋势折线序列数 = 选取英雄数(≤8)', trendG.builds.length
+  ? trOpt.series.length === Math.min(8, Object.keys(trendG.builds[0].series).length) : true);
+check('趋势折线每个序列点数 = build 数', trendG.builds.length
+  ? trOpt.series.every(function (s) { return s.data.length === trendG.builds.length; }) : true);
+check('趋势折线至少含一个有效数据点', trendG.builds.length
+  ? trOpt.series.some(function (s) { return s.data.some(function (v) { return v != null; }); }) : true);
 
 // ---------------------------------------------------------------- 汇总
 console.log('\n' + '─'.repeat(56));

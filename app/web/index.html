@@ -21,7 +21,10 @@
     </div>
     <span class="spacer"></span>
     <span class="pill" id="pill-provenance"><span class="dot"></span><span id="pill-text">载入中…</span></span>
-    <span class="pill" id="pill-meta">版本 —</span>
+    <label class="ver-sel" title="选择元数据版本：影响英雄名称/别名解析，以及「版本变更」视图的对比目标">
+      版本<select id="sel-ver"></select>
+    </label>
+    <span class="pill" id="pill-meta">—</span>
     <span class="pill" id="pill-updated">—</span>
     <button class="btn" id="btn-refresh" title="重新拉取数据束（并触发服务端重建）">刷新</button>
     <button class="btn" id="btn-auto" title="每 10 秒自动刷新（仅本地服务下可用）">自动刷新：关</button>
@@ -82,6 +85,7 @@
       <button data-tab="ranking">英雄 / Augment 排名</button>
       <button data-tab="synergy">协同</button>
       <button data-tab="strata">玩家分层</button>
+      <button data-tab="version">版本 / 趋势</button>
     </div>
 
     <!-- 概览 -->
@@ -96,6 +100,16 @@
         <div class="card">
           <div class="card-hd"><h2>排名速览（前 8）</h2><span class="tag" id="ov-rank-tag">Wilson 下界</span></div>
           <div class="card-bd"><div class="chart short" id="chart-ov-rank"></div></div>
+        </div>
+      </div>
+      <div class="cards two" style="margin-top:16px">
+        <div class="card">
+          <div class="card-hd"><h2>经济强度榜（hexdata）</h2><span class="tag">economyRanking</span></div>
+          <div class="card-bd"><div class="scroll"><table class="grid" id="tbl-econ"></table></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h2>分析风险备注</h2><span class="tag">riskNotes</span></div>
+          <div class="card-bd"><ul class="notes" id="ov-risk"></ul></div>
         </div>
       </div>
     </section>
@@ -146,6 +160,28 @@
       <div class="card" style="margin-top:16px">
         <div class="card-hd"><h2>分层英雄切片</h2><span class="tag" id="st-slice-tag">当前分层</span></div>
         <div class="card-bd"><div class="chart tall" id="chart-slice"></div></div>
+      </div>
+    </section>
+
+    <!-- 版本 / 趋势 -->
+    <section class="panel" id="panel-version">
+      <div id="vc-banner"></div>
+      <div class="card">
+        <div class="card-hd">
+          <h2 id="vc-title">版本变更</h2>
+          <span class="tag" id="vc-summary-tag">—</span>
+        </div>
+        <div class="card-bd">
+          <div class="chart short" id="chart-vc"></div>
+          <div class="scroll"><table class="grid" id="tbl-vc"></table></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-hd">
+          <h2>聚合趋势（英雄胜率跨版本）</h2>
+          <span class="tag" id="tr-tag">—</span>
+        </div>
+        <div class="card-bd"><div class="chart tall" id="chart-trend"></div></div>
       </div>
     </section>
   </main>

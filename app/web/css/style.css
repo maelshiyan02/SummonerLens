@@ -81,6 +81,13 @@ header.topbar {
 .pill.real .dot { background: var(--up); }
 .pill.fixture .dot { background: var(--warn-border); }
 
+.ver-sel { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
+.ver-sel select {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border-strong);
+  border-radius: 8px; padding: 5px 8px; font-size: 13px; cursor: pointer;
+}
+.ver-sel select:focus { outline: none; border-color: var(--accent); }
+
 .btn {
   border: 1px solid var(--border-strong); background: var(--panel-2); color: var(--text);
   padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px;
@@ -184,6 +191,14 @@ table.grid tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
 .neg { color: var(--down); }
 
 .scroll { max-height: 360px; overflow: auto; }
+
+ul.notes { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.9; }
+ul.notes li { margin-bottom: 2px; }
+.field-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.field-tag { font-size: 11px; padding: 1px 7px; border-radius: 999px; background: rgba(123,107,255,0.16); color: #b9a8ff; border: 1px solid rgba(123,107,255,0.35); }
+.chg-added { color: var(--down); }
+.chg-removed { color: var(--up); }
+.chg-changed { color: var(--tier-high); }
 
 footer.foot {
   grid-area: auto; padding: 14px 22px; border-top: 1px solid var(--border);
