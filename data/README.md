@@ -1,0 +1,43 @@
+# data · 本地数据层
+
+> 本地优先：数据落本地（SQLite / DuckDB / Parquet），统计与建模全在本地跑。
+> 重型产物（raw JSON / champions_full.json）**不入仓**，可由 `python/etl` 重新抓取；小表随仓便于跨版本 diff。
+
+## 目录结构
+
+```
+data/
+├─ meta/<version>/             # Data Dragon 版本快照（每 patch 一份）
+│  ├─ raw/                     # 原始 JSON（versions / champion / items / 173 英雄详情）[gitignore]
+│  ├─ champions_full.json      # 英雄完整数据（含技能/被动）[gitignore，大]
+│  ├─ champions.csv            # 英雄基础表
+│  ├─ items.csv                # 装备表
+│  ├─ skill_archetypes.csv     # 技能原型标注表（首版自动打标，manual_tags 待人工校订）
+│  ├─ aliases.csv              # 英雄别名词典（DataDragon + Hexdata）
+│  ├─ hexdata_citation.json    # hexdata 引用溯源（buildId / reportPatch / reportDate）
+│  └─ snapshot.json            # 快照元信息（版本/数量/时间/来源）
+├─ agg/                        # 聚合统计（借 hexdata ai-summary 等）
+├─ personal/                   # 本人 WeGame / LCU 自采对局
+└─ sample/                     # 随仓小样本
+```
+
+## 再生成
+
+```bash
+python python/etl/fetch_datadragon.py             # 抓最新版本
+python python/etl/fetch_datadragon.py 16.19.1     # 抓指定版本
+python python/etl/build_skill_archetypes.py       # 生成技能原型标注表
+python python/etl/build_aliases.py                # 生成英雄别名词典
+python tools/check_version_changes.py             # 比较最近两个版本
+```
+
+## 传输说明（重要）
+
+本机出网走代理，**Python 标准库证书链验证失败** → 抓取脚本**一律 curl 优先**（走系统/代理 CA）。详见 `.agent/memory/appendices/A09`。
+
+## 当前快照
+
+| 版本 | 英雄 | 装备 | 说明 |
+|---|---|---|---|
+| 16.20.1 | 173 | 870 | 最新；已生成原型标注 + 别名词典 |
+| 16.19.1 | 173 | 870 | 对照快照，用于版本变更检测 |

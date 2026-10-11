@@ -1,0 +1,10 @@
+{
+  "source": "Hexdata",
+  "source_url": "https://hexdata.com.cn/data/ai-summary.json",
+  "canonical": "https://hexdata.com.cn/",
+  "buildId": "hexdata-2026-09-27-f9b948bc5ff0",
+  "reportPatch": "16.19",
+  "reportDate": "2026-09-27",
+  "fetched_at": "2026-10-11T18:37:42",
+  "usage_note": "检索式获取 allowed；独立训练/批量转载/商用 disallowed；引用须附来源链接+buildId+reportPatch+reportDate"
+}

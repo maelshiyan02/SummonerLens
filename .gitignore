@@ -21,6 +21,9 @@ cache/
 # ===== 数据集（大文件，按需单独管理，勿入仓） =====
 data/raw/
 data/external/
+# Data Dragon 快照的重型产物（可由 python/etl 重新抓取，勿入库）
+data/meta/*/raw/
+data/meta/*/champions_full.json
 *.parquet
 *.duckdb
 *.db
