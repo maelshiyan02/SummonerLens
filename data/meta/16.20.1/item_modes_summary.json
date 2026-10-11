@@ -1,0 +1,48 @@
+{
+  "version": "16.20.1",
+  "item_total": 870,
+  "cross_check": {
+    "dd_total": 870,
+    "cdragon_total": 870,
+    "only_in_dd": [],
+    "only_in_cdragon": [],
+    "identical": true
+  },
+  "map_coverage": {
+    "11": 316,
+    "12": 404,
+    "30": 232,
+    "453": 419
+  },
+  "map_names": {
+    "0": "Common",
+    "11": "SR",
+    "12": "ARAM",
+    "22": "TFT",
+    "30": "Arena",
+    "453": "ClassicRift"
+  },
+  "id_family_count": {
+    "aram_copy": 3,
+    "arena_copy": 176,
+    "arena_copy_b": 49,
+    "base": 428,
+    "copy_32": 26,
+    "jade_copy": 164,
+    "special_55": 7,
+    "special_99": 1,
+    "sr_copy": 16
+  },
+  "jade_list_size": 153,
+  "jade_all_77": true,
+  "name_broken": [
+    "2008",
+    "226660",
+    "772139",
+    "772140"
+  ],
+  "aram_pool_size": 253,
+  "aram_mayhem_exclusive_count": 5,
+  "generated_at": "2026-10-11T19:08:25",
+  "source": "Riot Data Dragon + CommunityDragon"
+}

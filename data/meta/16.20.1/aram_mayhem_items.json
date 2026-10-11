@@ -1,0 +1,139 @@
+{
+  "version": "16.20.1",
+  "gamemode": "ARAM: Mayhem / 海克斯大乱斗",
+  "map_id": 12,
+  "map_name": "Howling Abyss (嚎哭深渊)",
+  "has_dedicated_item_catalog": false,
+  "note": "海克斯大乱斗无独立装备目录（kiwi.bin.json 仅含 Augment/任务），沿用共享装备池；下列为其相关/专属装备。",
+  "evidence": [
+    "Riot 官方 Wiki — ARAM: Mayhem（Items 章节列专属装备）",
+    "Riot 支持页 — ARAM: Mayhem Game Mode",
+    "官方补丁说明 25.23（Stat Anvil）/ 25.24（Hextech Gunblade, Sword of Blossoming Dawn）",
+    "CommunityDragon game/maps/modespecificdata/kiwi.bin.json（Augment + /ModesQuests，均挂 Map12）"
+  ],
+  "exclusive": [
+    {
+      "id": "1111",
+      "name_zh": "嘉文一世之靴",
+      "name_en": "Jarvan I's",
+      "scope": "exclusive",
+      "confidence": "confirmed",
+      "gold_total": 300,
+      "maps": "12"
+    },
+    {
+      "id": "3039",
+      "name_zh": "阿塔玛的清算",
+      "name_en": "Atma's Reckoning",
+      "scope": "exclusive",
+      "confidence": "confirmed",
+      "gold_total": 2900,
+      "maps": "12"
+    },
+    {
+      "id": "123430",
+      "name_zh": "毁坏仪式",
+      "name_en": "Rite of Ruin",
+      "scope": "exclusive",
+      "confidence": "confirmed",
+      "gold_total": 3000,
+      "maps": "12"
+    },
+    {
+      "id": "124011",
+      "name_zh": "花晓之剑",
+      "name_en": "Sword of Blossoming Dawn",
+      "scope": "exclusive",
+      "confidence": "confirmed",
+      "gold_total": 2350,
+      "maps": "12"
+    },
+    {
+      "id": "994403",
+      "name_zh": "金铲铲",
+      "name_en": "Golden Spatula",
+      "scope": "exclusive",
+      "confidence": "confirmed",
+      "gold_total": 2500,
+      "maps": "12"
+    }
+  ],
+  "mode_mechanic": [
+    {
+      "id": "6032",
+      "name_zh": "属性加成",
+      "name_en": "Stat Bonus",
+      "scope": "mode_mechanic",
+      "confidence": "confirmed",
+      "gold_total": 750,
+      "maps": "12"
+    },
+    {
+      "id": "220008",
+      "name_zh": "锻造器兑换券",
+      "name_en": "Anvil Voucher",
+      "scope": "mode_mechanic",
+      "confidence": "confirmed",
+      "gold_total": 750,
+      "maps": "12|30"
+    }
+  ],
+  "quest_item": [
+    {
+      "id": "223069",
+      "name_zh": "虚空献祭",
+      "name_en": "Void Immolation",
+      "scope": "quest_item",
+      "confidence": "high",
+      "gold_total": 6000,
+      "maps": "12|30"
+    },
+    {
+      "id": "223084",
+      "name_zh": "心之钢",
+      "name_en": "Heartsteel",
+      "scope": "quest_item",
+      "confidence": "high",
+      "gold_total": 2500,
+      "maps": "12|30"
+    },
+    {
+      "id": "226668",
+      "name_zh": "终极九头蛇",
+      "name_en": "Ultra Hydra",
+      "scope": "quest_item",
+      "confidence": "high",
+      "gold_total": 6000,
+      "maps": "12"
+    },
+    {
+      "id": "228002",
+      "name_zh": "沃格勒特的巫师帽",
+      "name_en": "Wooglet's Witchcap",
+      "scope": "quest_item",
+      "confidence": "high",
+      "gold_total": 6000,
+      "maps": "12|30"
+    }
+  ],
+  "pending": [
+    {
+      "id": "4003",
+      "name_zh": "救生索",
+      "name_en": "Lifeline",
+      "scope": "aram_only_pending",
+      "confidence": "medium",
+      "gold_total": 1600,
+      "maps": "12"
+    },
+    {
+      "id": "4004",
+      "name_zh": "幽魂弯刀",
+      "name_en": "Spectral Cutlass",
+      "scope": "aram_only_pending",
+      "confidence": "medium",
+      "gold_total": 2800,
+      "maps": "12"
+    }
+  ]
+}
