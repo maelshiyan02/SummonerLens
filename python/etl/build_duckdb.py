@@ -17,6 +17,7 @@
 """
 import json
 import sys
+import time
 from pathlib import Path
 
 try:
@@ -148,6 +149,145 @@ def build_personal_table(con, personal_dir: Path) -> int:
     return con.execute("SELECT count(*) FROM personal_matches").fetchone()[0]
 
 
+# ============================================================ M5 · 跨版本落库
+
+def load_registry(root: Path) -> dict:
+    """刷新并读取 `data/versions.json`（注册表是版本维度的唯一真相）。
+
+    先尝试调用 build_versions_index 就地刷新，保证注册表与磁盘一致；
+    刷新失败（极端情形）则退化为只读现有文件，并显式告警——不静默。
+    """
+    etl_dir = Path(__file__).resolve().parent
+    if str(etl_dir) not in sys.path:
+        sys.path.insert(0, str(etl_dir))
+    reg_path = root / "data" / "versions.json"
+    try:
+        import build_versions_index as bvi  # noqa: PLC0415
+        bvi.write_doc(reg_path, bvi.build(root))
+    except Exception as e:  # noqa: BLE001
+        print(f"[duckdb] ⚠️ 刷新版本注册表失败（{type(e).__name__}: {e}）；改读现有文件")
+    if not reg_path.exists():
+        raise SystemExit("[duckdb] ❌ 缺少 data/versions.json；请先运行 python/etl/build_versions_index.py")
+    return json.loads(reg_path.read_text(encoding="utf-8"))
+
+
+def _snaps(idx: dict, kind: str) -> list:
+    return [s for s in idx.get("snapshots", []) if s.get("kind") == kind]
+
+
+def _agg_citation(s: dict) -> str:
+    """单个 agg 快照的引用 JSON（每行内嵌，供 UI 直接拼引用块）。"""
+    return json.dumps({
+        "source": s.get("source") or "Hexdata",
+        "url": "https://hexdata.com.cn",
+        "buildId": s["id"], "reportPatch": s.get("patch"), "reportDate": s.get("report_date"),
+    }, ensure_ascii=False).replace("'", "''")
+
+
+def build_agg_history_tables(con, root: Path, agg_snaps: list) -> dict:
+    """把**全部** agg 快照纵向并入 history 表（多 buildId 并存）。
+
+    与 `agg_top_heroes` / `agg_top_augments`（仅最新）的区别：这三张表保留每个 buildId 的
+    一份，`_build_id` + `_asof`(patch) + `_report_date` 共同构成跨版本定位键。
+    用 `UNION ALL BY NAME`：不同快照列集若有差异，按列名对齐、缺列补 NULL。
+    """
+    counts = {}
+    for tbl, fname in (("agg_top_heroes_history", "top_heroes.csv"),
+                       ("agg_top_augments_history", "top_augments.csv")):
+        selects = []
+        for s in agg_snaps:
+            fp = root / s["path"] / fname
+            if not fp.exists():
+                print(f"[duckdb]   跳过（缺文件）: {s['id']}/{fname}")
+                continue
+            selects.append(f"""
+                SELECT *, 'Hexdata (self-collected samples)' AS _source,
+                       'aggregate_hexdata' AS _confidence,
+                       '{s.get('patch') or ''}' AS _asof,
+                       '{s['id']}' AS _build_id,
+                       '{s.get('report_date') or ''}' AS _report_date,
+                       '{_agg_citation(s)}' AS _citation,
+                       strftime(now(), '%Y-%m-%dT%H:%M:%S') AS _collected_at
+                FROM read_csv_auto('{q(fp)}', header=true)
+            """)
+        if not selects:
+            print(f"[duckdb]   无 agg 快照，跳过 {tbl}")
+            counts[tbl] = 0
+            continue
+        con.execute(f"CREATE OR REPLACE TABLE {tbl} AS " + " UNION ALL BY NAME ".join(selects))
+        counts[tbl] = con.execute(f"SELECT count(*) FROM {tbl}").fetchone()[0]
+    return counts
+
+
+def build_meta_changes_table(con, root: Path, meta_snaps: list) -> int:
+    """跨版本英雄改动：相邻 meta 版本两两 diff（复用 stats/trend.diff_meta）。
+
+    展平为长表：一行 = 一次改动。change_type ∈ {added, removed, changed}。
+    快照 <2 份时按纪律**建空表并显式 pending**，绝不返回空表冒充「无变更」。
+    """
+    cols = ("from_version VARCHAR, to_version VARCHAR, champion_id VARCHAR, champion_name VARCHAR, "
+            "change_type VARCHAR, fields VARCHAR, "
+            "_source VARCHAR, _confidence VARCHAR, _asof VARCHAR, _collected_at VARCHAR")
+    ids = sorted((s["id"] for s in meta_snaps), key=lambda v: tuple(
+        int(x) if x.isdigit() else -1 for x in str(v).split(".")))
+    if len(ids) < 2:
+        print(f"[duckdb]   meta_champion_changes：meta 快照 {len(ids)} 份(<2) -> 建空表（pending）")
+        con.execute(f"CREATE OR REPLACE TABLE meta_champion_changes({cols})")
+        return 0
+
+    py_dir = Path(__file__).resolve().parents[1]
+    if str(py_dir) not in sys.path:
+        sys.path.insert(0, str(py_dir))
+    from stats import trend  # noqa: PLC0415
+
+    rows = []
+    for a, b in zip(ids, ids[1:]):
+        res = trend.diff_meta(root, a, b)
+        if res.get("status") != "ok":
+            print(f"[duckdb]   ⚠️ diff_meta({a}->{b}) = {res.get('status')}：{res.get('detail')}")
+            continue
+        ch = res["champions"]
+        for c in ch["added"]:
+            rows.append((a, b, c["id"], c.get("name", ""), "added", ""))
+        for c in ch["removed"]:
+            rows.append((a, b, c["id"], c.get("name", ""), "removed", ""))
+        for c in ch["changed"]:
+            rows.append((a, b, c["id"], c.get("name", ""), "changed", ",".join(c["fields"])))
+
+    con.execute(f"CREATE OR REPLACE TABLE meta_champion_changes({cols})")
+    if rows:
+        con.executemany(
+            "INSERT INTO meta_champion_changes VALUES (?,?,?,?,?,?,?,?,?,?)",
+            [(*r, "Riot Data Dragon / CommunityDragon", "authoritative", r[1],
+              time.strftime("%Y-%m-%dT%H:%M:%S")) for r in rows])
+    print(f"[duckdb]   meta_champion_changes：{len(ids)-1} 对版本 -> {len(rows)} 条改动")
+    return len(rows)
+
+
+def build_hero_trend_view(con, has_history: bool, idx: dict) -> None:
+    """英雄 × 版本 序列视图（跨 buildId），供趋势查询与前端折线直接消费。"""
+    if not has_history:
+        print("[duckdb]   跳过 v_hero_trend（无 agg 快照）")
+        return
+    con.execute("""
+        CREATE OR REPLACE VIEW v_hero_trend AS
+        SELECT h.id                AS hero_id,
+               h.name              AS hero_name,
+               h._build_id         AS build_id,
+               h._asof             AS patch,
+               h._report_date      AS report_date,
+               h.winRate           AS win_rate,
+               h.pickRate          AS pick_rate,
+               h.games             AS games,
+               h.tier              AS tier,
+               c.key               AS champion_key,
+               c.name              AS champion_name
+        FROM agg_top_heroes_history h
+        LEFT JOIN meta_champions c ON c.key = h.id
+        ORDER BY h.name, h._report_date
+    """)
+
+
 def main() -> None:
     root = project_root()
     ver = pick_version(root)
@@ -177,6 +317,17 @@ def main() -> None:
         print(f"   {t:26s} {n} 行")
     n_cit = build_citation_table(con, agg_dir)
     print(f"   agg_citation               {n_cit} 行")
+
+    # ---- M5：跨版本（全部快照并表 + 相邻版本 diff）----
+    print("[duckdb] 2b) 跨版本表（M5）")
+    idx = load_registry(root)
+    agg_snaps = _snaps(idx, "agg")
+    meta_snaps = _snaps(idx, "meta")
+    c_hist = build_agg_history_tables(con, root, agg_snaps)
+    for t, n in c_hist.items():
+        print(f"   {t:26s} {n} 行（{len(agg_snaps)} 快照）")
+    n_chg = build_meta_changes_table(con, root, meta_snaps)
+
     print("[duckdb] 3) 本人对局表")
     n_per = build_personal_table(con, root / "data" / "personal")
     if n_per:
@@ -197,6 +348,9 @@ def main() -> None:
         LEFT JOIN agg_hero_aliases a ON a.id = c.key
     """)
 
+    # 视图：英雄 × 版本 序列（跨 buildId，M5）
+    build_hero_trend_view(con, bool(agg_snaps), idx)
+
     tables = [r[0] for r in con.execute(
         "SELECT table_name FROM information_schema.tables WHERE table_schema='main' ORDER BY table_name"
     ).fetchall()]
@@ -211,7 +365,15 @@ def main() -> None:
         "hexdata_patch": patch,
         "tables": tables,
         "views": views,
-        "row_counts": {**c1, **c2, "agg_citation": n_cit, "personal_matches": n_per},
+        "row_counts": {**c1, **c2, "agg_citation": n_cit, **c_hist,
+                       "meta_champion_changes": n_chg, "personal_matches": n_per},
+        "versions": {
+            "meta_snapshots": [s["id"] for s in meta_snaps],
+            "agg_snapshots": [s["id"] for s in agg_snaps],
+            "meta_latest": idx.get("latest", {}).get("meta"),
+            "agg_latest": idx.get("latest", {}).get("agg"),
+            "history_builds": len(agg_snaps),
+        },
         "source_tiers": {
             "authoritative": "Data Dragon / CommunityDragon（元数据）",
             "aggregate_hexdata": "Hexdata 自建样本（聚合统计，须带四字段溯源）",

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """M2 · 数据管道端到端验收（含故障注入自检）。
 
-验收对象（三路数据 + 本地落库）：
+验收对象（三路数据 + 本地落库 + 跨版本）：
   1) 元数据：data/meta/<ver>/{champions,items,augments,skill_archetypes}.csv
   2) 聚合统计：data/agg/<buildId>/{top_heroes,top_augments,hero_aliases}.csv + citation.json
   3) 本人对局：data/personal/matches.jsonl（**依赖本人凭证，允许缺席**）
   4) 本地落库：data/summonerlens.duckdb
+  5) 跨版本（M5）：agg_top_{heroes,augments}_history / meta_champion_changes / v_hero_trend
 
 用法：
   <venv>/python tools/verify_pipeline.py [version]             # 正常校验
@@ -169,6 +170,66 @@ def main() -> None:
               con.execute("SELECT count(*) FROM meta_champions").fetchone()[0] == 173)
         check("meta_augments 行数 == 223",
               con.execute("SELECT count(*) FROM meta_augments").fetchone()[0] == 223)
+
+        # ---- 5) 跨版本落库（M5）----
+        print("[5] 跨版本落库（M5：history 表 + 改动表 + 趋势视图）")
+        reg_fp = root / "data" / "versions.json"
+        agg_n = meta_n = None
+        if reg_fp.exists():
+            reg = json.loads(reg_fp.read_text(encoding="utf-8"))
+            agg_n = reg.get("counts", {}).get("agg")
+            meta_n = reg.get("counts", {}).get("meta")
+        check("versions.json 存在（版本注册表）", agg_n is not None and meta_n is not None)
+
+        m5_tables = ["agg_top_heroes_history", "agg_top_augments_history", "meta_champion_changes"]
+        for t in m5_tables:
+            check(f"表 {t} 存在（M5）", t in tabs)
+        for t in [x for x in m5_tables if x in tabs]:
+            cols = {r[0] for r in con.execute(
+                "SELECT column_name FROM information_schema.columns "
+                f"WHERE table_name='{t}'").fetchall()}
+            has = all(c in cols for c in ("_source", "_confidence", "_asof", "_collected_at"))
+            check(f"{t} 四列溯源齐全（含 _collected_at）", has)
+            if has:
+                n_null = con.execute(
+                    f"SELECT count(*) FROM {t} WHERE _source IS NULL OR _confidence IS NULL "
+                    "OR _asof IS NULL OR _collected_at IS NULL").fetchone()[0]
+                check(f"{t} 溯源列无空值", n_null == 0)
+
+        # history：行数 = 快照数 × 12（每份 agg 有 12 名英雄/12 个符文），且多 buildId 并存
+        if agg_n and "agg_top_heroes_history" in tabs and "agg_top_augments_history" in tabs:
+            for t in ("agg_top_heroes_history", "agg_top_augments_history"):
+                n = con.execute(f"SELECT count(*) FROM {t}").fetchone()[0]
+                check(f"{t} 行数 == {agg_n}×12 = {agg_n*12}", n == agg_n * 12)
+            nb = con.execute(
+                "SELECT count(DISTINCT _build_id) FROM agg_top_heroes_history").fetchone()[0]
+            check(f"agg_top_heroes_history 覆盖 {agg_n} 个 buildId", nb == agg_n)
+
+        # 改动表：非空 + 含已知真实改动（Vayne/stats）。空表必须判 FAIL（承 kb M01）
+        if "meta_champion_changes" in tabs:
+            n = con.execute("SELECT count(*) FROM meta_champion_changes").fetchone()[0]
+            if meta_n and meta_n >= 2:
+                check(f"meta_champion_changes 非空（{meta_n} 版元数据应有改动）", n > 0)
+                known = con.execute(
+                    "SELECT count(*) FROM meta_champion_changes WHERE champion_id='Vayne' "
+                    "AND change_type='changed' AND fields LIKE '%stats%'").fetchone()[0]
+                check("meta_champion_changes 含已知改动 Vayne/stats", known >= 1)
+            else:
+                print("  ⚠️ PENDING：meta 快照 <2 份，跨版本改动无从产生（预期）——不计 FAIL")
+
+        # 趋势视图：行数 = 快照数 × 12，版本维 = 快照数
+        check("视图 v_hero_trend 存在", "v_hero_trend" in tabs)
+        if "v_hero_trend" in tabs and agg_n:
+            n = con.execute("SELECT count(*) FROM v_hero_trend").fetchone()[0]
+            check(f"v_hero_trend 行数 == {agg_n}×12 = {agg_n*12}", n == agg_n * 12)
+            nb = con.execute("SELECT count(DISTINCT build_id) FROM v_hero_trend").fetchone()[0]
+            check(f"v_hero_trend 版本数 == {agg_n}", nb == agg_n)
+
+        if self_test and "v_hero_trend" in tabs:
+            # 故障注入：只改判据（要求 99999 行）→ 必然 FAIL，证明 M5 断言确实作用于真实查询
+            check("[SELF-TEST] v_hero_trend 行数 == 99999（应 FAIL）",
+                  con.execute("SELECT count(*) FROM v_hero_trend").fetchone()[0] == 99999)
+
         con.close()
 
     print("\n===== 汇总 =====")

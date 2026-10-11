@@ -6,16 +6,21 @@
     "agg_citation",
     "agg_hero_aliases",
     "agg_top_augments",
+    "agg_top_augments_history",
     "agg_top_heroes",
+    "agg_top_heroes_history",
     "meta_aliases",
     "meta_augments",
+    "meta_champion_changes",
     "meta_champions",
     "meta_items",
     "meta_items_modes",
     "meta_skill_archetypes",
+    "v_hero_trend",
     "v_heroes"
   ],
   "views": [
+    "v_hero_trend",
     "v_heroes"
   ],
   "row_counts": {
@@ -29,7 +34,22 @@
     "agg_top_augments": 12,
     "agg_hero_aliases": 172,
     "agg_citation": 1,
+    "agg_top_heroes_history": 12,
+    "agg_top_augments_history": 12,
+    "meta_champion_changes": 7,
     "personal_matches": 0
+  },
+  "versions": {
+    "meta_snapshots": [
+      "16.19.1",
+      "16.20.1"
+    ],
+    "agg_snapshots": [
+      "hexdata-2026-09-27-f9b948bc5ff0"
+    ],
+    "meta_latest": "16.20.1",
+    "agg_latest": "hexdata-2026-09-27-f9b948bc5ff0",
+    "history_builds": 1
   },
   "source_tiers": {
     "authoritative": "Data Dragon / CommunityDragon（元数据）",
