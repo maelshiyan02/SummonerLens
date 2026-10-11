@@ -12,5 +12,21 @@
     "16.18.1",
     "16.17.1",
     "16.16.1"
-  ]
+  ],
+  "augments": {
+    "source": "CommunityDragon",
+    "communitydragon_build": "16.20.8248524+branch.releases-16-20.content.release",
+    "augment_defs_total": 223,
+    "kiwi_pool_size": 223,
+    "cherry_pool_size": 57,
+    "kiwi_jade_pool_size": 188,
+    "kiwi_pool_rarity": {
+      "kPrismatic": 75,
+      "kGold": 86,
+      "kSilver": 62
+    },
+    "name_hit_zh": 223,
+    "desc_hit_zh": 223,
+    "fetched_at": "2026-10-11T18:54:26"
+  }
 }

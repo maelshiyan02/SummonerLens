@@ -8,13 +8,17 @@
 ```
 data/
 ├─ meta/<version>/             # Data Dragon 版本快照（每 patch 一份）
-│  ├─ raw/                     # 原始 JSON（versions / champion / items / 173 英雄详情）[gitignore]
+│  ├─ raw/                     # 原始 JSON（versions / champion / items / 英雄详情 / cdragon 强化符文）[gitignore]
 │  ├─ champions_full.json      # 英雄完整数据（含技能/被动）[gitignore，大]
 │  ├─ champions.csv            # 英雄基础表
 │  ├─ items.csv                # 装备表
 │  ├─ skill_archetypes.csv     # 技能原型标注表（首版自动打标，manual_tags 待人工校订）
 │  ├─ aliases.csv              # 英雄别名词典（DataDragon + Hexdata）
 │  ├─ hexdata_citation.json    # hexdata 引用溯源（buildId / reportPatch / reportDate）
+│  ├─ augments.csv             # 强化符文表（海克斯池 223 条：中英文名/描述/稀有度/标签/图标）
+│  ├─ augments_full.json       # 强化符文完整数据（程序加载用）
+│  ├─ augment_pools.json       # 各模式启用池（CHERRY=57 / KIWI=223 / KIWI_JADE=188）
+│  ├─ augment_display_tags.json# 强化符文类别标签文本（伤害/经济/速度… 11 类）
 │  └─ snapshot.json            # 快照元信息（版本/数量/时间/来源）
 ├─ agg/                        # 聚合统计（借 hexdata ai-summary 等）
 ├─ personal/                   # 本人 WeGame / LCU 自采对局
@@ -28,6 +32,7 @@ python python/etl/fetch_datadragon.py             # 抓最新版本
 python python/etl/fetch_datadragon.py 16.19.1     # 抓指定版本
 python python/etl/build_skill_archetypes.py       # 生成技能原型标注表
 python python/etl/build_aliases.py                # 生成英雄别名词典
+python python/etl/fetch_augments.py               # 抓强化符文（CommunityDragon，海克斯池）
 python tools/check_version_changes.py             # 比较最近两个版本
 ```
 
@@ -37,7 +42,7 @@ python tools/check_version_changes.py             # 比较最近两个版本
 
 ## 当前快照
 
-| 版本 | 英雄 | 装备 | 说明 |
-|---|---|---|---|
-| 16.20.1 | 173 | 870 | 最新；已生成原型标注 + 别名词典 |
-| 16.19.1 | 173 | 870 | 对照快照，用于版本变更检测 |
+| 版本 | 英雄 | 装备 | 强化符文(海克斯) | 说明 |
+|---|---|---|---|---|
+| 16.20.1 | 173 | 870 | 223 | 最新；已生成原型标注 + 别名词典 + 强化符文（cdragon 16.20.8248524） |
+| 16.19.1 | 173 | 870 | — | 对照快照，用于版本变更检测 |

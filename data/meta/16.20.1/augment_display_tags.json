@@ -1,0 +1,50 @@
+{
+  "note": "AugmentDisplayTags 为整型枚举；数字↔名称映射待补。下列为类别名文本（中/英）。",
+  "tag_count": 11,
+  "tags": {
+    "ally": {
+      "zh": "己方 ",
+      "en": "Ally"
+    },
+    "classicish": {
+      "zh": "经典模式版",
+      "en": "Classic-ish"
+    },
+    "damage": {
+      "zh": "伤害",
+      "en": "Damage"
+    },
+    "economy": {
+      "zh": "经济",
+      "en": "Economy"
+    },
+    "general": {
+      "zh": "综合",
+      "en": "General"
+    },
+    "quest": {
+      "zh": "任务",
+      "en": "Quest"
+    },
+    "questline": {
+      "zh": "任务线",
+      "en": "Questline"
+    },
+    "resilience": {
+      "zh": "复原力",
+      "en": "Resilience"
+    },
+    "speed": {
+      "zh": "速度",
+      "en": "Speed"
+    },
+    "statanvil": {
+      "zh": "属性锻造器",
+      "en": "Stat Anvil"
+    },
+    "utility": {
+      "zh": "功能",
+      "en": "Utility"
+    }
+  }
+}
