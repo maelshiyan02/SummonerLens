@@ -26,6 +26,20 @@ Flutter Desktop（壳） + Python（pandas/polars/duckdb/scipy 数据层） + EC
 > 记忆真身唯一在 **`.agent/`**，其余（`.workbuddy` 等）是工具自身运行目录，**不**作为项目记忆载体。
 > 与 mangrove 项目（D:\Mangrove_Windows）严格隔离：禁止互相改文件。
 
+## 快速开始（打开仪表板）
+
+在 M4 产物已就绪的前提下，**双击项目根目录下的脚本**即可：
+
+| 方式 | 双击这个文件 | 说明 |
+|---|---|---|
+| 浏览器（推荐） | `run_dashboard.bat` | 自动起本地服务（随机空闲端口）并打开默认浏览器；**关闭该窗口即停止服务** |
+| 桌面壳 | `run_desktop.bat` | 启动 Flutter 桌面程序 `app/build/windows/x64/runner/Release/summonerlens.exe` |
+| 离线兜底 | `app/web/index.html` | 直接双击，**无需服务、无需 Python**（数据为上次构建的内联快照） |
+
+- 脚本会自动探测 Python（托管 venv → 系统 `C:\Python38` → PATH 里的 `py`/`python`）。
+- 前置：数据束缺失时先跑 `python python/bridge/build_viz_bundle.py`；桌面壳未构建时先跑 `python tools/flutter_task.py build`。
+- 无 Python 也能看：直接用「离线兜底」方式。
+
 ## 目录结构
 
 ```
