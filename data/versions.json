@@ -1,0 +1,63 @@
+{
+  "schema": "summonerlens.versions.v1",
+  "generated_at": "2026-10-11T21:39:26",
+  "latest": {
+    "meta": "16.20.1",
+    "agg": "hexdata-2026-09-27-f9b948bc5ff0"
+  },
+  "counts": {
+    "meta": 2,
+    "agg": 1
+  },
+  "warnings": [],
+  "snapshots": [
+    {
+      "kind": "agg",
+      "id": "hexdata-2026-09-27-f9b948bc5ff0",
+      "patch": "16.19",
+      "patch_family": "16.19",
+      "report_date": "2026-09-27",
+      "collected_at": "2026-10-11T19:12:06",
+      "path": "data/agg/hexdata-2026-09-27-f9b948bc5ff0",
+      "source": "Hexdata",
+      "extra": {
+        "hero_rows": 12,
+        "augment_rows": 12,
+        "attribution_text": "数据来源：Hexdata（https://hexdata.com.cn）｜Build: hexdata-2026-09-27-f9b948bc5ff0｜Patch: 16.19｜数据日期: 2026-09-27"
+      },
+      "is_latest": true
+    },
+    {
+      "kind": "meta",
+      "id": "16.19.1",
+      "patch": "16.19.1",
+      "patch_family": "16.19",
+      "report_date": null,
+      "collected_at": "2026-10-11T18:42:48",
+      "path": "data/meta/16.19.1",
+      "source": "Riot Data Dragon",
+      "extra": {
+        "locale": "zh_CN",
+        "champion_count": 173,
+        "item_count": 870
+      },
+      "is_latest": false
+    },
+    {
+      "kind": "meta",
+      "id": "16.20.1",
+      "patch": "16.20.1",
+      "patch_family": "16.20",
+      "report_date": null,
+      "collected_at": "2026-10-11T18:37:14",
+      "path": "data/meta/16.20.1",
+      "source": "Riot Data Dragon",
+      "extra": {
+        "locale": "zh_CN",
+        "champion_count": 173,
+        "item_count": 870
+      },
+      "is_latest": true
+    }
+  ]
+}
