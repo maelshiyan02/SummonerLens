@@ -1,0 +1,168 @@
+{
+  "methodology": {
+    "sourceType": "self-collected match samples",
+    "sourcesPage": "https://hexdata.com.cn/methodology#data-sources",
+    "matchStatistics": "Hexdata self-collected ARAM Mayhem match samples",
+    "metadata": [
+      "Riot Data Dragon",
+      "CommunityDragon"
+    ],
+    "scores": [
+      "HexScore",
+      "globalHexScore"
+    ],
+    "samplePolicy": {
+      "low": {
+        "min": 1,
+        "maxExclusive": 250
+      },
+      "medium": {
+        "min": 250,
+        "maxExclusive": 1000
+      },
+      "high": {
+        "min": 1000
+      }
+    },
+    "recommendationPolicy": {
+      "minRecommendationGames": 250,
+      "strongRecommendationMinGames": 1000,
+      "confidenceInterval": "wilson_95",
+      "wilsonZ": 1.96,
+      "ranking": "sample_tier_then_wilson_lower_bound_v1",
+      "rankingSignals": [
+        "sample_tier",
+        "wilson_lower_bound",
+        "pick_rate",
+        "games"
+      ]
+    },
+    "disclaimer": "Hexdata is independent and is not endorsed by Riot Games.",
+    "crawlerPolicy": {
+      "searchAndUserDirectedRetrieval": "allowed",
+      "standaloneModelTraining": "disallowed",
+      "googleExtended": "allowed for Gemini grounding visibility"
+    }
+  },
+  "patchComparison": {
+    "currentPatch": "16.19",
+    "previousPatch": "",
+    "transitionLabel": "Patch 16.19",
+    "reportDate": "2026-09-27",
+    "trendCoverage": 0,
+    "reliableTrendCoverage": 0,
+    "minimumGames": 1000,
+    "hasComparison": false,
+    "risingHeroes": [],
+    "fallingHeroes": [],
+    "methodology": {
+      "comparison": "same ARAM Mayhem mode across adjacent public aggregate snapshots",
+      "calculation": "current winRate minus previous winRate",
+      "minimumGamesPerPatch": 1000,
+      "unit": "percentage-point change",
+      "causalClaim": false
+    }
+  },
+  "economyRanking": {
+    "canonicalUrl": "https://hexdata.com.cn/economy-ranking",
+    "patch": "16.15",
+    "eligibleMatches": 8499669,
+    "heroCount": 172,
+    "firstGameCreation": 1785370654004,
+    "lastGameCreation": 1786099100804,
+    "interpretation": "postgame_association_only_not_causal_policy_proof",
+    "leaders": [
+      {
+        "rank": 1,
+        "heroId": 360,
+        "name": "沙漠玫瑰",
+        "winAssociationPerHundred": 3.58380429,
+        "recommendedShare": 0.2371767,
+        "games": 73254
+      },
+      {
+        "rank": 2,
+        "heroId": 200,
+        "name": "虚空女皇",
+        "winAssociationPerHundred": 3.1923259,
+        "recommendedShare": 0.21687211,
+        "games": 29671
+      },
+      {
+        "rank": 3,
+        "heroId": 120,
+        "name": "战争之影",
+        "winAssociationPerHundred": 2.81751336,
+        "recommendedShare": 0.21891654,
+        "games": 99398
+      },
+      {
+        "rank": 4,
+        "heroId": 223,
+        "name": "河流之王",
+        "winAssociationPerHundred": 2.73239462,
+        "recommendedShare": 0.20782243,
+        "games": 183640
+      },
+      {
+        "rank": 5,
+        "heroId": 104,
+        "name": "法外狂徒",
+        "winAssociationPerHundred": 2.42715732,
+        "recommendedShare": 0.23363334,
+        "games": 166883
+      },
+      {
+        "rank": 6,
+        "heroId": 799,
+        "name": "铁血狼母",
+        "winAssociationPerHundred": 2.42153207,
+        "recommendedShare": 0.21601507,
+        "games": 53899
+      },
+      {
+        "rank": 7,
+        "heroId": 777,
+        "name": "封魔剑魂",
+        "winAssociationPerHundred": 2.41267757,
+        "recommendedShare": 0.21634586,
+        "games": 95130
+      },
+      {
+        "rank": 8,
+        "heroId": 11,
+        "name": "无极剑圣",
+        "winAssociationPerHundred": 2.39772375,
+        "recommendedShare": 0.22143106,
+        "games": 122934
+      },
+      {
+        "rank": 9,
+        "heroId": 895,
+        "name": "不羁之悦",
+        "winAssociationPerHundred": 2.3831222,
+        "recommendedShare": 0.22069217,
+        "games": 13553
+      },
+      {
+        "rank": 10,
+        "heroId": 523,
+        "name": "残月之肃",
+        "winAssociationPerHundred": 2.19853471,
+        "recommendedShare": 0.22640339,
+        "games": 62030
+      }
+    ]
+  },
+  "riskNotes": [
+    "低样本高胜率不直接等于稳定版本答案。",
+    "HexScore 和综合评分会同时考虑收益、样本和覆盖范围。",
+    "玩家实战仍应结合阵容缺口、英雄熟练度和当前三选一选项判断。"
+  ],
+  "license": "https://hexdata.com.cn/methodology#data-license",
+  "isBasedOn": [
+    "https://hexdata.com.cn/methodology#data-sources",
+    "https://developer.riotgames.com/docs/lol#data-dragon",
+    "https://www.communitydragon.org/"
+  ]
+}

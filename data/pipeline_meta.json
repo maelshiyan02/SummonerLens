@@ -1,0 +1,39 @@
+{
+  "meta_version": "16.20.1",
+  "hexdata_build": "hexdata-2026-09-27-f9b948bc5ff0",
+  "hexdata_patch": "16.19",
+  "tables": [
+    "agg_citation",
+    "agg_hero_aliases",
+    "agg_top_augments",
+    "agg_top_heroes",
+    "meta_aliases",
+    "meta_augments",
+    "meta_champions",
+    "meta_items",
+    "meta_items_modes",
+    "meta_skill_archetypes",
+    "v_heroes"
+  ],
+  "views": [
+    "v_heroes"
+  ],
+  "row_counts": {
+    "meta_champions": 173,
+    "meta_items": 870,
+    "meta_items_modes": 870,
+    "meta_augments": 223,
+    "meta_skill_archetypes": 173,
+    "meta_aliases": 173,
+    "agg_top_heroes": 12,
+    "agg_top_augments": 12,
+    "agg_hero_aliases": 172,
+    "agg_citation": 1,
+    "personal_matches": 0
+  },
+  "source_tiers": {
+    "authoritative": "Data Dragon / CommunityDragon（元数据）",
+    "aggregate_hexdata": "Hexdata 自建样本（聚合统计，须带四字段溯源）",
+    "secondary": "WeGame / LCU 本人对局（局内指标有偏，仅参考）"
+  }
+}

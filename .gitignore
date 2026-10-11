@@ -24,10 +24,17 @@ data/external/
 # Data Dragon 快照的重型产物（可由 python/etl 重新抓取，勿入库）
 data/meta/*/raw/
 data/meta/*/champions_full.json
-*.parquet
+# hexdata 聚合原始 JSON（大，可由 fetch_hexdata.py 重抓）
+data/agg/*/raw/
+# 本地落库（派生物，可由 build_duckdb.py 重建）
 *.duckdb
 *.db
+*.parquet
 !data/sample/*.parquet
+
+# ===== 本人隐私数据（凭证 + 自采对局，绝不入库） =====
+data/personal/*
+!data/personal/README.md
 
 # ===== 环境与密钥 =====
 .env

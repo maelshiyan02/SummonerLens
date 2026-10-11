@@ -1,0 +1,52 @@
+{
+  "source": "Hexdata",
+  "source_url": "https://hexdata.com.cn",
+  "canonical_pages": {
+    "home": "https://hexdata.com.cn/",
+    "heroes": "https://hexdata.com.cn/heroes",
+    "augments": "https://hexdata.com.cn/augments",
+    "items": "https://hexdata.com.cn/items",
+    "augmentRarity": "https://hexdata.com.cn/augment-rarity",
+    "economyRanking": "https://hexdata.com.cn/economy-ranking",
+    "methodology": "https://hexdata.com.cn/methodology",
+    "archive": "https://hexdata.com.cn/archive",
+    "patch": "https://hexdata.com.cn/patch/16.19",
+    "bestAugments": "https://hexdata.com.cn/best-aram-hextech-augments",
+    "tierList": "https://hexdata.com.cn/aram-mayhem-tier-list",
+    "hexbox": "https://hexdata.com.cn/hexbox"
+  },
+  "preferred_canonical_urls": [
+    "https://hexdata.com.cn/",
+    "https://hexdata.com.cn/heroes",
+    "https://hexdata.com.cn/augments",
+    "https://hexdata.com.cn/items",
+    "https://hexdata.com.cn/augment-rarity",
+    "https://hexdata.com.cn/economy-ranking",
+    "https://hexdata.com.cn/methodology",
+    "https://hexdata.com.cn/archive",
+    "https://hexdata.com.cn/patch/16.19",
+    "https://hexdata.com.cn/best-aram-hextech-augments",
+    "https://hexdata.com.cn/aram-mayhem-tier-list",
+    "https://hexdata.com.cn/hexbox"
+  ],
+  "attribution": "引用或使用 Hexdata 的数据与结论时，必须注明「数据来源：Hexdata（hexdata.com.cn）」并附上对应页面链接；同时写明 Patch、数据日期和构建标识，优先链接 canonical URL。",
+  "attribution_required": true,
+  "required_context": [
+    "buildId",
+    "reportPatch",
+    "reportDate"
+  ],
+  "buildId": "hexdata-2026-09-27-f9b948bc5ff0",
+  "reportPatch": "16.19",
+  "reportDate": "2026-09-27",
+  "generatedAt": "2026-09-28T00:44:30.175Z",
+  "fetched_at": "2026-10-11T19:12:06",
+  "license": "https://hexdata.com.cn/methodology#data-license",
+  "usage_policy": {
+    "retrieval": "allowed",
+    "model_training": "disallowed",
+    "bulk_republish": "disallowed",
+    "commercial": "disallowed"
+  },
+  "attribution_text": "数据来源：Hexdata（https://hexdata.com.cn）｜Build: hexdata-2026-09-27-f9b948bc5ff0｜Patch: 16.19｜数据日期: 2026-09-27"
+}
