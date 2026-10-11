@@ -36,6 +36,11 @@ data/agg/*/raw/
 data/personal/*
 !data/personal/README.md
 
+# ===== M3 派生：合成夹具 + 派生分析（可由 gen_fixture.py / run_m3.py 重建） =====
+data/sample/m3_corpus.synth.jsonl
+data/sample/m3_corpus.synth.manifest.json
+data/derived/
+
 # ===== 环境与密钥 =====
 .env
 .env.*
