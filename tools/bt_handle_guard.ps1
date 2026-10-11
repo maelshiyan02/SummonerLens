@@ -54,7 +54,13 @@ function Write-Log {
   param([string]$Message)
   $line = '{0}  {1}' -f (Get-Date).ToString('yyyy-MM-dd HH:mm:ss'), $Message
   Write-Output $line
-  try { Add-Content -LiteralPath $LogFile -Value $line -Encoding UTF8 } catch { }
+  try {
+    # keep the log bounded (rotate at 512 KB) so scheduled runs do not grow it forever
+    if ((Test-Path -LiteralPath $LogFile) -and ((Get-Item -LiteralPath $LogFile).Length -gt 524288)) {
+      Move-Item -LiteralPath $LogFile -Destination ($LogFile + '.1') -Force
+    }
+    Add-Content -LiteralPath $LogFile -Value $line -Encoding UTF8
+  } catch { }
 }
 
 function Test-Admin {
