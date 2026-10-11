@@ -1,0 +1,43 @@
+# ===== WorkBuddy 本地运行目录（非项目记忆，不入库） =====
+.workbuddy/
+.trae/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ===== 构建产物 / 缓存 =====
+build/
+dist/
+*.build/
+out/
+cache/
+.cache/
+
+# ===== 数据集（大文件，按需单独管理，勿入仓） =====
+data/raw/
+data/external/
+*.parquet
+*.duckdb
+*.db
+!data/sample/*.parquet
+
+# ===== 环境与密钥 =====
+.env
+.env.*
+*.pem
+*.key
+
+# ===== IDE / OS =====
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ===== 文档临时产物 =====
+*.tmp
+~$*
