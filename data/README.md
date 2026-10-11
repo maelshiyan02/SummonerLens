@@ -12,7 +12,8 @@ data/
 │  ├─ champions_full.json      # 英雄完整数据（含技能/被动）[gitignore，大]
 │  ├─ champions.csv            # 英雄基础表
 │  ├─ items.csv                # 装备表
-│  ├─ skill_archetypes.csv     # 技能原型标注表（首版自动打标，manual_tags 待人工校订）
+│  ├─ skill_archetypes.csv     # 技能原型标注表（7 标签：auto + 人工校订 manual_tags，见 A11）
+│  ├─ archetype_overrides.json # 技能原型人工校订结果（173 条，可复现）
 │  ├─ aliases.csv              # 英雄别名词典（DataDragon + Hexdata）
 │  ├─ hexdata_citation.json    # hexdata 引用溯源（buildId / reportPatch / reportDate）
 │  ├─ augments.csv             # 强化符文表（海克斯池 223 条：中英文名/描述/稀有度/标签/图标）
@@ -34,6 +35,7 @@ python python/etl/build_skill_archetypes.py       # 生成技能原型标注表
 python python/etl/build_aliases.py                # 生成英雄别名词典
 python python/etl/fetch_augments.py               # 抓强化符文（CommunityDragon，海克斯池）
 python tools/check_version_changes.py             # 比较最近两个版本
+python tools/verify_archetypes.py                 # 校验技能原型标注（--self-test 故障注入）
 ```
 
 ## 传输说明（重要）

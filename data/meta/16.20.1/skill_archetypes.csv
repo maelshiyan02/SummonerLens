@@ -1,174 +1,174 @@
-﻿championId,key,name,title,ddragon_tags,ranged,attackrange,hp,archetype_tags,manual_tags
-Annie,1,黑暗之女,安妮,Mage|Support,远程,625,560,aoe|burst|cc|poke|range|sustain,
-Olaf,2,狂战士,奥拉夫,Fighter|Tank,近战,125,645,aoe|burst|range|sustain,
-Galio,3,正义巨像,加里奥,Tank|Mage,近战,150,600,aoe|cc|mobility|sustain,
-TwistedFate,4,卡牌大师,崔斯特,Mage|Marksman,远程,525,604,burst|mobility|range,
-XinZhao,5,德邦总管,赵信,Fighter|Tank,近战,175,620,aoe|burst|cc|mobility|sustain,
-Urgot,6,无畏战车,厄加特,Fighter|Tank,远程,350,655,burst|cc|mobility|range|sustain,
-Leblanc,7,诡术妖姬,乐芙兰,Assassin|Mage,远程,525,598,cc|mobility|poke|range,
-Vladimir,8,猩红收割者,弗拉基米尔,Mage|Fighter,远程,450,600,aoe|cc|poke|range|sustain,
-Fiddlesticks,9,远古恐惧,费德提克,Mage|Support,远程,480,650,aoe|burst|cc|range,
-Kayle,10,正义天使,凯尔,Marksman|Mage,近战,175,670,aoe|burst|cc|mobility|sustain,
-MasterYi,11,无极剑圣,易,Fighter|Assassin,近战,175,640,burst|cc|sustain,
-Alistar,12,牛头酋长,阿利斯塔,Tank|Support,近战,125,685,cc|mobility|sustain,
-Ryze,13,符文法师,瑞兹,Mage,远程,550,620,aoe|burst|cc|mobility|range,
-Sion,14,亡灵战神,赛恩,Tank|Fighter,近战,175,655,aoe|burst|cc|mobility|sustain,
-Sivir,15,战争女神,希维尔,Marksman,远程,500,600,aoe|burst|range|sustain,
-Soraka,16,众星之子,索拉卡,Support|Mage,远程,550,605,aoe|cc|range|sustain,
-Teemo,17,迅捷斥候,提莫,Marksman|Mage,远程,500,615,cc|mobility|poke|range,
-Tristana,18,麦林炮手,崔丝塔娜,Marksman|Assassin,远程,550,640,aoe|cc|mobility|range,
-Warwick,19,祖安怒兽,沃里克,Fighter|Tank,近战,125,620,cc|mobility|sustain,
-Nunu,20,雪原双子,努努和威朗普,Tank|Mage,近战,125,610,aoe|cc|sustain,
-MissFortune,21,赏金猎人,厄运小姐,Marksman|Mage,远程,550,625,aoe|burst|range,
-Ashe,22,寒冰射手,艾希,Marksman|Support,远程,600,610,aoe|burst|cc|poke|range,
-Tryndamere,23,蛮族之王,泰达米尔,Fighter|Assassin,近战,175,696,burst|cc|mobility|poke|sustain,
-Jax,24,武器大师,贾克斯,Fighter,近战,125,650,aoe|burst,
-Morgana,25,堕落天使,莫甘娜,Support|Mage,远程,450,630,aoe|cc|range|sustain,
-Zilean,26,时光守护者,基兰,Support|Mage,远程,550,574,aoe|cc|mobility|range,
-Singed,27,炼金术士,辛吉德,Tank|Mage,近战,125,650,burst|cc|range,
-Evelynn,28,痛苦之拥,伊芙琳,Assassin|Mage,近战,125,642,aoe|cc|mobility|sustain,
-Twitch,29,瘟疫之源,图奇,Marksman|Assassin,远程,550,630,aoe|burst|cc|range,
-Karthus,30,死亡颂唱者,卡尔萨斯,Mage,远程,450,620,aoe|poke|range,
-Chogath,31,虚空恐惧,科加斯,Tank|Mage,近战,125,644,aoe|burst|cc|sustain,
-Amumu,32,殇之木乃伊,阿木木,Tank|Support,近战,125,685,aoe|burst|cc|range,
-Rammus,33,披甲龙龟,拉莫斯,Tank,近战,125,645,aoe|cc|mobility,
-Anivia,34,冰晶凤凰,艾尼维亚,Mage,远程,600,550,aoe|cc|range,
-Shaco,35,恶魔小丑,萨科,Assassin,近战,125,630,aoe|burst|cc|mobility,
-DrMundo,36,祖安狂人,蒙多医生,Tank|Fighter,近战,125,640,burst|cc|sustain,
-Sona,37,琴瑟仙女,娑娜,Support|Mage,远程,550,550,aoe|cc|range|sustain,
-Kassadin,38,虚空行者,卡萨丁,Assassin|Mage,近战,150,646,aoe|burst|cc|mobility|poke|sustain,
-Irelia,39,刀锋舞者,艾瑞莉娅,Fighter|Assassin,近战,200,630,cc|mobility|sustain,
-Janna,40,风暴之怒,迦娜,Support|Mage,远程,550,570,aoe|cc|range|sustain,
-Gangplank,41,海洋之灾,普朗克,Fighter,近战,125,630,aoe|cc|sustain,
-Corki,42,英勇投弹手,库奇,Marksman|Mage,远程,550,610,aoe|burst|range,
-Karma,43,天启者,卡尔玛,Mage|Support,远程,525,630,cc|range|sustain,
-Taric,44,瓦洛兰之盾,塔里克,Support|Tank,近战,150,645,cc|sustain,
-Veigar,45,邪恶小法师,维迦,Mage,远程,550,580,aoe|cc|range,
-Trundle,48,巨魔之王,特朗德尔,Fighter|Tank,近战,175,650,aoe|sustain,
-Swain,50,诺克萨斯统领,斯维因,Mage|Support,远程,525,595,cc|range|sustain,
-Caitlyn,51,皮城女警,凯特琳,Marksman,远程,650,580,burst|cc|range,
-Blitzcrank,53,蒸汽机器人,布里茨,Tank|Support,近战,125,600,cc|sustain,
-Malphite,54,熔岩巨兽,墨菲特,Tank|Mage,近战,125,665,aoe|cc|sustain,
-Katarina,55,不祥之刃,卡特琳娜,Assassin|Mage,近战,125,672,aoe|burst|range,
-Nocturne,56,永恒梦魇,魔腾,Fighter|Assassin,近战,125,640,aoe|cc|mobility|sustain,
-Maokai,57,扭曲树精,茂凯,Tank|Support,近战,125,665,burst|cc|mobility|range|sustain,
-Renekton,58,荒漠屠夫,雷克顿,Fighter|Tank,近战,125,660,aoe|burst|cc|sustain,
-JarvanIV,59,德玛西亚皇子,嘉文四世,Fighter|Tank,近战,175,640,aoe|cc|sustain,
-Elise,60,蜘蛛女皇,伊莉丝,Assassin|Mage,远程,550,620,burst|cc|range|sustain,
-Orianna,61,发条魔灵,奥莉安娜,Mage|Support,远程,525,565,aoe|cc|range,
-MonkeyKing,62,齐天大圣,孙悟空,Fighter|Tank,近战,175,610,burst|cc|mobility|sustain,
-Brand,63,复仇焰魂,布兰德,Mage|Support,远程,550,570,aoe|cc|range|sustain,
-LeeSin,64,盲僧,李青,Fighter|Assassin,近战,125,645,cc|sustain,
-Vayne,67,暗夜猎手,薇恩,Marksman|Assassin,远程,550,580,burst|cc|mobility|range,
-Rumble,68,机械公敌,兰博,Fighter|Mage,近战,125,640,aoe|burst|cc|sustain,
-Cassiopeia,69,魔蛇之拥,卡西奥佩娅,Mage,远程,550,610,aoe|burst|cc|mobility|range|sustain,
-Skarner,72,上古领主,斯卡纳,Tank|Fighter,近战,150,630,cc|mobility|range|sustain,
-Heimerdinger,74,大发明家,黑默丁格,Mage|Support,远程,550,558,cc|range,
-Nasus,75,沙漠死神,内瑟斯,Fighter|Tank,近战,125,650,aoe|sustain,
-Nidalee,76,狂野女猎手,奈德丽,Assassin|Mage,远程,525,610,range|sustain,
-Udyr,77,兽灵行者,乌迪尔,Fighter|Tank,近战,125,664,burst|cc|sustain,
-Poppy,78,圣锤之毅,波比,Tank|Fighter,近战,125,610,aoe|cc|mobility|sustain,
-Gragas,79,酒桶,古拉加斯,Fighter|Mage,近战,125,640,aoe|cc|mobility|range|sustain,
-Pantheon,80,不屈之枪,潘森,Fighter|Assassin,近战,175,650,cc|range,
-Ezreal,81,探险家,伊泽瑞尔,Marksman|Mage,远程,550,600,aoe|mobility|range,
-Mordekaiser,82,铁铠冥魂,莫德凯撒,Fighter|Mage,近战,175,645,aoe|poke|sustain,
-Yorick,83,牧魂人,约里克,Fighter|Tank,近战,175,650,aoe|burst|cc|sustain,
-Akali,84,离群之刺,阿卡丽,Assassin,近战,125,600,aoe|burst|cc|mobility,
-Kennen,85,狂暴之心,凯南,Mage,远程,550,580,aoe|burst|cc|range,
-Garen,86,德玛西亚之力,盖伦,Fighter|Tank,近战,175,690,burst|cc|sustain,
-Leona,89,曙光女神,蕾欧娜,Tank|Support,近战,125,646,aoe|cc|range,
-Malzahar,90,虚空先知,玛尔扎哈,Mage,远程,500,580,cc|mobility|range|sustain,
-Talon,91,刀锋之影,泰隆,Assassin,近战,125,658,burst|cc,
-Riven,92,放逐之刃,锐雯,Fighter|Assassin,近战,125,630,aoe|burst|cc|mobility|poke|range,
-KogMaw,96,深渊巨口,克格莫,Marksman|Mage,远程,500,635,aoe|burst|cc|poke|range,
-Shen,98,暮光之眼,慎,Tank,近战,125,610,burst|cc|mobility|sustain,
-Lux,99,光辉女郎,拉克丝,Mage|Support,远程,550,580,aoe|cc|poke|range,
-Xerath,101,远古巫灵,泽拉斯,Mage|Support,远程,525,575,aoe|burst|cc|range|sustain,
-Shyvana,102,龙血武姬,希瓦娜,Fighter|Tank,近战,150,625,aoe|cc|mobility|sustain,
-Ahri,103,九尾妖狐,阿狸,Mage|Assassin,远程,550,590,aoe|burst|cc|range|sustain,
-Graves,104,法外狂徒,格雷福斯,Marksman,远程,425,625,aoe|cc|mobility|range,
-Fizz,105,潮汐海灵,菲兹,Assassin|Fighter,近战,175,640,burst|cc,
-Volibear,106,不灭狂雷,沃利贝尔,Fighter|Tank,近战,150,650,aoe|burst|cc|sustain,
-Rengar,107,傲之追猎者,雷恩加尔,Assassin|Fighter,近战,125,590,aoe|burst|cc|mobility|sustain,
-Varus,110,惩戒之箭,韦鲁斯,Marksman|Mage,远程,575,600,cc|range|sustain,
-Nautilus,111,深海泰坦,诺提勒斯,Tank|Support,近战,175,646,aoe|cc|sustain,
-Viktor,112,奥术先驱,维克托,Mage,远程,525,600,aoe|cc|range|sustain,
-Sejuani,113,北地之怒,瑟庄妮,Tank,近战,150,630,cc|mobility,
-Fiora,114,无双剑姬,菲奥娜,Fighter|Assassin,近战,150,620,aoe|burst|cc|mobility|sustain,
-Ziggs,115,爆破鬼才,吉格斯,Mage,远程,550,606,aoe|cc|range,
-Lulu,117,仙灵女巫,璐璐,Support|Mage,远程,550,565,cc|range,
-Draven,119,荣耀行刑官,德莱文,Marksman,远程,550,675,burst|cc|mobility|range,
-Hecarim,120,战争之影,赫卡里姆,Fighter|Tank,近战,175,625,aoe|cc|mobility|sustain,
-Khazix,121,虚空掠夺者,卡兹克,Assassin,近战,125,643,aoe|cc|mobility|sustain,
-Darius,122,诺克萨斯之手,德莱厄斯,Fighter|Tank,近战,175,652,burst|sustain,
-Jayce,126,未来守护者,杰斯,Fighter|Marksman,近战,125,590,cc|range|sustain,
-Lissandra,127,冰霜女巫,丽桑卓,Mage,远程,550,620,aoe|cc|mobility|range|sustain,
-Diana,131,皎月女神,黛安娜,Fighter|Assassin,近战,150,640,aoe|cc|mobility|sustain,
-Quinn,133,德玛西亚之翼,奎因,Marksman|Assassin,远程,525,565,aoe|range,
-Syndra,134,暗黑元首,辛德拉,Mage,远程,550,583,burst|cc|range,
-AurelionSol,136,铸星龙王,奥瑞利安·索尔,Mage,远程,550,600,aoe|burst|cc|range,
-Kayn,141,影流之镰,凯隐,Fighter|Assassin,近战,175,655,aoe|burst|cc|mobility|sustain,
-Zoe,142,暮光星灵,佐伊,Mage,远程,550,630,aoe|cc|range,
-Zyra,143,荆棘之兴,婕拉,Mage|Support,远程,575,574,aoe|cc|range,
-Kaisa,145,虚空之女,卡莎,Marksman|Mage,远程,525,640,cc|mobility|range,
-Seraphine,147,星籁歌姬,萨勒芬妮,Support|Mage,远程,525,570,aoe|cc|range|sustain,
-Gnar,150,迷失之牙,纳尔,Fighter|Tank,近战,175,540,aoe|burst|cc|range,
-Zac,154,生化魔人,扎克,Tank|Fighter,近战,175,685,cc|sustain,
-Yasuo,157,疾风剑豪,亚索,Fighter|Assassin,近战,175,590,aoe|burst|cc|mobility|sustain,
-Velkoz,161,虚空之眼,维克兹,Mage|Support,远程,525,590,aoe|burst|cc|range,
-Taliyah,163,岩雀,塔莉垭,Mage|Support,远程,525,550,aoe|cc|mobility|poke|range,
-Camille,164,青钢影,卡蜜尔,Fighter|Assassin,近战,125,650,aoe|burst|cc|sustain,
-Akshan,166,影哨,阿克尚,Marksman|Assassin,远程,500,610,burst|range|sustain,
-Belveth,200,虚空女皇,卑尔维斯,Fighter,近战,150,580,cc|mobility|poke|sustain,
-Braum,201,弗雷尔卓德之心,布隆,Tank|Support,近战,125,610,aoe|cc,
-Jhin,202,戏命师,烬,Marksman|Mage,远程,550,655,burst|cc|range,
-Kindred,203,永猎双子,千珏,Marksman,远程,500,595,aoe|cc|mobility|range|sustain,
-Zeri,221,祖安花火,泽丽,Marksman,远程,550,600,burst|cc|mobility|range,
-Jinx,222,暴走萝莉,金克丝,Marksman,远程,525,630,aoe|cc|poke|range,
-TahmKench,223,河流之王,塔姆,Tank|Support,近战,175,640,aoe|burst|cc|poke|sustain,
-Briar,233,狂厄蔷薇,贝蕾亚,Fighter|Assassin,近战,125,625,aoe|burst|cc|mobility|sustain,
-Viego,234,破败之王,佛耶戈,Fighter|Assassin,近战,200,630,aoe|burst|cc|mobility|sustain,
-Senna,235,涤魂圣枪,赛娜,Support|Marksman,远程,600,530,aoe|burst|cc|range|sustain,
-Lucian,236,圣枪游侠,卢锡安,Marksman|Assassin,远程,500,641,cc|mobility|range|sustain,
-Zed,238,影流之主,劫,Assassin,近战,125,654,burst|cc|mobility|sustain,
-Kled,240,暴怒骑士,克烈,Fighter,近战,125,410,burst|cc|mobility|range|sustain,
-Ekko,245,时间刺客,艾克,Assassin|Mage,近战,125,655,aoe|burst|cc|mobility|sustain,
-Qiyana,246,元素女皇,奇亚娜,Assassin,近战,150,590,burst|cc|mobility,
-Vi,254,皮城执法官,蔚,Fighter|Assassin,近战,125,655,burst|cc|sustain,
-Aatrox,266,暗裔剑魔,亚托克斯,Fighter,近战,175,650,aoe|cc|mobility|sustain,
-Nami,267,唤潮鲛姬,娜美,Support|Mage,远程,550,560,aoe|burst|cc|range|sustain,
-Azir,268,沙漠皇帝,阿兹尔,Mage|Marksman,远程,525,575,aoe|cc|mobility|range|sustain,
-Yuumi,350,魔法猫咪,悠米,Support|Mage,远程,425,500,burst|cc|mobility|range|sustain,
-Samira,360,沙漠玫瑰,莎弥拉,Marksman|Assassin,远程,500,630,aoe|cc|mobility|range,
-Thresh,412,魂锁典狱长,锤石,Support|Tank,远程,450,620,aoe|cc|range|sustain,
-Illaoi,420,海兽祭司,俄洛伊,Fighter|Tank,近战,125,656,sustain,
-RekSai,421,虚空遁地兽,雷克塞,Fighter|Tank,近战,175,600,burst|cc|poke|sustain,
-Ivern,427,翠神,艾翁,Support|Mage,远程,475,630,cc|mobility|range|sustain,
-Kalista,429,复仇之矛,卡莉丝塔,Marksman,远程,525,560,aoe|burst|cc|mobility|range,
-Bard,432,星界游神,巴德,Support|Mage,远程,500,630,aoe|cc|mobility|range|sustain,
-Rakan,497,幻翎,洛,Support,远程,300,610,cc|range|sustain,
-Xayah,498,逆羽,霞,Marksman,远程,525,630,cc|range,
-Ornn,516,山隐之焰,奥恩,Tank,近战,175,660,cc|mobility|poke,
-Sylas,517,解脱者,塞拉斯,Mage|Assassin,近战,175,600,aoe|cc|mobility|poke|sustain,
-Neeko,518,万花通灵,妮蔻,Mage|Support,远程,550,610,cc|range,
-Aphelios,523,残月之肃,厄斐琉斯,Marksman,远程,550,600,aoe|cc|poke|range,
-Rell,526,镕铁少女,芮尔,Tank|Support,近战,175,620,aoe|burst|cc|mobility|sustain,
-Pyke,555,血港鬼影,派克,Support|Assassin,近战,150,670,burst|cc|mobility|sustain,
-Vex,711,愁云使者,薇古丝,Mage,远程,550,590,burst|cc|mobility|poke|range|sustain,
-Yone,777,封魔剑魂,永恩,Fighter|Assassin,近战,175,620,aoe|burst|cc|mobility|sustain,
-Ambessa,799,铁血狼母,安蓓萨,Fighter|Assassin,近战,125,630,aoe|burst|cc|mobility|sustain,
-Mel,800,流光镜影,梅尔,Mage|Support,远程,550,630,aoe|burst|cc|poke|range,
-Yunara,804,不破之誓,芸阿娜,Marksman,远程,575,590,burst|cc|mobility|range,
-Locke,805,灰烬驱魔人,洛克,Assassin|Mage,近战,125,620,burst|mobility|sustain,
-Sett,875,腕豪,瑟提,Fighter|Tank,近战,125,670,aoe|burst|cc|sustain,
-Lillia,876,含羞蓓蕾,莉莉娅,Fighter|Mage,远程,325,605,aoe|burst|cc|range,
-Gwen,887,灵罗娃娃,格温,Fighter,近战,150,620,aoe|burst|cc|mobility|range|sustain,
-Renata,888,炼金男爵,烈娜塔 · 戈拉斯克,Support|Mage,远程,550,545,burst|cc|range|sustain,
-Aurora,893,双界灵兔,阿萝拉,Mage|Assassin,远程,550,607,aoe|cc|mobility|range|sustain,
-Nilah,895,不羁之悦,尼菈,Fighter|Assassin,近战,225,570,aoe|mobility|sustain,
-KSante,897,纳祖芒荣耀,奎桑提,Tank|Fighter,近战,150,625,aoe|cc|mobility|sustain,
-Smolder,901,炽炎雏龙,斯莫德,Marksman|Mage,远程,550,575,burst|cc|range,
-Milio,902,明烛,米利欧,Support|Mage,远程,525,560,aoe|cc|range|sustain,
-Zaahen,904,不落魔锋,亚恒,Fighter,近战,175,640,aoe|burst|cc|mobility|sustain,
-Hwei,910,异画师,彗,Mage|Support,远程,550,580,aoe|cc|range,
-Naafiri,950,百裂冥犬,纳亚菲利,Assassin|Fighter,近战,125,610,aoe|burst|mobility|sustain,
+﻿championId,key,name,title,ddragon_tags,ranged,attackrange,hp,auto_tags,auto_evidence,has_ranged_skill,manual_tags,manual_evidence,review_status
+Annie,1,黑暗之女,安妮,Mage|Support,远程,625,560,aoe|burst|cc|range|sustain,"aoe:[R,W]<-区域,周围,锥形 | burst:[E]<-爆发 | cc:[P]<-晕眩 | range:[AA]<-普攻射程 | sustain:[E]<-护盾",True,aoe|burst|cc|range|sustain,-,reviewed
+Olaf,2,狂战士,奥拉夫,Fighter|Tank,近战,125,645,aoe|burst|sustain,"aoe:[Q]<-区域 | burst:[E]<-真实伤害 | sustain:[P,W]<-护盾,生命偷取",False,aoe|burst|cc|sustain,+cc(Q减速),reviewed
+Galio,3,正义巨像,加里奥,Tank|Mage,近战,150,600,aoe|cc|mobility|sustain,"aoe:[P,R]<-区域,范围 | cc:[E,R,W]<-击退,击飞,嘲讽 | mobility:[E]<-冲锋 | sustain:[R]<-护盾",False,aoe|cc|mobility|sustain,-,reviewed
+TwistedFate,4,卡牌大师,崔斯特,Mage|Marksman,远程,525,604,mobility|range,mobility:[R]<-传送 | range:[AA]<-普攻射程,True,aoe|cc|mobility|range,"+cc(W黄牌晕),+aoe(Q/R)",reviewed
+XinZhao,5,德邦总管,赵信,Fighter|Tank,近战,175,620,aoe|cc|mobility|sustain,"aoe:[E]<-范围 | cc:[E,Q,R,W]<-减速,击退,击飞 | mobility:[E]<-冲锋 | sustain:[P]<-治疗",False,aoe|cc|mobility|sustain,-,reviewed
+Urgot,6,无畏战车,厄加特,Fighter|Tank,远程,350,655,aoe|burst|cc|mobility|range|sustain,"aoe:[Q]<-波及 | burst:[R]<-处决 | cc:[Q,W]<-减速 | mobility:[E]<-冲锋 | range:[AA]<-普攻射程 | sustain:[E]<-护盾",False,aoe|burst|cc|mobility|range|sustain,-,reviewed
+Leblanc,7,诡术妖姬,乐芙兰,Assassin|Mage,远程,525,598,cc|mobility|range,"cc:[E]<-束缚,禁锢 | mobility:[W]<-位移 | range:[AA]<-普攻射程",True,burst|cc|mobility|range,+burst(刺客高爆发),reviewed
+Vladimir,8,猩红收割者,弗拉基米尔,Mage|Fighter,远程,450,600,aoe|cc|range|sustain,"aoe:[R]<-区域 | cc:[W]<-减速 | range:[AA]<-普攻射程 | sustain:[Q,R]<-治疗",False,aoe|cc|range|sustain,-,reviewed
+Fiddlesticks,9,远古恐惧,费德提克,Mage|Support,远程,480,650,aoe|burst|cc|range,"aoe:[E,R]<-区域,范围 | burst:[W]<-处决 | cc:[E,Q]<-减速,恐惧,沉默 | range:[AA]<-普攻射程",False,aoe|burst|cc|range|sustain,+sustain(W吸血),reviewed
+Kayle,10,正义天使,凯尔,Marksman|Mage,近战,175,670,aoe|cc|mobility|sustain,aoe:[R]<-区域 | cc:[Q]<-减速 | mobility:[Q]<-传送 | sustain:[W]<-治疗,False,aoe|cc|mobility|sustain,-,reviewed
+MasterYi,11,无极剑圣,易,Fighter|Assassin,近战,175,640,burst|sustain,"burst:[E,Q]<-暴击,真实伤害 | sustain:[W]<-回复",False,burst|sustain,-,reviewed
+Alistar,12,牛头酋长,阿利斯塔,Tank|Support,近战,125,685,cc|mobility|sustain,"cc:[E,P,W]<-击退,晕眩 | mobility:[P]<-位移 | sustain:[P]<-治疗",False,cc|mobility|sustain,-,reviewed
+Ryze,13,符文法师,瑞兹,Mage,远程,550,620,aoe|burst|cc|mobility|range,"aoe:[Q]<-弹射,直线 | burst:[Q]<-爆发 | cc:[W]<-减速,禁锢 | mobility:[R]<-传送 | range:[AA]<-普攻射程",False,aoe|burst|cc|mobility|range,-,reviewed
+Sion,14,亡灵战神,赛恩,Tank|Fighter,近战,175,655,aoe|cc|mobility|sustain,"aoe:[Q]<-区域 | cc:[E,Q,R]<-减速,击退,击飞,晕眩 | mobility:[R]<-冲锋 | sustain:[P,W]<-护盾,生命偷取",False,aoe|cc|mobility|sustain,-,reviewed
+Sivir,15,战争女神,希维尔,Marksman,远程,500,600,aoe|burst|range|sustain,"aoe:[W]<-周围,弹射 | burst:[E,R]<-爆发 | range:[AA]<-普攻射程 | sustain:[E]<-回复",False,aoe|burst|range|sustain,-,reviewed
+Soraka,16,众星之子,索拉卡,Support|Mage,远程,550,605,aoe|cc|range|sustain,"aoe:[E,Q]<-区域 | cc:[E,Q]<-减速,沉默,禁锢 | range:[AA]<-普攻射程 | sustain:[Q,R,W]<-回复,治疗",False,aoe|cc|range|sustain,-,reviewed
+Teemo,17,迅捷斥候,提莫,Marksman|Mage,远程,500,615,cc|mobility|range,"cc:[Q,R]<-减速,致盲 | mobility:[W]<-冲刺 | range:[AA]<-普攻射程",True,aoe|cc|mobility|range,+aoe(R蘑菇),reviewed
+Tristana,18,麦林炮手,崔丝塔娜,Marksman|Assassin,远程,550,640,aoe|cc|mobility|range,"aoe:[E,W]<-区域,周围 | cc:[R,W]<-减速,击退 | mobility:[W]<-跳跃 | range:[AA]<-普攻射程",True,aoe|burst|cc|mobility|range,+burst(E/R),reviewed
+Warwick,19,祖安怒兽,沃里克,Fighter|Tank,近战,125,620,cc|mobility|sustain,"cc:[E,R]<-压制,恐惧 | mobility:[R]<-跳跃 | sustain:[P,Q]<-治疗",False,cc|mobility|sustain,-,reviewed
+Nunu,20,雪原双子,努努和威朗普,Tank|Mage,近战,125,610,aoe|cc|sustain,"aoe:[P,R]<-区域,周围 | cc:[E,R,W]<-减速,击飞,禁锢 | sustain:[Q]<-回复",False,aoe|cc|mobility|sustain,+mobility(W滚雪球),reviewed
+MissFortune,21,赏金猎人,厄运小姐,Marksman|Mage,远程,550,625,aoe|burst|range,"aoe:[E,R]<-区域,范围,锥形 | burst:[R]<-暴击 | range:[AA]<-普攻射程",False,aoe|burst|cc|range,+cc(E减速),reviewed
+Ashe,22,寒冰射手,艾希,Marksman|Support,远程,600,610,aoe|burst|cc|range,"aoe:[R,W]<-直线,范围,锥形 | burst:[P]<-暴击 | cc:[P,R]<-减速,晕眩 | range:[AA]<-普攻射程",True,aoe|burst|cc|range,-,reviewed
+Tryndamere,23,蛮族之王,泰达米尔,Fighter|Assassin,近战,175,696,burst|cc|mobility|sustain,burst:[P]<-暴击 | cc:[W]<-减速 | mobility:[E]<-冲锋 | sustain:[Q]<-治疗,False,burst|cc|mobility|sustain,-,reviewed
+Jax,24,武器大师,贾克斯,Fighter,近战,125,650,aoe|cc,"aoe:[E,R]<-周围 | cc:[E]<-击晕",False,aoe|cc|mobility,+mobility(Q跳斩),reviewed
+Morgana,25,堕落天使,莫甘娜,Support|Mage,远程,450,630,aoe|cc|range|sustain,"aoe:[W]<-区域 | cc:[Q,R]<-减速,晕眩,束缚,禁锢 | range:[AA]<-普攻射程 | sustain:[P]<-治疗",False,aoe|cc|range|sustain,-,reviewed
+Zilean,26,时光守护者,基兰,Support|Mage,远程,550,574,aoe|cc|mobility|range,"aoe:[Q]<-区域,范围 | cc:[Q]<-晕眩 | mobility:[E]<-位移 | range:[AA]<-普攻射程",False,aoe|cc|mobility|range,-,reviewed
+Singed,27,炼金术士,辛吉德,Tank|Mage,近战,125,650,burst|cc,"burst:[P]<-爆发 | cc:[E,W]<-减速,禁锢",True,aoe|cc,"去burst(非爆发),+aoe(Q毒气)",reviewed
+Evelynn,28,痛苦之拥,伊芙琳,Assassin|Mage,近战,125,642,aoe|cc|mobility|sustain,aoe:[R]<-区域 | cc:[W]<-魅惑 | mobility:[R]<-位移 | sustain:[P]<-治疗,False,aoe|cc|mobility|sustain,-,reviewed
+Twitch,29,瘟疫之源,图奇,Marksman|Assassin,远程,550,630,aoe|burst|cc|range,aoe:[W]<-区域 | burst:[P]<-真实伤害 | cc:[W]<-减速 | range:[AA]<-普攻射程,False,aoe|burst|cc|range,-,reviewed
+Karthus,30,死亡颂唱者,卡尔萨斯,Mage,远程,450,620,aoe|range,aoe:[Q]<-区域 | range:[AA]<-普攻射程,False,aoe|cc|range,+cc(W墙减速),reviewed
+Chogath,31,虚空恐惧,科加斯,Tank|Mage,近战,125,644,aoe|burst|cc|sustain,"aoe:[W]<-区域,锥形 | burst:[R]<-真实伤害 | cc:[E,Q,W]<-减速,沉默 | sustain:[P]<-回复",False,aoe|burst|cc|sustain,-,reviewed
+Amumu,32,殇之木乃伊,阿木木,Tank|Support,近战,125,685,aoe|burst|cc,"aoe:[E]<-周围 | burst:[P]<-真实伤害 | cc:[Q,R]<-晕眩,眩晕",True,aoe|burst|cc,-,reviewed
+Rammus,33,披甲龙龟,拉莫斯,Tank,近战,125,645,aoe|cc|mobility,"aoe:[R]<-区域 | cc:[E,Q,R]<-减速,击飞,嘲讽 | mobility:[R]<-冲刺",False,aoe|cc|mobility,-,reviewed
+Anivia,34,冰晶凤凰,艾尼维亚,Mage,远程,600,550,aoe|cc|range,"aoe:[Q]<-区域,范围 | cc:[Q,R]<-减速,晕眩 | range:[AA]<-普攻射程",False,aoe|cc|range,-,reviewed
+Shaco,35,恶魔小丑,萨科,Assassin,近战,125,630,aoe|burst|cc|mobility,aoe:[R]<-周围 | burst:[Q]<-暴击 | cc:[W]<-恐惧 | mobility:[Q]<-传送,False,aoe|burst|cc|mobility,-,reviewed
+DrMundo,36,祖安狂人,蒙多医生,Tank|Fighter,近战,125,640,burst|cc|sustain,"burst:[W]<-爆发 | cc:[Q]<-减速 | sustain:[P,R,W]<-回复,治疗",False,cc|sustain,去burst(非爆发),reviewed
+Sona,37,琴瑟仙女,娑娜,Support|Mage,远程,550,550,aoe|cc|range|sustain,"aoe:[E]<-区域 | cc:[R]<-晕眩 | range:[AA]<-普攻射程 | sustain:[W]<-护盾,治疗",False,aoe|cc|mobility|range|sustain,+mobility(E加速),reviewed
+Kassadin,38,虚空行者,卡萨丁,Assassin|Mage,近战,150,646,aoe|cc|mobility|sustain,"aoe:[E,R]<-区域,锥形 | cc:[E]<-减速 | mobility:[R]<-传送 | sustain:[Q,W]<-回复,护盾",False,aoe|cc|mobility|sustain,-,reviewed
+Irelia,39,刀锋舞者,艾瑞莉娅,Fighter|Assassin,近战,200,630,cc|mobility|sustain,"cc:[E,R]<-减速,晕眩 | mobility:[Q]<-突进 | sustain:[Q]<-治疗",False,aoe|cc|mobility|sustain,+aoe(R),reviewed
+Janna,40,风暴之怒,迦娜,Support|Mage,远程,550,570,aoe|cc|range|sustain,"aoe:[Q]<-区域 | cc:[Q,R,W]<-减速,击退,击飞 | range:[AA]<-普攻射程 | sustain:[R]<-治疗",False,aoe|cc|range|sustain,-,reviewed
+Gangplank,41,海洋之灾,普朗克,Fighter,近战,125,630,aoe|cc,"aoe:[E,R]<-区域,范围 | cc:[E,R]<-减速",False,aoe|cc|sustain,+sustain(W治疗),reviewed
+Corki,42,英勇投弹手,库奇,Marksman|Mage,远程,550,610,aoe|burst|range,"aoe:[E,Q,R]<-区域,周围,范围,锥形 | burst:[P]<-真实伤害 | range:[AA]<-普攻射程",False,aoe|burst|mobility|range,+mobility(W位移),reviewed
+Karma,43,天启者,卡尔玛,Mage|Support,远程,525,630,cc|range|sustain,"cc:[W]<-束缚,禁锢 | range:[AA]<-普攻射程 | sustain:[E,W]<-护盾,治疗",False,aoe|cc|range|sustain,+aoe(Q/R),reviewed
+Taric,44,瓦洛兰之盾,塔里克,Support|Tank,近战,150,645,cc|sustain,"cc:[E]<-晕眩 | sustain:[Q,W]<-护盾,治疗",False,aoe|cc|sustain,+aoe(R),reviewed
+Veigar,45,邪恶小法师,维迦,Mage,远程,550,580,aoe|cc|range,aoe:[W]<-区域 | cc:[E]<-晕眩 | range:[AA]<-普攻射程,False,aoe|burst|cc|range,+burst(高爆发),reviewed
+Trundle,48,巨魔之王,特朗德尔,Fighter|Tank,近战,175,650,aoe|sustain,"aoe:[W]<-区域 | sustain:[P,W]<-治疗",False,aoe|cc|sustain,+cc(E减速),reviewed
+Swain,50,诺克萨斯统领,斯维因,Mage|Support,远程,525,595,cc|range|sustain,"cc:[E,R,W]<-减速,禁锢 | range:[AA]<-普攻射程 | sustain:[P]<-治疗",False,aoe|cc|range|sustain,+aoe(R),reviewed
+Caitlyn,51,皮城女警,凯特琳,Marksman,远程,650,580,burst|cc|range,"burst:[P]<-暴击 | cc:[E,W]<-减速,束缚 | range:[AA]<-普攻射程",True,burst|cc|mobility|range,+mobility(E位移),reviewed
+Blitzcrank,53,蒸汽机器人,布里茨,Tank|Support,近战,125,600,cc|sustain,"cc:[E,R,W]<-减速,击飞,沉默 | sustain:[P]<-护盾",False,cc|mobility|sustain,+mobility(W加速),reviewed
+Malphite,54,熔岩巨兽,墨菲特,Tank|Mage,近战,125,665,aoe|cc|sustain,aoe:[R]<-区域 | cc:[R]<-击飞 | sustain:[P]<-护盾,False,aoe|cc|mobility|sustain,+mobility(R冲锋),reviewed
+Katarina,55,不祥之刃,卡特琳娜,Assassin|Mage,近战,125,672,aoe|burst,"aoe:[Q,R]<-周围,弹射 | burst:[W]<-爆发",True,aoe|burst|mobility,+mobility(E闪现),reviewed
+Nocturne,56,永恒梦魇,魔腾,Fighter|Assassin,近战,125,640,aoe|cc|mobility|sustain,"aoe:[E,R]<-范围 | cc:[E]<-恐惧 | mobility:[R]<-突进 | sustain:[P,W]<-护盾,治疗",False,aoe|cc|mobility|sustain,-,reviewed
+Maokai,57,扭曲树精,茂凯,Tank|Support,近战,125,665,cc|mobility|sustain,"cc:[Q,R,W]<-减速,击退,禁锢 | mobility:[W]<-突进 | sustain:[P]<-治疗",False,aoe|cc|mobility|sustain,+aoe(Q/R),reviewed
+Renekton,58,荒漠屠夫,雷克顿,Fighter|Tank,近战,125,660,aoe|cc|sustain,"aoe:[Q,R]<-周围 | cc:[W]<-晕眩 | sustain:[Q,W]<-护盾,治疗",False,aoe|cc|mobility|sustain,+mobility(E位移),reviewed
+JarvanIV,59,德玛西亚皇子,嘉文四世,Fighter|Tank,近战,175,640,aoe|cc|sustain,"aoe:[R]<-周围 | cc:[Q,W]<-减速,击飞 | sustain:[W]<-护盾",False,aoe|cc|mobility|sustain,+mobility(EQ),reviewed
+Elise,60,蜘蛛女皇,伊莉丝,Assassin|Mage,远程,550,620,cc|range|sustain,"cc:[E]<-晕眩 | range:[AA]<-普攻射程 | sustain:[E,P]<-回复,治疗",False,aoe|cc|range|sustain,+aoe,reviewed
+Orianna,61,发条魔灵,奥莉安娜,Mage|Support,远程,525,565,aoe|cc|range,"aoe:[Q,R]<-区域,周围 | cc:[W]<-减速 | range:[AA]<-普攻射程",False,aoe|cc|range|sustain,+sustain(E护盾),reviewed
+MonkeyKing,62,齐天大圣,孙悟空,Fighter|Tank,近战,175,610,cc|mobility|sustain,"cc:[R]<-击飞 | mobility:[E,W]<-突进 | sustain:[P]<-回复,生命值回复",False,cc|mobility|sustain,-,reviewed
+Brand,63,复仇焰魂,布兰德,Mage|Support,远程,550,570,aoe|cc|range|sustain,"aoe:[P,W]<-区域,范围 | cc:[Q,R]<-减速,晕眩 | range:[AA]<-普攻射程 | sustain:[P]<-回复",True,aoe|cc|range,去sustain(无治疗),reviewed
+LeeSin,64,盲僧,李青,Fighter|Assassin,近战,125,645,cc|sustain,"cc:[R]<-击退,击飞 | sustain:[P,W]<-吸血,回复,护盾",False,cc|mobility|sustain,+mobility(W/Q),reviewed
+Vayne,67,暗夜猎手,薇恩,Marksman|Assassin,远程,550,580,burst|cc|mobility|range,"burst:[W]<-真实伤害 | cc:[E]<-击退,晕眩 | mobility:[Q]<-翻滚 | range:[AA]<-普攻射程",True,burst|cc|mobility|range,-,reviewed
+Rumble,68,机械公敌,兰博,Fighter|Mage,近战,125,640,aoe|cc|sustain,"aoe:[Q,R]<-区域,范围,锥形 | cc:[E,R]<-减速 | sustain:[W]<-护盾",False,aoe|cc|sustain,-,reviewed
+Cassiopeia,69,魔蛇之拥,卡西奥佩娅,Mage,远程,550,610,aoe|cc|range|sustain,"aoe:[Q]<-区域 | cc:[R,W]<-减速,晕眩 | range:[AA]<-普攻射程 | sustain:[E]<-回复,治疗",False,aoe|cc|range|sustain,-,reviewed
+Skarner,72,上古领主,斯卡纳,Tank|Fighter,近战,150,630,cc|mobility|sustain,"cc:[E,R,W]<-减速,压制,晕眩 | mobility:[E]<-冲锋 | sustain:[W]<-护盾",True,aoe|cc|mobility|sustain,+aoe(Q),reviewed
+Heimerdinger,74,大发明家,黑默丁格,Mage|Support,远程,550,558,cc|range,"cc:[E]<-减速,晕眩 | range:[AA]<-普攻射程",False,aoe|cc|range,+aoe(炮台/R),reviewed
+Nasus,75,沙漠死神,内瑟斯,Fighter|Tank,近战,125,650,aoe|sustain,aoe:[E]<-区域 | sustain:[P]<-生命偷取,False,aoe|cc|sustain,+cc(W减速),reviewed
+Nidalee,76,狂野女猎手,奈德丽,Assassin|Mage,远程,525,610,range|sustain,range:[AA]<-普攻射程 | sustain:[E]<-治疗,True,poke|range|sustain,+poke(标枪),reviewed
+Udyr,77,兽灵行者,乌迪尔,Fighter|Tank,近战,125,664,cc|sustain,"cc:[E,R]<-减速,晕眩 | sustain:[W]<-回复,护盾,治疗",False,aoe|cc|sustain,+aoe(R),reviewed
+Poppy,78,圣锤之毅,波比,Tank|Fighter,近战,125,610,aoe|cc|mobility|sustain,"aoe:[Q]<-区域 | cc:[E,Q,R,W]<-减速,击飞,晕眩 | mobility:[W]<-突进 | sustain:[P]<-护盾",False,aoe|cc|mobility|sustain,-,reviewed
+Gragas,79,酒桶,古拉加斯,Fighter|Mage,近战,125,640,aoe|cc|mobility|sustain,"aoe:[E,R]<-区域,范围 | cc:[E,R]<-击退,晕眩 | mobility:[E]<-冲锋 | sustain:[P]<-治疗",True,aoe|cc|mobility|sustain,-,reviewed
+Pantheon,80,不屈之枪,潘森,Fighter|Assassin,近战,175,650,cc,cc:[W]<-晕眩,True,aoe|cc|mobility,"+aoe(R),+mobility(R)",reviewed
+Ezreal,81,探险家,伊泽瑞尔,Marksman|Mage,远程,550,600,aoe|mobility|range,"aoe:[E,R]<-区域 | mobility:[E]<-传送 | range:[AA]<-普攻射程",False,aoe|mobility|poke|range,+poke(经典Poke),reviewed
+Mordekaiser,82,铁铠冥魂,莫德凯撒,Fighter|Mage,近战,175,645,aoe|sustain,"aoe:[E]<-区域 | sustain:[W]<-护盾,治疗",False,aoe|sustain,-,reviewed
+Yorick,83,牧魂人,约里克,Fighter|Tank,近战,175,650,aoe|cc|sustain,aoe:[W]<-区域 | cc:[E]<-减速 | sustain:[Q]<-治疗,False,aoe|cc|sustain,-,reviewed
+Akali,84,离群之刺,阿卡丽,Assassin,近战,125,600,aoe|burst|cc|mobility,"aoe:[P]<-周围 | burst:[R]<-处决 | cc:[Q]<-减速 | mobility:[E,R]<-突进",False,aoe|burst|cc|mobility,-,reviewed
+Kennen,85,狂暴之心,凯南,Mage,远程,550,580,aoe|cc|range,"aoe:[Q,R]<-区域,周围 | cc:[P]<-晕眩 | range:[AA]<-普攻射程",True,aoe|cc|mobility|range,+mobility(E位移),reviewed
+Garen,86,德玛西亚之力,盖伦,Fighter|Tank,近战,175,690,burst|cc|sustain,"burst:[Q,R]<-处决,爆发 | cc:[Q]<-沉默 | sustain:[P,W]<-回复,护盾",False,burst|cc|sustain,-,reviewed
+Leona,89,曙光女神,蕾欧娜,Tank|Support,近战,125,646,aoe|cc,"aoe:[E,R]<-区域,直线 | cc:[Q,R]<-减速,晕眩",True,aoe|cc|mobility,+mobility(E突进),reviewed
+Malzahar,90,虚空先知,玛尔扎哈,Mage,远程,500,580,cc|mobility|range|sustain,"cc:[Q,R]<-压制,沉默 | mobility:[Q]<-传送 | range:[AA]<-普攻射程 | sustain:[E]<-回复",False,cc|range|sustain,去mobility(Q非位移),reviewed
+Talon,91,刀锋之影,泰隆,Assassin,近战,125,658,cc,cc:[W]<-减速,False,aoe|burst|cc|mobility,"+burst,+mobility(E跳墙),+aoe(W/R)",reviewed
+Riven,92,放逐之刃,锐雯,Fighter|Assassin,近战,125,630,aoe|burst|cc|mobility,"aoe:[Q,R]<-周围,范围 | burst:[W]<-爆发 | cc:[Q,W]<-击飞,晕眩 | mobility:[E]<-冲锋",True,aoe|burst|cc|mobility,-,reviewed
+KogMaw,96,深渊巨口,克格莫,Marksman|Mage,远程,500,635,aoe|burst|cc|range,aoe:[P]<-周围 | burst:[P]<-真实伤害 | cc:[E]<-减速 | range:[AA]<-普攻射程,True,aoe|burst|cc|range,-,reviewed
+Shen,98,暮光之眼,慎,Tank,近战,125,610,cc|mobility|sustain,"cc:[E,Q]<-减速,嘲讽 | mobility:[E,R]<-传送,冲刺 | sustain:[P,R]<-护盾",False,cc|mobility|sustain,-,reviewed
+Lux,99,光辉女郎,拉克丝,Mage|Support,远程,550,580,aoe|cc|range,"aoe:[E,R]<-区域 | cc:[E,Q]<-减速,束缚 | range:[AA]<-普攻射程",False,aoe|cc|range|sustain,+sustain(W护盾),reviewed
+Xerath,101,远古巫灵,泽拉斯,Mage|Support,远程,525,575,aoe|cc|range,"aoe:[W]<-区域 | cc:[E,W]<-减速,晕眩 | range:[AA]<-普攻射程",True,aoe|cc|poke|range,+poke(经典Poke),reviewed
+Shyvana,102,龙血武姬,希瓦娜,Fighter|Tank,近战,150,625,aoe|cc|mobility|sustain,"aoe:[Q,W]<-区域,周围 | cc:[E,R]<-减速,变形,恐惧 | mobility:[R]<-跳跃 | sustain:[W]<-护盾,治疗",True,aoe|cc|mobility,去sustain(无回复),reviewed
+Ahri,103,九尾妖狐,阿狸,Mage|Assassin,远程,550,590,aoe|burst|cc|range|sustain,"aoe:[R]<-周围 | burst:[Q,W]<-爆发,真实伤害 | cc:[E]<-魅惑 | range:[AA]<-普攻射程 | sustain:[P]<-治疗",False,aoe|burst|cc|mobility|range|sustain,+mobility(R位移),reviewed
+Graves,104,法外狂徒,格雷福斯,Marksman,远程,425,625,aoe|cc|mobility|range,"aoe:[R,W]<-区域,范围,锥形 | cc:[P]<-击退 | mobility:[E]<-冲刺 | range:[AA]<-普攻射程",False,aoe|burst|cc|mobility|range,+burst(R),reviewed
+Fizz,105,潮汐海灵,菲兹,Assassin|Fighter,近战,175,640,cc,"cc:[R]<-减速,击飞",False,aoe|burst|cc|mobility,"+burst,+mobility(E),+aoe",reviewed
+Volibear,106,不灭狂雷,沃利贝尔,Fighter|Tank,近战,150,650,aoe|cc|sustain,"aoe:[E,R]<-区域 | cc:[E,Q,R]<-减速,晕眩 | sustain:[E,W]<-护盾,治疗",False,aoe|cc|mobility|sustain,+mobility(R跳跃),reviewed
+Rengar,107,傲之追猎者,雷恩加尔,Assassin|Fighter,近战,125,590,aoe|cc|mobility|sustain,"aoe:[R]<-范围 | cc:[E]<-禁锢 | mobility:[P,R]<-跳跃 | sustain:[W]<-回复",False,aoe|cc|mobility|sustain,-,reviewed
+Varus,110,惩戒之箭,韦鲁斯,Marksman|Mage,远程,575,600,cc|range|sustain,"cc:[R]<-禁锢 | range:[AA]<-普攻射程 | sustain:[E]<-回复,治疗",True,aoe|cc|poke|range,"去sustain(E是重伤),+poke(Q),+aoe",reviewed
+Nautilus,111,深海泰坦,诺提勒斯,Tank|Support,近战,175,646,aoe|cc|sustain,"aoe:[W]<-周围 | cc:[E,P,R]<-减速,晕眩,禁锢 | sustain:[W]<-护盾",False,aoe|cc|sustain,-,reviewed
+Viktor,112,奥术先驱,维克托,Mage,远程,525,600,aoe|cc|range|sustain,"aoe:[E,W]<-直线,范围 | cc:[W]<-减速,晕眩 | range:[AA]<-普攻射程 | sustain:[Q]<-护盾",False,aoe|cc|range|sustain,-,reviewed
+Sejuani,113,北地之怒,瑟庄妮,Tank,近战,150,630,cc|mobility,"cc:[E,P,Q,R,W]<-减速,击晕,击飞,晕眩 | mobility:[Q]<-冲锋",False,aoe|cc|mobility,+aoe(W/E),reviewed
+Fiora,114,无双剑姬,菲奥娜,Fighter|Assassin,近战,150,620,aoe|burst|cc|mobility|sustain,"aoe:[R]<-范围 | burst:[E]<-暴击 | cc:[E,W]<-减速,晕眩,禁锢 | mobility:[Q]<-冲刺 | sustain:[P,R]<-回复,治疗",False,aoe|burst|cc|mobility|sustain,-,reviewed
+Ziggs,115,爆破鬼才,吉格斯,Mage,远程,550,606,aoe|cc|range,"aoe:[R]<-区域 | cc:[E,W]<-减速,击退 | range:[AA]<-普攻射程",False,aoe|cc|poke|range,+poke(经典Poke),reviewed
+Lulu,117,仙灵女巫,璐璐,Support|Mage,远程,550,565,cc|range,"cc:[Q,R]<-减速,击飞 | range:[AA]<-普攻射程",True,cc|range|sustain,+sustain(E护盾),reviewed
+Draven,119,荣耀行刑官,德莱文,Marksman,远程,550,675,burst|cc|mobility|range,"burst:[R]<-处决 | cc:[E]<-减速,击退 | mobility:[W]<-冲刺 | range:[AA]<-普攻射程",False,burst|cc|mobility|range,-,reviewed
+Hecarim,120,战争之影,赫卡里姆,Fighter|Tank,近战,175,625,aoe|cc|mobility|sustain,"aoe:[Q,R]<-周围,直线 | cc:[E]<-击退 | mobility:[R]<-冲锋 | sustain:[W]<-恢复生命",False,aoe|cc|mobility|sustain,-,reviewed
+Khazix,121,虚空掠夺者,卡兹克,Assassin,近战,125,643,aoe|cc|mobility|sustain,"aoe:[E,W]<-区域,范围,锥形 | cc:[P,Q,W]<-减速,恐惧 | mobility:[E]<-跳跃 | sustain:[W]<-回复",False,aoe|cc|mobility|sustain,-,reviewed
+Darius,122,诺克萨斯之手,德莱厄斯,Fighter|Tank,近战,175,652,burst|sustain,burst:[R]<-真实伤害 | sustain:[Q]<-治疗,False,burst|cc|sustain,+cc(E拉/W减速),reviewed
+Jayce,126,未来守护者,杰斯,Fighter|Marksman,近战,125,590,cc|sustain,"cc:[E,Q]<-减速,击退 | sustain:[W]<-回复",True,cc,去sustain(无治疗),reviewed
+Lissandra,127,冰霜女巫,丽桑卓,Mage,远程,550,620,aoe|cc|mobility|range|sustain,"aoe:[W]<-周围 | cc:[Q,R,W]<-减速,晕眩,束缚 | mobility:[E]<-传送 | range:[AA]<-普攻射程 | sustain:[R]<-治疗",False,aoe|cc|mobility|range|sustain,-,reviewed
+Diana,131,皎月女神,黛安娜,Fighter|Assassin,近战,150,640,aoe|cc|mobility|sustain,"aoe:[P,Q,R,W]<-区域,周围,范围 | cc:[R]<-减速 | mobility:[E]<-冲刺 | sustain:[W]<-护盾",False,aoe|cc|mobility|sustain,-,reviewed
+Quinn,133,德玛西亚之翼,奎因,Marksman|Assassin,远程,525,565,aoe|range,"aoe:[Q,W]<-区域 | range:[AA]<-普攻射程",False,aoe|burst|cc|mobility|range,"+burst,+cc(E减速),+mobility(E/R)",reviewed
+Syndra,134,暗黑元首,辛德拉,Mage,远程,550,583,burst|cc|range,"burst:[P]<-处决,真实伤害 | cc:[E,P]<-减速,击退,晕眩 | range:[AA]<-普攻射程",True,aoe|burst|cc|range,+aoe(Q/W/R),reviewed
+AurelionSol,136,铸星龙王,奥瑞利安·索尔,Mage,远程,550,600,aoe|burst|cc|range,"aoe:[E,R]<-区域,范围 | burst:[E]<-处决 | cc:[R]<-减速,击飞,晕眩,眩晕 | range:[AA]<-普攻射程",False,aoe|burst|cc|poke|range,+poke(远程消耗),reviewed
+Kayn,141,影流之镰,凯隐,Fighter|Assassin,近战,175,655,aoe|cc|mobility|sustain,"aoe:[W]<-直线 | cc:[W]<-减速 | mobility:[E,Q]<-冲刺,穿越地形 | sustain:[P]<-治疗",False,aoe|cc|mobility|sustain,-,reviewed
+Zoe,142,暮光星灵,佐伊,Mage,远程,550,630,aoe|cc|range,aoe:[Q]<-直线 | cc:[E]<-昏睡 | range:[AA]<-普攻射程,True,aoe|cc|poke|range,+poke(经典Poke),reviewed
+Zyra,143,荆棘之兴,婕拉,Mage|Support,远程,575,574,aoe|cc|range,"aoe:[Q,R]<-区域,范围 | cc:[E,P,R,W]<-击飞,束缚,缠绕 | range:[AA]<-普攻射程",False,aoe|cc|range,-,reviewed
+Kaisa,145,虚空之女,卡莎,Marksman|Mage,远程,525,640,cc|mobility|range,cc:[P]<-定身 | mobility:[R]<-突进 | range:[AA]<-普攻射程,False,burst|cc|mobility|range,+burst(高爆发),reviewed
+Seraphine,147,星籁歌姬,萨勒芬妮,Support|Mage,远程,525,570,aoe|cc|range|sustain,"aoe:[E,Q]<-区域,直线 | cc:[R]<-魅惑 | range:[AA]<-普攻射程 | sustain:[W]<-护盾,治疗",False,aoe|cc|range|sustain,-,reviewed
+Gnar,150,迷失之牙,纳尔,Fighter|Tank,近战,175,540,aoe|cc,"aoe:[E,W]<-区域 | cc:[P,Q,R,W]<-减速,变形,晕眩",True,aoe|cc|mobility,+mobility(E跳跃),reviewed
+Zac,154,生化魔人,扎克,Tank|Fighter,近战,175,685,cc|sustain,"cc:[R]<-减速,击飞 | sustain:[P]<-回复",False,cc|mobility|sustain,+mobility(E跳),reviewed
+Yasuo,157,疾风剑豪,亚索,Fighter|Assassin,近战,175,590,aoe|burst|cc|mobility|sustain,"aoe:[Q,R]<-直线,范围 | burst:[P,R]<-暴击 | cc:[Q]<-击飞 | mobility:[E]<-突进 | sustain:[P]<-护盾",False,aoe|burst|cc|mobility|sustain,-,reviewed
+Velkoz,161,虚空之眼,维克兹,Mage|Support,远程,525,590,aoe|burst|cc|range,"aoe:[E]<-区域 | burst:[P,R,W]<-爆发,真实伤害 | cc:[E,Q]<-减速,击退,击飞 | range:[AA]<-普攻射程",False,aoe|burst|cc|poke|range,+poke(经典Poke),reviewed
+Taliyah,163,岩雀,塔莉垭,Mage|Support,远程,525,550,aoe|cc|mobility|range,"aoe:[W]<-区域 | cc:[E,Q]<-减速,晕眩 | mobility:[E]<-位移,冲刺 | range:[AA]<-普攻射程",True,aoe|cc|mobility|poke|range,+poke(Q),reviewed
+Camille,164,青钢影,卡蜜尔,Fighter|Assassin,近战,125,650,aoe|burst|cc|sustain,"aoe:[R,W]<-区域,范围,锥形 | burst:[Q]<-爆发 | cc:[E,W]<-减速,击飞 | sustain:[P,W]<-护盾,治疗",False,aoe|burst|cc|mobility|sustain,+mobility(E钩锁),reviewed
+Akshan,166,影哨,阿克尚,Marksman|Assassin,远程,500,610,range|sustain,"range:[AA]<-普攻射程 | sustain:[P,W]<-回复,护盾",True,burst|mobility|range|sustain,"+burst(R),+mobility(E钩锁)",reviewed
+Belveth,200,虚空女皇,卑尔维斯,Fighter,近战,150,580,cc|mobility|sustain,"cc:[E,W]<-减速,击飞,禁锢 | mobility:[Q]<-突进 | sustain:[E]<-生命偷取",False,aoe|cc|mobility|sustain,+aoe(Q/R),reviewed
+Braum,201,弗雷尔卓德之心,布隆,Tank|Support,近战,125,610,aoe|cc,"aoe:[R]<-直线 | cc:[P,Q,R]<-减速,击晕,击飞",False,aoe|cc,-,reviewed
+Jhin,202,戏命师,烬,Marksman|Mage,远程,550,655,burst|cc|range,"burst:[P,R]<-斩杀,暴击,爆发 | cc:[E,R,W]<-减速,禁锢 | range:[AA]<-普攻射程",True,aoe|burst|cc|range,+aoe(Q/R),reviewed
+Kindred,203,永猎双子,千珏,Marksman,远程,500,595,aoe|cc|mobility|range|sustain,aoe:[R]<-区域 | cc:[E]<-减速 | mobility:[Q]<-翻滚 | range:[AA]<-普攻射程 | sustain:[R]<-治疗,True,aoe|cc|mobility|range|sustain,-,reviewed
+Zeri,221,祖安花火,泽丽,Marksman,远程,550,600,cc|mobility|range,cc:[W]<-减速 | mobility:[E]<-冲刺 | range:[AA]<-普攻射程,False,aoe|cc|mobility|range,+aoe(W/R),reviewed
+Jinx,222,暴走萝莉,金克丝,Marksman,远程,525,630,aoe|cc|range,"aoe:[Q]<-范围 | cc:[E,W]<-减速,束缚 | range:[AA]<-普攻射程",True,aoe|burst|cc|range,+burst(R火箭),reviewed
+TahmKench,223,河流之王,塔姆,Tank|Support,近战,175,640,aoe|cc|sustain,"aoe:[W]<-区域 | cc:[Q,W]<-减速,击飞,晕眩 | sustain:[E,Q,R]<-护盾,治疗",False,aoe|cc|sustain,-,reviewed
+Briar,233,狂厄蔷薇,贝蕾亚,Fighter|Assassin,近战,125,625,aoe|cc|mobility|sustain,"aoe:[R,W]<-区域,周围 | cc:[E,Q,R]<-减速,击退,恐惧,晕眩 | mobility:[W]<-跳跃 | sustain:[E,P,R,W]<-回复,治疗,生命偷取",False,aoe|cc|mobility|sustain,-,reviewed
+Viego,234,破败之王,佛耶戈,Fighter|Assassin,近战,200,630,aoe|burst|cc|mobility|sustain,"aoe:[R]<-周围 | burst:[R]<-处决 | cc:[R,W]<-击退,晕眩 | mobility:[R,W]<-传送,冲刺 | sustain:[P]<-治疗",False,aoe|burst|cc|mobility|sustain,-,reviewed
+Senna,235,涤魂圣枪,赛娜,Support|Marksman,远程,600,530,aoe|burst|cc|range|sustain,"aoe:[E,R]<-区域 | burst:[P]<-暴击 | cc:[W]<-禁锢 | range:[AA]<-普攻射程 | sustain:[Q,R]<-护盾,治疗",True,aoe|burst|cc|range|sustain,-,reviewed
+Lucian,236,圣枪游侠,卢锡安,Marksman|Assassin,远程,500,641,cc|mobility|range|sustain,"cc:[P]<-定身 | mobility:[E]<-冲刺 | range:[AA]<-普攻射程 | sustain:[P]<-护盾,治疗",True,burst|mobility|range,"去cc/去sustain(P无控无治疗),+burst",reviewed
+Zed,238,影流之主,劫,Assassin,近战,125,654,cc|mobility|sustain,"cc:[E]<-减速 | mobility:[R,W]<-突进 | sustain:[W]<-回复",False,burst|cc|mobility,"去sustain(W无回复),+burst",reviewed
+Kled,240,暴怒骑士,克烈,Fighter,近战,125,410,burst|cc|mobility|sustain,"burst:[E]<-爆发 | cc:[Q]<-击退 | mobility:[E,R]<-冲锋,突进 | sustain:[P,Q,R]<-回复,护盾",True,aoe|burst|cc|mobility|sustain,-,reviewed
+Ekko,245,时间刺客,艾克,Assassin|Mage,近战,125,655,aoe|burst|cc|mobility|sustain,"aoe:[R,W]<-区域,范围 | burst:[P]<-爆发 | cc:[Q,W]<-减速,晕眩 | mobility:[E,R]<-传送 | sustain:[R,W]<-护盾,治疗",False,aoe|burst|cc|mobility|sustain,-,reviewed
+Qiyana,246,元素女皇,奇亚娜,Assassin,近战,150,590,cc|mobility,"cc:[R]<-晕眩 | mobility:[E,W]<-突进",False,aoe|burst|cc|mobility,"+burst,+aoe(R)",reviewed
+Vi,254,皮城执法官,蔚,Fighter|Assassin,近战,125,655,cc|sustain,"cc:[Q,R]<-击退,击飞 | sustain:[P]<-护盾",False,cc|mobility|sustain,+mobility(Q位移),reviewed
+Aatrox,266,暗裔剑魔,亚托克斯,Fighter,近战,175,650,aoe|cc|mobility|sustain,"aoe:[Q,W]<-区域,范围 | cc:[R]<-恐惧 | mobility:[E]<-突进 | sustain:[E,P,R]<-治疗",False,aoe|cc|mobility|sustain,-,reviewed
+Nami,267,唤潮鲛姬,娜美,Support|Mage,远程,550,560,aoe|cc|range|sustain,"aoe:[Q]<-区域 | cc:[E,Q,R]<-减速,击飞,晕眩 | range:[AA]<-普攻射程 | sustain:[W]<-治疗",False,aoe|cc|range|sustain,-,reviewed
+Azir,268,沙漠皇帝,阿兹尔,Mage|Marksman,远程,525,575,aoe|cc|mobility|range|sustain,"aoe:[W]<-直线 | cc:[Q,R]<-减速,击退 | mobility:[E,R]<-位移,冲锋 | range:[AA]<-普攻射程 | sustain:[E]<-护盾",False,aoe|cc|mobility|range|sustain,-,reviewed
+Yuumi,350,魔法猫咪,悠米,Support|Mage,远程,425,500,burst|cc|mobility|range|sustain,"burst:[E]<-爆发 | cc:[Q]<-减速 | mobility:[W]<-突进 | range:[AA]<-普攻射程 | sustain:[E,P,R,W]<-回复,护盾,治疗",True,cc|mobility|range|sustain,去burst(非爆发),reviewed
+Samira,360,沙漠玫瑰,莎弥拉,Marksman|Assassin,远程,500,630,aoe|cc|mobility|range,"aoe:[R,W]<-周围 | cc:[P]<-击飞,定身 | mobility:[E,P]<-冲刺 | range:[AA]<-普攻射程",True,aoe|burst|cc|mobility|range,+burst(R),reviewed
+Thresh,412,魂锁典狱长,锤石,Support|Tank,远程,450,620,aoe|cc|range|sustain,aoe:[W]<-周围 | cc:[R]<-减速 | range:[AA]<-普攻射程 | sustain:[W]<-护盾,False,aoe|cc|range|sustain,-,reviewed
+Illaoi,420,海兽祭司,俄洛伊,Fighter|Tank,近战,125,656,sustain,sustain:[P]<-治疗,False,aoe|sustain,+aoe(Q/W/R),reviewed
+RekSai,421,虚空遁地兽,雷克塞,Fighter|Tank,近战,175,600,burst|cc|sustain,burst:[E]<-真实伤害 | cc:[W]<-击飞 | sustain:[P]<-回复,False,aoe|burst|cc|sustain,+aoe(Q),reviewed
+Ivern,427,翠神,艾翁,Support|Mage,远程,475,630,cc|mobility|range|sustain,"cc:[E,Q]<-减速,禁锢 | mobility:[Q]<-突进 | range:[AA]<-普攻射程 | sustain:[E]<-护盾",False,aoe|cc|mobility|range|sustain,+aoe(R),reviewed
+Kalista,429,复仇之矛,卡莉丝塔,Marksman,远程,525,560,aoe|cc|mobility|range,"aoe:[W]<-区域 | cc:[E,R]<-减速,击退 | mobility:[P,R]<-传送,位移 | range:[AA]<-普攻射程",False,aoe|cc|mobility|range,-,reviewed
+Bard,432,星界游神,巴德,Support|Mage,远程,500,630,aoe|cc|mobility|range|sustain,"aoe:[P,R]<-区域,范围 | cc:[P,Q]<-减速,晕眩 | mobility:[E]<-传送 | range:[AA]<-普攻射程 | sustain:[P,W]<-回复,治疗",False,aoe|cc|mobility|range|sustain,-,reviewed
+Rakan,497,幻翎,洛,Support,远程,300,610,cc|range|sustain,"cc:[R,W]<-击飞,魅惑 | range:[AA]<-普攻射程 | sustain:[E,P,Q]<-护盾,治疗",False,cc|mobility|range|sustain,+mobility(W/E),reviewed
+Xayah,498,逆羽,霞,Marksman,远程,525,630,cc|range,cc:[E]<-禁锢 | range:[AA]<-普攻射程,False,burst|cc|range,+burst(R/连招),reviewed
+Ornn,516,山隐之焰,奥恩,Tank,近战,175,660,cc|mobility,"cc:[E,Q,R]<-减速,击飞 | mobility:[E]<-冲锋",False,aoe|cc|mobility,+aoe(W/R),reviewed
+Sylas,517,解脱者,塞拉斯,Mage|Assassin,近战,175,600,aoe|cc|mobility|sustain,aoe:[Q]<-区域 | cc:[Q]<-减速 | mobility:[E]<-突进 | sustain:[W]<-治疗,False,aoe|cc|mobility|sustain,-,reviewed
+Neeko,518,万花通灵,妮蔻,Mage|Support,远程,550,610,cc|range,"cc:[E,P,R]<-击飞,定身,晕眩,禁锢 | range:[AA]<-普攻射程",True,aoe|cc|mobility|range,"+aoe(Q/R),+mobility(W隐身)",reviewed
+Aphelios,523,残月之肃,厄斐琉斯,Marksman,远程,550,600,aoe|cc|range,"aoe:[Q]<-范围,锥形 | cc:[Q]<-减速,禁锢 | range:[AA]<-普攻射程",True,aoe|cc|range,-,reviewed
+Rell,526,镕铁少女,芮尔,Tank|Support,近战,175,620,aoe|burst|cc|sustain,"aoe:[Q]<-直线 | burst:[W]<-爆发 | cc:[Q,W]<-击飞,晕眩 | sustain:[Q,W]<-护盾",False,aoe|burst|cc|mobility|sustain,+mobility(W跳),reviewed
+Pyke,555,血港鬼影,派克,Support|Assassin,近战,150,670,burst|cc|mobility|sustain,burst:[R]<-处决 | cc:[E]<-晕眩 | mobility:[E]<-突进 | sustain:[P]<-回复,False,burst|cc|mobility|sustain,-,reviewed
+Vex,711,愁云使者,薇古丝,Mage,远程,550,590,cc|mobility|range|sustain,"cc:[E,P]<-减速,恐惧 | mobility:[P,R]<-冲刺 | range:[AA]<-普攻射程 | sustain:[W]<-护盾",True,cc|mobility|range|sustain,-,reviewed
+Yone,777,封魔剑魂,永恩,Fighter|Assassin,近战,175,620,aoe|burst|cc|mobility|sustain,"aoe:[Q,R,W]<-直线,范围,锥形 | burst:[P]<-暴击 | cc:[Q]<-击飞 | mobility:[Q]<-冲刺 | sustain:[W]<-护盾",False,aoe|burst|cc|mobility|sustain,-,reviewed
+Ambessa,799,铁血狼母,安蓓萨,Fighter|Assassin,近战,125,630,aoe|cc|mobility|sustain,"aoe:[Q,R]<-区域,直线 | cc:[E,R]<-减速,压制,晕眩 | mobility:[E,P,R]<-冲刺,瞬移 | sustain:[W]<-护盾",False,aoe|cc|mobility|sustain,-,reviewed
+Mel,800,流光镜影,梅尔,Mage|Support,远程,550,630,aoe|burst|cc|range,"aoe:[E,Q]<-区域,周围,范围 | burst:[P]<-处决 | cc:[E]<-减速,禁锢 | range:[AA]<-普攻射程",True,aoe|burst|cc|range,-,reviewed
+Yunara,804,不破之誓,芸阿娜,Marksman,远程,575,590,burst|cc|mobility|range,burst:[P]<-暴击 | cc:[W]<-减速 | mobility:[E]<-冲刺 | range:[AA]<-普攻射程,False,burst|cc|mobility|range,-,reviewed
+Locke,805,灰烬驱魔人,洛克,Assassin|Mage,近战,125,620,burst|mobility|sustain,"burst:[R]<-处决 | mobility:[E]<-传送,冲刺 | sustain:[W]<-回复",False,aoe|burst|mobility|sustain,+aoe(R),reviewed
+Sett,875,腕豪,瑟提,Fighter|Tank,近战,125,670,aoe|burst|cc|sustain,"aoe:[W]<-区域 | burst:[W]<-真实伤害 | cc:[E,R]<-减速,晕眩 | sustain:[P,W]<-回复,护盾",False,aoe|burst|cc|sustain,-,reviewed
+Lillia,876,含羞蓓蕾,莉莉娅,Fighter|Mage,远程,325,605,aoe|burst|cc|range,"aoe:[W]<-区域 | burst:[Q]<-真实伤害 | cc:[E,R]<-减速,昏睡 | range:[AA]<-普攻射程",False,aoe|burst|cc|range,-,reviewed
+Gwen,887,灵罗娃娃,格温,Fighter,近战,150,620,aoe|burst|cc|mobility|sustain,"aoe:[Q]<-区域,锥形 | burst:[Q]<-真实伤害 | cc:[R]<-减速 | mobility:[E]<-冲刺 | sustain:[P]<-治疗",True,aoe|burst|mobility|sustain,去cc(R无控),reviewed
+Renata,888,炼金男爵,烈娜塔 · 戈拉斯克,Support|Mage,远程,550,545,cc|range|sustain,"cc:[E,Q]<-减速,禁锢 | range:[AA]<-普攻射程 | sustain:[E]<-护盾",True,aoe|cc|range|sustain,+aoe,reviewed
+Aurora,893,双界灵兔,阿萝拉,Mage|Assassin,远程,550,607,aoe|cc|mobility|range|sustain,"aoe:[R]<-区域 | cc:[E,R]<-减速 | mobility:[R]<-传送 | range:[AA]<-普攻射程 | sustain:[P]<-治疗",True,aoe|cc|mobility|range|sustain,-,reviewed
+Nilah,895,不羁之悦,尼菈,Fighter|Assassin,近战,225,570,aoe|mobility|sustain,"aoe:[Q,R]<-周围,直线 | mobility:[E]<-冲刺 | sustain:[P]<-护盾,治疗",False,aoe|cc|mobility|sustain,+cc(R拉),reviewed
+KSante,897,纳祖芒荣耀,奎桑提,Tank|Fighter,近战,150,625,aoe|cc|mobility|sustain,"aoe:[Q]<-直线 | cc:[Q,R,W]<-减速,击退,晕眩 | mobility:[E,R,W]<-冲刺 | sustain:[E,R]<-护盾,治疗",False,aoe|cc|mobility|sustain,-,reviewed
+Smolder,901,炽炎雏龙,斯莫德,Marksman|Mage,远程,550,575,cc|range,cc:[R]<-减速 | range:[AA]<-普攻射程,False,burst|cc|mobility|range,"+burst(R),+mobility(E飞行)",reviewed
+Milio,902,明烛,米利欧,Support|Mage,远程,525,560,aoe|cc|range|sustain,"aoe:[Q,R]<-范围 | cc:[Q]<-减速,击退 | range:[AA]<-普攻射程 | sustain:[E,R,W]<-护盾,治疗",True,aoe|cc|range|sustain,-,reviewed
+Zaahen,904,不落魔锋,亚恒,Fighter,近战,175,640,aoe|cc|mobility|sustain,"aoe:[E]<-周围 | cc:[Q]<-击飞 | mobility:[E]<-冲刺 | sustain:[Q,R]<-治疗",False,aoe|cc|mobility|sustain,-,reviewed
+Hwei,910,异画师,彗,Mage|Support,远程,550,580,aoe|cc|range,aoe:[P]<-范围 | cc:[R]<-减速 | range:[AA]<-普攻射程,False,aoe|cc|poke|range,+poke(远程消耗),reviewed
+Naafiri,950,百裂冥犬,纳亚菲利,Assassin|Fighter,近战,125,610,aoe|mobility|sustain,"aoe:[E]<-区域 | mobility:[E,R]<-冲刺 | sustain:[E,R]<-回复,护盾",False,aoe|cc|mobility|sustain,+cc(W减速),reviewed

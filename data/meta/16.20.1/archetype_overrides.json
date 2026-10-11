@@ -1,0 +1,1706 @@
+{
+  "Annie": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Olaf": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+cc(Q减速)"
+  },
+  "Galio": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "TwistedFate": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+cc(W黄牌晕),+aoe(Q/R)"
+  },
+  "XinZhao": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Urgot": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Leblanc": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(刺客高爆发)"
+  },
+  "Vladimir": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Fiddlesticks": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+sustain(W吸血)"
+  },
+  "Kayle": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "MasterYi": {
+    "tags": [
+      "burst",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Alistar": {
+    "tags": [
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Ryze": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Sion": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Sivir": {
+    "tags": [
+      "aoe",
+      "burst",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Soraka": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Teemo": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(R蘑菇)"
+  },
+  "Tristana": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(E/R)"
+  },
+  "Warwick": {
+    "tags": [
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Nunu": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(W滚雪球)"
+  },
+  "MissFortune": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+cc(E减速)"
+  },
+  "Ashe": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Tryndamere": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Jax": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(Q跳斩)"
+  },
+  "Morgana": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Zilean": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Singed": {
+    "tags": [
+      "aoe",
+      "cc"
+    ],
+    "status": "reviewed",
+    "note": "去burst(非爆发),+aoe(Q毒气)"
+  },
+  "Evelynn": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Twitch": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Karthus": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+cc(W墙减速)"
+  },
+  "Chogath": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Amumu": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Rammus": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Anivia": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Shaco": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "DrMundo": {
+    "tags": [
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "去burst(非爆发)"
+  },
+  "Sona": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E加速)"
+  },
+  "Kassadin": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Irelia": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(R)"
+  },
+  "Janna": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Gangplank": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+sustain(W治疗)"
+  },
+  "Corki": {
+    "tags": [
+      "aoe",
+      "burst",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(W位移)"
+  },
+  "Karma": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q/R)"
+  },
+  "Taric": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(R)"
+  },
+  "Veigar": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(高爆发)"
+  },
+  "Trundle": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+cc(E减速)"
+  },
+  "Swain": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(R)"
+  },
+  "Caitlyn": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E位移)"
+  },
+  "Blitzcrank": {
+    "tags": [
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(W加速)"
+  },
+  "Malphite": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(R冲锋)"
+  },
+  "Katarina": {
+    "tags": [
+      "aoe",
+      "burst",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E闪现)"
+  },
+  "Nocturne": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Maokai": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q/R)"
+  },
+  "Renekton": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E位移)"
+  },
+  "JarvanIV": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(EQ)"
+  },
+  "Elise": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe"
+  },
+  "Orianna": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+sustain(E护盾)"
+  },
+  "MonkeyKing": {
+    "tags": [
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Brand": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "去sustain(无治疗)"
+  },
+  "LeeSin": {
+    "tags": [
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(W/Q)"
+  },
+  "Vayne": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Rumble": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Cassiopeia": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Skarner": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q)"
+  },
+  "Heimerdinger": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(炮台/R)"
+  },
+  "Nasus": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+cc(W减速)"
+  },
+  "Nidalee": {
+    "tags": [
+      "poke",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+poke(标枪)"
+  },
+  "Udyr": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(R)"
+  },
+  "Poppy": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Gragas": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Pantheon": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(R),+mobility(R)"
+  },
+  "Ezreal": {
+    "tags": [
+      "aoe",
+      "mobility",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+poke(经典Poke)"
+  },
+  "Mordekaiser": {
+    "tags": [
+      "aoe",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Yorick": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Akali": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Kennen": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E位移)"
+  },
+  "Garen": {
+    "tags": [
+      "burst",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Leona": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E突进)"
+  },
+  "Malzahar": {
+    "tags": [
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "去mobility(Q非位移)"
+  },
+  "Talon": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+burst,+mobility(E跳墙),+aoe(W/R)"
+  },
+  "Riven": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "KogMaw": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Shen": {
+    "tags": [
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Lux": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+sustain(W护盾)"
+  },
+  "Xerath": {
+    "tags": [
+      "aoe",
+      "cc",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+poke(经典Poke)"
+  },
+  "Shyvana": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "去sustain(无回复)"
+  },
+  "Ahri": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(R位移)"
+  },
+  "Graves": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(R)"
+  },
+  "Fizz": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+burst,+mobility(E),+aoe"
+  },
+  "Volibear": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(R跳跃)"
+  },
+  "Rengar": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Varus": {
+    "tags": [
+      "aoe",
+      "cc",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "去sustain(E是重伤),+poke(Q),+aoe"
+  },
+  "Nautilus": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Viktor": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Sejuani": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(W/E)"
+  },
+  "Fiora": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Ziggs": {
+    "tags": [
+      "aoe",
+      "cc",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+poke(经典Poke)"
+  },
+  "Lulu": {
+    "tags": [
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+sustain(E护盾)"
+  },
+  "Draven": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Hecarim": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Khazix": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Darius": {
+    "tags": [
+      "burst",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+cc(E拉/W减速)"
+  },
+  "Jayce": {
+    "tags": [
+      "cc"
+    ],
+    "status": "reviewed",
+    "note": "去sustain(无治疗)"
+  },
+  "Lissandra": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Diana": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Quinn": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst,+cc(E减速),+mobility(E/R)"
+  },
+  "Syndra": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q/W/R)"
+  },
+  "AurelionSol": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+poke(远程消耗)"
+  },
+  "Kayn": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Zoe": {
+    "tags": [
+      "aoe",
+      "cc",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+poke(经典Poke)"
+  },
+  "Zyra": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Kaisa": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(高爆发)"
+  },
+  "Seraphine": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Gnar": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E跳跃)"
+  },
+  "Zac": {
+    "tags": [
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E跳)"
+  },
+  "Yasuo": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Velkoz": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+poke(经典Poke)"
+  },
+  "Taliyah": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+poke(Q)"
+  },
+  "Camille": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(E钩锁)"
+  },
+  "Akshan": {
+    "tags": [
+      "burst",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+burst(R),+mobility(E钩锁)"
+  },
+  "Belveth": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q/R)"
+  },
+  "Braum": {
+    "tags": [
+      "aoe",
+      "cc"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Jhin": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q/R)"
+  },
+  "Kindred": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Zeri": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(W/R)"
+  },
+  "Jinx": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(R火箭)"
+  },
+  "TahmKench": {
+    "tags": [
+      "aoe",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Briar": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Viego": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Senna": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Lucian": {
+    "tags": [
+      "burst",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "去cc/去sustain(P无控无治疗),+burst"
+  },
+  "Zed": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "去sustain(W无回复),+burst"
+  },
+  "Kled": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Ekko": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Qiyana": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+burst,+aoe(R)"
+  },
+  "Vi": {
+    "tags": [
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(Q位移)"
+  },
+  "Aatrox": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Nami": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Azir": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Yuumi": {
+    "tags": [
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "去burst(非爆发)"
+  },
+  "Samira": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(R)"
+  },
+  "Thresh": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Illaoi": {
+    "tags": [
+      "aoe",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q/W/R)"
+  },
+  "RekSai": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q)"
+  },
+  "Ivern": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(R)"
+  },
+  "Kalista": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Bard": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Rakan": {
+    "tags": [
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(W/E)"
+  },
+  "Xayah": {
+    "tags": [
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(R/连招)"
+  },
+  "Ornn": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(W/R)"
+  },
+  "Sylas": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Neeko": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(Q/R),+mobility(W隐身)"
+  },
+  "Aphelios": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Rell": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+mobility(W跳)"
+  },
+  "Pyke": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Vex": {
+    "tags": [
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Yone": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Ambessa": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Mel": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Yunara": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Locke": {
+    "tags": [
+      "aoe",
+      "burst",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe(R)"
+  },
+  "Sett": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Lillia": {
+    "tags": [
+      "aoe",
+      "burst",
+      "cc",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Gwen": {
+    "tags": [
+      "aoe",
+      "burst",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "去cc(R无控)"
+  },
+  "Renata": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+aoe"
+  },
+  "Aurora": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Nilah": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+cc(R拉)"
+  },
+  "KSante": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Smolder": {
+    "tags": [
+      "burst",
+      "cc",
+      "mobility",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+burst(R),+mobility(E飞行)"
+  },
+  "Milio": {
+    "tags": [
+      "aoe",
+      "cc",
+      "range",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Zaahen": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "-"
+  },
+  "Hwei": {
+    "tags": [
+      "aoe",
+      "cc",
+      "poke",
+      "range"
+    ],
+    "status": "reviewed",
+    "note": "+poke(远程消耗)"
+  },
+  "Naafiri": {
+    "tags": [
+      "aoe",
+      "cc",
+      "mobility",
+      "sustain"
+    ],
+    "status": "reviewed",
+    "note": "+cc(W减速)"
+  }
+}
