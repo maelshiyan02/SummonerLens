@@ -20,8 +20,11 @@
     watch    : foreground watchdog; restarts the service whenever handles
                exceed -Threshold (keeps Bluetooth, bounds the leak)
     restart  : restart the service once (frees leaked handles now)
-    disable  : stop + disable the service entirely (test BT after)
-    enable   : re-enable the service (undo 'disable')
+    disable  : stop + disable the service entirely and park the watchdog
+               task (test Bluetooth after; this is the reversible "cure")
+    enable   : re-enable the service + watchdog task (undo 'disable')
+    radio    : read-only; report whether the Bluetooth radio is present
+               and powered (proves the stack works with MTKBTSVC disabled)
 
   NOTE: watch/restart/disable/enable need an elevated (Administrator) shell.
         status works unelevated.
@@ -32,7 +35,7 @@
     powershell -ExecutionPolicy Bypass -File tools\bt_handle_guard.ps1 -Action disable
 #>
 param(
-  [ValidateSet('status', 'watch', 'restart', 'disable', 'enable')]
+  [ValidateSet('status', 'watch', 'restart', 'disable', 'enable', 'radio')]
   [string]$Action = 'status',
 
   [int]$Threshold = 20000,      # watch: restart when handles exceed this
@@ -44,6 +47,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $SvcName = 'MTKBTSVC'
 $ProcName = 'mtkbtsvc'
+$TaskName = 'SummonerLens-BtHandleGuard'
 
 $Root = Split-Path -Parent $PSScriptRoot
 $LogDir = Join-Path $Root 'build'
@@ -100,6 +104,39 @@ function Show-Status {
   }
 }
 
+function Show-Radio {
+  # Read-only. Reports the Windows Bluetooth radio power state through the
+  # WinRT Radio API. When MTKBTSVC is disabled this is the proof that the
+  # core stack (bthserv + BTHUSB/BTHPORT) still powers the radio on its own.
+  try {
+    Add-Type -AssemblyName System.Runtime.WindowsRuntime -ErrorAction Stop
+    $ext = [System.WindowsRuntimeSystemExtensions].GetMethods() |
+      Where-Object { $_.Name -eq 'AsTask' -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncOperation`1' }
+    $asTaskGeneric = $ext[0]
+    function AwaitOp($op, $t) {
+      $m = $asTaskGeneric.MakeGenericMethod($t)
+      $nt = $m.Invoke($null, @($op))
+      $nt.Wait(-1) | Out-Null
+      return $nt.Result
+    }
+    [Windows.Devices.Radios.Radio, Windows.System.Devices, ContentType = WindowsRuntime] | Out-Null
+    $radios = AwaitOp ([Windows.Devices.Radios.Radio]::GetRadiosAsync()) ([System.Collections.Generic.IReadOnlyList[Windows.Devices.Radios.Radio]])
+    $bt = @($radios | Where-Object { $_.Kind -eq 'Bluetooth' })
+    if ($bt.Count -eq 0) {
+      Write-Log 'RADIO: Windows reports no Bluetooth radio object -> adapter/driver may be down'
+      return
+    }
+    Write-Log ("RADIO: Bluetooth radio '{0}' state={1}" -f $bt[0].Name, $bt[0].State)
+    if ([string]$bt[0].State -eq 'On') {
+      Write-Log 'RADIO: powered ON and drivable (Bluetooth switch is on)'
+    } else {
+      Write-Log 'RADIO: radio exists but is Off (Windows Bluetooth switch is off)'
+    }
+  } catch {
+    Write-Log ('RADIO: probe failed - ' + $_.Exception.Message)
+  }
+}
+
 function Restart-SvcOnce {
   if (-not (Test-Admin)) { Write-Log 'ERROR: need Administrator to restart the service'; return $false }
   $p = Get-SvcProcess
@@ -114,6 +151,8 @@ function Restart-SvcOnce {
 
 function Watch-Loop {
   if (-not (Test-Admin)) { Write-Log 'ERROR: need Administrator for watch mode'; return }
+  $mode = [string](Get-CimInstance Win32_Service -Filter "Name='$SvcName'").StartMode
+  if ($mode -eq 'Disabled') { Write-Log ("service '{0}' is Disabled - nothing to guard, exiting" -f $SvcName); return }
   Write-Log ("watch started: threshold={0} interval={1}s maxRounds={2}" -f $Threshold, $IntervalSec, $MaxRounds)
   $round = 0
   while ($true) {
@@ -141,6 +180,9 @@ function Disable-Svc {
   Start-Sleep -Seconds 2
   Write-Log ("'{0}' stopped and set to Disabled. Test Bluetooth mouse/headset now." -f $SvcName)
   Write-Log 'If Bluetooth still works, the leak is gone for good. To undo: -Action enable'
+  # the watchdog is pointless (and noisy) once the service can no longer start
+  $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
+  if ($task) { Disable-ScheduledTask -TaskName $TaskName | Out-Null; Write-Log ("watchdog task '{0}' disabled (undo: -Action enable)" -f $TaskName) }
 }
 
 function Enable-Svc {
@@ -149,6 +191,11 @@ function Enable-Svc {
   Start-Service -Name $SvcName
   Start-Sleep -Seconds 2
   Write-Log ("'{0}' set to Automatic and started." -f $SvcName)
+  $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
+  if ($task -and $task.State -eq 'Disabled') {
+    Enable-ScheduledTask -TaskName $TaskName | Out-Null
+    Write-Log ("watchdog task '{0}' re-enabled" -f $TaskName)
+  }
 }
 
 switch ($Action) {
@@ -157,4 +204,5 @@ switch ($Action) {
   'restart' { Restart-SvcOnce | Out-Null }
   'disable' { Disable-Svc }
   'enable' { Enable-Svc }
+  'radio' { Show-Radio }
 }
