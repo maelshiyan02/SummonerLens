@@ -7,20 +7,39 @@ import '../theme.dart';
 
 /// webview（WebView2）封装：装载本地 ECharts 仪表板，带加载中 / 错误态。
 ///
-/// 只使用 webview_windows 的稳定 API：initialize / loadUrl / loadingState。
+/// **时序契约（重要）**：`WebviewController.initialize()` 必须在 **任何** 其它调用
+/// （`loadUrl` / `reload` / `executeScript` …）之前完成 —— 插件的 `_methodChannel`
+/// 是 `late` 字段，只在 `initialize()` 里赋值；未初始化就调用会抛
+/// `LateInitializationError: Field '_methodChannel' has not been initialized`。
+///
+/// 因此本组件在 `initialize()` 成功后才回调 [onInitialized]，
+/// **父级必须等到该回调触发后**才可以操作 controller。
 class DashboardWebview extends StatefulWidget {
-  const DashboardWebview({super.key, required this.controller, this.onReady});
+  const DashboardWebview({
+    super.key,
+    required this.controller,
+    this.onInitialized,
+    this.onReady,
+    this.onLoadError,
+  });
 
   final WebviewController controller;
+
+  /// controller 初始化完成（**此时才可以安全调用 loadUrl 等**）。
+  final VoidCallback? onInitialized;
+
+  /// 页面导航完成（首屏可见）。
   final VoidCallback? onReady;
+
+  /// 导航级错误（不替换视图，由父级提示，便于用户点「刷新」重试）。
+  final ValueChanged<String>? onLoadError;
 
   @override
   State<DashboardWebview> createState() => _DashboardWebviewState();
 }
 
 class _DashboardWebviewState extends State<DashboardWebview> {
-  final List<StreamSubscription<LoadingState>> _subs =
-      <StreamSubscription<LoadingState>>[];
+  final List<StreamSubscription<dynamic>> _subs = <StreamSubscription<dynamic>>[];
   bool _inited = false;
   bool _loading = true;
   String? _error;
@@ -28,7 +47,7 @@ class _DashboardWebviewState extends State<DashboardWebview> {
   @override
   void initState() {
     super.initState();
-    _init();
+    unawaited(_init());
   }
 
   Future<void> _init() async {
@@ -38,13 +57,21 @@ class _DashboardWebviewState extends State<DashboardWebview> {
         await c.initialize();
         _inited = true;
       }
-      _subs.add(c.loadingState.listen((state) {
+      if (!mounted) return;
+      // 先开始监听再通知外部装载，避免错过首次 loading 事件
+      _subs.add(c.loadingState.listen((LoadingState state) {
         if (!mounted) return;
         setState(() => _loading = state == LoadingState.loading);
         if (state == LoadingState.navigationCompleted) {
           widget.onReady?.call();
         }
       }));
+      _subs.add(c.onLoadError.listen((WebErrorStatus err) {
+        if (!mounted) return;
+        setState(() => _loading = false);
+        widget.onLoadError?.call('$err');
+      }));
+      widget.onInitialized?.call();
     } catch (e) {
       if (mounted) setState(() => _error = '$e');
     }
@@ -52,8 +79,8 @@ class _DashboardWebviewState extends State<DashboardWebview> {
 
   @override
   void dispose() {
-    for (final s in _subs) {
-      s.cancel();
+    for (final StreamSubscription<dynamic> s in _subs) {
+      unawaited(s.cancel());
     }
     super.dispose();
   }
