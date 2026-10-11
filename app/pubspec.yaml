@@ -1,0 +1,24 @@
+name: summonerlens
+description: "SummonerLens · 召唤师数据分析助手（海克斯大乱斗）桌面壳"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # Windows 内嵌 WebView2，用于装载本地 ECharts 仪表板（app/web）
+  webview_windows: ^0.4.0
+  # 打开系统浏览器 / 打开目录（兜底与调试）
+  url_launcher: ^6.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

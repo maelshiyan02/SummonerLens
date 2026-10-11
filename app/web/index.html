@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SummonerLens · 召唤师数据分析助手</title>
+<!-- 离线约束：仅本地资源，禁止任何 CDN 外链（tools/verify_m4.py 会断言） -->
+<link rel="stylesheet" href="css/style.css" />
+<script src="vendor/echarts.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo"></span>
+      <h1>SummonerLens</h1>
+      <span class="sub">召唤师数据分析助手 · 海克斯大乱斗</span>
+    </div>
+    <span class="spacer"></span>
+    <span class="pill" id="pill-provenance"><span class="dot"></span><span id="pill-text">载入中…</span></span>
+    <span class="pill" id="pill-meta">版本 —</span>
+    <span class="pill" id="pill-updated">—</span>
+    <button class="btn" id="btn-refresh" title="重新拉取数据束（并触发服务端重建）">刷新</button>
+    <button class="btn" id="btn-auto" title="每 10 秒自动刷新（仅本地服务下可用）">自动刷新：关</button>
+  </header>
+
+  <aside class="side">
+    <h3>数据源</h3>
+    <div class="seg" id="seg-dataset">
+      <button data-dataset="real" class="active">真实聚合</button>
+      <button data-dataset="fixture">合成夹具</button>
+    </div>
+    <p class="hint" id="dataset-hint">hexdata 群体聚合样本</p>
+
+    <h3>别名词典搜索</h3>
+    <div class="search-box">
+      <input id="search" type="text" placeholder="输入英雄名 / 昵称，如 快乐风男、TF、火女" autocomplete="off" />
+    </div>
+    <div class="search-result" id="search-result"></div>
+
+    <h3>样本档</h3>
+    <div class="chips" id="chips-tier">
+      <span class="chip active" data-tier="all">全部</span>
+      <span class="chip tier-high" data-tier="high">高样本 ≥1000</span>
+      <span class="chip tier-medium" data-tier="medium">中样本 250-999</span>
+      <span class="chip tier-low" data-tier="low">低样本 &lt;250</span>
+    </div>
+
+    <h3>推荐级</h3>
+    <div class="chips" id="chips-rec">
+      <span class="chip active" data-rec="all">全部</span>
+      <span class="chip" data-rec="strong">强力推荐</span>
+      <span class="chip" data-rec="recommend">可参考</span>
+      <span class="chip" data-rec="none">样本不足</span>
+    </div>
+
+    <h3>角色</h3>
+    <div class="chips" id="chips-role">
+      <span class="chip active" data-role="all">全部</span>
+      <span class="chip" data-role="战士">战士</span>
+      <span class="chip" data-role="坦克">坦克</span>
+      <span class="chip" data-role="法师">法师</span>
+      <span class="chip" data-role="刺客">刺客</span>
+      <span class="chip" data-role="射手">射手</span>
+      <span class="chip" data-role="辅助">辅助</span>
+    </div>
+
+    <h3>分层（MMR 分位）</h3>
+    <div class="chips" id="chips-stratum">
+      <span class="chip active" data-stratum="all">全量</span>
+      <span class="chip" data-stratum="top40">前 40%</span>
+      <span class="chip" data-stratum="top20">前 20%</span>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="tabs" id="tabs">
+      <button data-tab="overview" class="active">概览</button>
+      <button data-tab="ranking">英雄 / Augment 排名</button>
+      <button data-tab="synergy">协同</button>
+      <button data-tab="strata">玩家分层</button>
+    </div>
+
+    <!-- 概览 -->
+    <section class="panel active" id="panel-overview">
+      <div id="ov-banner"></div>
+      <div class="kpis" id="ov-kpis"></div>
+      <div class="cards two">
+        <div class="card">
+          <div class="card-hd"><h2>样本档分布</h2><span class="tag">当前筛选</span></div>
+          <div class="card-bd"><div class="chart short" id="chart-tier"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h2>排名速览（前 8）</h2><span class="tag" id="ov-rank-tag">Wilson 下界</span></div>
+          <div class="card-bd"><div class="chart short" id="chart-ov-rank"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 排名 -->
+    <section class="panel" id="panel-ranking">
+      <div id="rk-banner"></div>
+      <div class="card">
+        <div class="card-hd">
+          <h2 id="rk-title">英雄排名</h2>
+          <span class="tag">浅色 = 观测胜率；实色 = Wilson 95% 下界（排序信号）</span>
+          <span class="tag" id="rk-count"></span>
+        </div>
+        <div class="card-bd"><div class="chart tall" id="chart-rank"></div></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-hd"><h2>明细表</h2><span class="tag">按排名（档位优先）</span></div>
+        <div class="card-bd"><div class="scroll"><table class="grid" id="tbl-rank"></table></div></div>
+      </div>
+    </section>
+
+    <!-- 协同 -->
+    <section class="panel" id="panel-synergy">
+      <div id="sy-banner"></div>
+      <div class="card">
+        <div class="card-hd"><h2>英雄 × Augment 协同</h2><span class="tag" id="sy-tag">lift vs 英雄边际</span></div>
+        <div class="card-bd"><div class="chart tall" id="chart-synergy"></div></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-hd"><h2>协同明细</h2><span class="tag">含三元组（英雄 × Augment × 装备）</span></div>
+        <div class="card-bd"><div class="scroll"><table class="grid" id="tbl-synergy"></table></div></div>
+      </div>
+    </section>
+
+    <!-- 分层 -->
+    <section class="panel" id="panel-strata">
+      <div id="st-banner"></div>
+      <div class="cards two">
+        <div class="card">
+          <div class="card-hd"><h2>MMR 分布（反推估计）</h2><span class="tag">虚线 = 分层阈值</span></div>
+          <div class="card-bd"><div class="chart" id="chart-mmr"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h2>分层汇总</h2><span class="tag">top20 ⊆ top40 ⊆ all</span></div>
+          <div class="card-bd"><div class="scroll"><table class="grid" id="tbl-strata"></table></div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-hd"><h2>分层英雄切片</h2><span class="tag" id="st-slice-tag">当前分层</span></div>
+        <div class="card-bd"><div class="chart tall" id="chart-slice"></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot" id="foot"></footer>
+</div>
+
+<div id="boot" class="center-msg">
+  <div class="spinner"></div>
+  <div>正在载入数据束 …</div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

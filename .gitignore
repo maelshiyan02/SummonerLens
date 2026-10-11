@@ -41,6 +41,11 @@ data/sample/m3_corpus.synth.jsonl
 data/sample/m3_corpus.synth.manifest.json
 data/derived/
 
+# ===== M4 可视化数据束（派生，可由 python/bridge/build_viz_bundle.py 重建） =====
+# 首次打开时由 bridge 自动生成，故不入库；app/web/vendor/ 的 ECharts 必须入库（离线依赖）
+app/web/data/*.json
+!app/web/data/README.md
+
 # ===== 环境与密钥 =====
 .env
 .env.*
