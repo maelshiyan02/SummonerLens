@@ -133,6 +133,74 @@ def build_citation_table(con, agg_dir: Path) -> int:
     return 1
 
 
+def build_resg_tables(con, root: Path) -> dict:
+    """RESG 完整聚合表：来源 = resg.top 公开端点，aggregate_resg 可信度层级。
+
+    与 hexdata（仅 top 12）的区别：RESG 是**完整英雄池（173）+ 完整海克斯池（211）**，
+    独立于现有三路数据，作为第四路追加，不影响既有断言链。
+    """
+    resg_root = root / "data" / "agg_resg"
+    latest = resg_root / "LATEST"
+    counts = {}
+    if not latest.exists():
+        print("[duckdb]   跳过 RESG（data/agg_resg/LATEST 不存在；请先运行 fetch_resg.py）")
+        return counts
+    ver = latest.read_text(encoding="utf-8").strip()
+    rdir = resg_root / ver
+    cite_fp = rdir / "citation.json"
+    fetched_at = time.strftime("%Y-%m-%dT%H:%M:%S")
+    cite_text = ""
+    if cite_fp.exists():
+        cite_text = json.loads(cite_fp.read_text(encoding="utf-8")).get("attribution_text", "")
+
+    # champions
+    ch_fp = rdir / "champions.json"
+    if ch_fp.exists():
+        con.execute(f"""
+            CREATE OR REPLACE TABLE agg_resg_champions AS
+            SELECT id::INTEGER, name::VARCHAR, title::VARCHAR, alias::VARCHAR,
+                   roles, ip::VARCHAR,
+                   tm::BIGINT  AS games,
+                   wm::BIGINT  AS wins,
+                   wr::DOUBLE  AS win_rate,
+                   tier::VARCHAR,
+                   'RESG (aggregate, resg.top)' AS _source,
+                   'aggregate_resg' AS _confidence,
+                   '{ver}' AS _asof,
+                   '{ver}' AS _resg_version,
+                   '{cite_text}' AS _citation,
+                   '{fetched_at}' AS _collected_at
+            FROM read_json_auto('{q(ch_fp)}')
+        """)
+        counts["agg_resg_champions"] = con.execute("SELECT count(*) FROM agg_resg_champions").fetchone()[0]
+
+    # augments
+    aug_fp = rdir / "augments.json"
+    if aug_fp.exists():
+        con.execute(f"""
+            CREATE OR REPLACE TABLE agg_resg_augments AS
+            SELECT id::INTEGER, name::VARCHAR, description::VARCHAR, tooltip::VARCHAR,
+                   ip::VARCHAR,
+                   tm::BIGINT  AS games,
+                   wm::BIGINT  AS wins,
+                   wr::DOUBLE  AS win_rate,
+                   pr::DOUBLE  AS pick_rate,
+                   tier::VARCHAR,
+                   quality::INTEGER,
+                   topChampions AS top_champions,
+                   'RESG (aggregate, resg.top)' AS _source,
+                   'aggregate_resg' AS _confidence,
+                   '{ver}' AS _asof,
+                   '{ver}' AS _resg_version,
+                   '{cite_text}' AS _citation,
+                   '{fetched_at}' AS _collected_at
+            FROM read_json_auto('{q(aug_fp)}')
+        """)
+        counts["agg_resg_augments"] = con.execute("SELECT count(*) FROM agg_resg_augments").fetchone()[0]
+
+    return counts
+
+
 def build_personal_table(con, personal_dir: Path) -> int:
     """本人对局表（若存在）。来源 = WeGame/LCU，次级佐证。"""
     fp = personal_dir / "matches.jsonl"
@@ -335,6 +403,14 @@ def main() -> None:
     else:
         print("   personal_matches           0 行")
 
+    # ---- RESG 完整聚合（第四路，完整池 vs hexdata top12）----
+    print("[duckdb] 4) RESG 完整聚合表（resg.top）")
+    c_resg = build_resg_tables(con, root)
+    for t, n in c_resg.items():
+        print(f"   {t:26s} {n} 行")
+    if not c_resg:
+        print("   （跳过：无 RESG 数据）")
+
     # 视图：英雄池（元数据 × 聚合昵称）
     con.execute("""
         CREATE OR REPLACE VIEW v_heroes AS
@@ -366,7 +442,8 @@ def main() -> None:
         "tables": tables,
         "views": views,
         "row_counts": {**c1, **c2, "agg_citation": n_cit, **c_hist,
-                       "meta_champion_changes": n_chg, "personal_matches": n_per},
+                       "meta_champion_changes": n_chg, "personal_matches": n_per,
+                       **c_resg},
         "versions": {
             "meta_snapshots": [s["id"] for s in meta_snaps],
             "agg_snapshots": [s["id"] for s in agg_snaps],
@@ -377,6 +454,7 @@ def main() -> None:
         "source_tiers": {
             "authoritative": "Data Dragon / CommunityDragon（元数据）",
             "aggregate_hexdata": "Hexdata 自建样本（聚合统计，须带四字段溯源）",
+            "aggregate_resg": "RESG resg.top 公开端点（完整英雄/海克斯池聚合）",
             "secondary": "WeGame / LCU 本人对局（局内指标有偏，仅参考）",
         },
     }

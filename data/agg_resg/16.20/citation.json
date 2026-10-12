@@ -1,0 +1,14 @@
+{
+  "source": "RESG",
+  "source_url": "https://resg.top",
+  "resg_version": "16.20",
+  "resg_base": "https://resg.top/api/v1",
+  "fetched_at": "2026-10-12T16:09:06",
+  "usage_policy": {
+    "retrieval": "allowed (public read-only)",
+    "bulk_republish": "disallowed",
+    "commercial": "disallowed",
+    "license_note": "RESG 未声明开放许可，本项目仅读取公开聚合端点用于分析展示，引用须标注来源。"
+  },
+  "attribution_text": "数据来源：RESG（https://resg.top）｜Patch: 16.20｜抓取日期: 2026-10-12T16:09:06"
+}

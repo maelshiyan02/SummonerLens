@@ -180,7 +180,8 @@ def sec_b(env: Env):
     idx = b.get("dataset_index", {})
     check("数据集索引非空", len(idx) > 0)
     check("所有数据集 kind 取值合法",
-          all(v.get("kind") in ("real_aggregate", "synthetic_fixture") for v in idx.values()),
+          all(v.get("kind") in ("real_aggregate", "real_aggregate_resg",
+                                 "synthetic_fixture", "unavailable") for v in idx.values()),
           str({k: v.get("kind") for k, v in idx.items()}))
     check("真实数据集标注为 real_aggregate",
           idx.get("hero_ranking", {}).get("kind") == "real_aggregate"
@@ -188,8 +189,9 @@ def sec_b(env: Env):
     check("夹具数据集标注为 synthetic_fixture",
           all(idx.get(k, {}).get("kind") == "synthetic_fixture"
               for k in idx if k.startswith("fixture_")))
-    empty = [k for k, v in idx.items() if not v.get("rows")]
-    check("无空数据集（空结果判 FAIL）", not empty, f"空：{empty}")
+    empty = [k for k, v in idx.items()
+             if not v.get("rows") and v.get("kind") != "unavailable"]
+    check("无空数据集（空结果判 FAIL，unavailable 豁免）", not empty, f"空：{empty}")
     check("bundle.warnings 非空", len(b.get("warnings") or []) > 0)
     check("warnings 明确警示合成夹具不得对外",
           any("合成夹具" in w or "synthetic" in w for w in (b.get("warnings") or [])))

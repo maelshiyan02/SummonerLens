@@ -12,6 +12,9 @@
     bundle: null,
     dataset: 'real',      // real | fixture
     entity: 'hero',       // hero | augment（排名面板）
+    resgEntity: 'hero',   // hero | augment | item（RESG 完整池面板）
+    resgSortKey: 'rank',  // 表头排序键
+    resgSortDir: 'asc',   // asc | desc
     tier: 'all',
     rec: 'all',
     role: 'all',
@@ -483,6 +486,225 @@
     };
   }
 
+  // ---------------------------------------------------------------- RESG · 完整池排名
+  var RESG_TIER_MAP = { T0: 3, T1: 2, T2: 1, T3: 0, T4: 0 };  // tier 强度映射
+
+  /** RESG tier 彩色 tag：T0 红（顶级）→ T4 灰（垫底）。 */
+  function resgTierTag(tier) {
+    var colors = { T0: '#ff5b5b', T1: '#e8b23a', T2: '#4a9eff', T3: '#7b8496', T4: '#555d6b' };
+    var c = colors[tier] || '#6b7484';
+    return '<span class="tag-mini" style="background:' + c + '">' + (tier || '—') + '</span>';
+  }
+
+  /** 通用表头排序：点击列头切换升/降序。 */
+  function _sortRows(rows, key, dir) {
+    var d = dir === 'asc' ? 1 : -1;
+    return rows.slice().sort(function (a, b) {
+      var av = a[key], bv = b[key];
+      if (typeof av === 'number' && typeof bv === 'number') { return (av - bv) * d; }
+      av = (av == null ? '' : String(av));
+      bv = (bv == null ? '' : String(bv));
+      return av.localeCompare(bv, 'zh-CN') * d;
+    });
+  }
+
+  /** 生成表头 HTML：带排序指示器，点击触发 state 更新 + 重绘。 */
+  function _resgHeader(cols) {
+    var html = '<thead><tr>';
+    cols.forEach(function (col, i) {
+      var indicator = '';
+      if (col.sortable) {
+        var active = state.resgSortKey === col.key;
+        indicator = active ? (state.resgSortDir === 'asc' ? ' ▲' : ' ▼') : '';
+        html += '<th class="sortable' + (active ? ' active' : '') + '" data-sort="' + col.key + '">'
+          + col.label + indicator + '</th>';
+      } else {
+        html += '<th>' + col.label + '</th>';
+      }
+    });
+    html += '</tr></thead>';
+    return html;
+  }
+
+  function renderResg() {
+    var b = state.bundle;
+    var entity = state.resgEntity;
+
+    // entity 切换 seg：首次渲染时注入
+    var segEnt = $('panel-resg').querySelector('.card-hd .seg');
+    if (!segEnt) {
+      segEnt = document.createElement('div');
+      segEnt.className = 'seg';
+      segEnt.style.marginLeft = 'auto';
+      segEnt.innerHTML = '<button data-entity="hero" class="active">英雄</button>' +
+        '<button data-entity="augment">海克斯</button>' +
+        '<button data-entity="item">装备</button>';
+      $('panel-resg').querySelector('.card-hd').appendChild(segEnt);
+      segEnt.addEventListener('click', function (e) {
+        var btn = e.target.closest('button'); if (!btn) { return; }
+        state.resgEntity = btn.getAttribute('data-entity');
+        state.resgSortKey = 'rank'; state.resgSortDir = 'asc';
+        Array.prototype.forEach.call(this.children, function (x) {
+          x.classList.toggle('active', x === btn);
+        });
+        renderResg();
+      });
+    }
+    // 同步状态高亮
+    Array.prototype.forEach.call(segEnt.querySelectorAll('button'), function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-entity') === entity);
+    });
+
+    // 横幅
+    var prov = C.provenanceOf(b, entity === 'hero' ? 'resg_champions'
+      : entity === 'augment' ? 'resg_augments' : 'resg_items');
+    var bannerEl = $('rg-banner');
+    if (entity === 'item') {
+      bannerEl.innerHTML = '<div class="banner"><div><b>⚠️ 装备聚合数据暂缺</b>——' +
+        'RESG / hexdata 均未提供装备维度的公开聚合胜率端点。' +
+        '以下展示 A12 元数据装备列表（870 件）含模式归属标注，聚合胜率数据缺口待数据源出现后接入。</div></div>';
+    } else {
+      bannerEl.innerHTML = '<div class="banner real"><div><b>RESG 完整聚合数据</b>（resg.top）——' +
+        (prov.attribution || '来源：RESG resg.top') +
+        '｜版本 ' + (prov.resg_version || '—') + '｜完整英雄/海克斯池。</div></div>';
+    }
+
+    $('rg-title').textContent = (entity === 'hero' ? '完整英雄池排名（173）'
+      : entity === 'augment' ? '完整海克斯池排名（211）'
+      : '装备列表（A12 元数据）');
+
+    // --- hero 表格 ---
+    if (entity === 'hero') {
+      var dataset = (b.datasets.resg_champions || { rows: [] });
+      var rows = dataset.rows || [];
+      // 应用筛选
+      rows = C.filterByTier(rows, state.tier);
+      rows = C.filterByRecommendation(rows, state.rec);
+      rows = rows.filter(function (r) {
+        return state.role === 'all' || (r.roles || []).indexOf(state.role) >= 0;
+      });
+      // 表头排序
+      if (state.resgSortKey !== 'rank') {
+        rows = _sortRows(rows, state.resgSortKey, state.resgSortDir);
+      }
+      $('rg-count').textContent = rows.length + ' 项';
+
+      if (!rows.length) {
+        $('tbl-resg').innerHTML = '<thead><tr><th class="hint">当前筛选下无数据</th></tr></thead><tbody></tbody>';
+        return;
+      }
+
+      var cols = [
+        { key: 'rank', label: '#', sortable: true },
+        { key: 'name', label: '英雄', sortable: false },
+        { key: 'title', label: '称号', sortable: false },
+        { key: 'roles', label: '角色', sortable: false },
+        { key: 'games', label: '场次', sortable: true },
+        { key: 'winRate', label: '胜率', sortable: true },
+        { key: 'tier_hint', label: 'Tier', sortable: false },
+        { key: 'wilson_lower', label: 'Wilson 下界', sortable: true },
+        { key: 'recommendation_level', label: '推荐级', sortable: false },
+      ];
+      var html = _resgHeader(cols) + '<tbody>';
+      rows.forEach(function (r) {
+        var roles = (r.roles || []).map(function (x) {
+          return '<span class="role-tag" style="background:' + C.roleColor(x) + '">' + x + '</span>';
+        }).join(' ');
+        var rowClass = r.sample_tier === 'low' ? 'tier-row-low' : '';
+        html += '<tr class="' + rowClass + '">' +
+          '<td class="num">' + r.rank + '</td>' +
+          '<td><b>' + r.name + '</b></td>' +
+          '<td class="dim">' + (r.title || '') + '</td>' +
+          '<td>' + roles + '</td>' +
+          '<td class="num">' + C.fmtInt(r.games) + '</td>' +
+          '<td class="num">' + C.pct(r.winRate) + '</td>' +
+          '<td>' + resgTierTag(r.tier_hint) + '</td>' +
+          '<td class="num">' + C.pct(r.wilson_lower) + '</td>' +
+          '<td>' + C.recZh(r.recommendation_level) + '</td>' +
+          '</tr>';
+      });
+      html += '</tbody>';
+      $('tbl-resg').innerHTML = html;
+    }
+
+    // --- augment 表格 ---
+    else if (entity === 'augment') {
+      var dataset2 = (b.datasets.resg_augments || { rows: [] });
+      var rows2 = dataset2.rows || [];
+      rows2 = C.filterByTier(rows2, state.tier);
+      rows2 = C.filterByRecommendation(rows2, state.rec);
+      if (state.resgSortKey !== 'rank') {
+        rows2 = _sortRows(rows2, state.resgSortKey, state.resgSortDir);
+      }
+      $('rg-count').textContent = rows2.length + ' 项';
+
+      if (!rows2.length) {
+        $('tbl-resg').innerHTML = '<thead><tr><th class="hint">当前筛选下无数据</th></tr></thead><tbody></tbody>';
+        return;
+      }
+
+      var cols2 = [
+        { key: 'rank', label: '#', sortable: true },
+        { key: 'name', label: '海克斯', sortable: false },
+        { key: 'games', label: '场次', sortable: true },
+        { key: 'winRate', label: '胜率', sortable: true },
+        { key: 'pickRate', label: '登场率', sortable: true },
+        { key: 'tier_hint', label: 'Tier', sortable: false },
+        { key: 'quality', label: 'Quality', sortable: true },
+        { key: 'wilson_lower', label: 'Wilson 下界', sortable: true },
+        { key: 'recommendation_level', label: '推荐级', sortable: false },
+      ];
+      var html2 = _resgHeader(cols2) + '<tbody>';
+      rows2.forEach(function (r) {
+        var rarity = r.rarity ? ('<span class="tag-mini">' + r.rarity + '</span>') : '';
+        var rowClass2 = r.sample_tier === 'low' ? 'tier-row-low' : '';
+        html2 += '<tr class="' + rowClass2 + '">' +
+          '<td class="num">' + r.rank + '</td>' +
+          '<td><b>' + r.name + '</b>' + rarity + '</td>' +
+          '<td class="num">' + C.fmtInt(r.games) + '</td>' +
+          '<td class="num">' + C.pct(r.winRate) + '</td>' +
+          '<td class="num">' + C.pct(r.pickRate) + '</td>' +
+          '<td>' + resgTierTag(r.tier_hint) + '</td>' +
+          '<td class="num">' + (r.quality != null ? r.quality : '—') + '</td>' +
+          '<td class="num">' + C.pct(r.wilson_lower) + '</td>' +
+          '<td>' + C.recZh(r.recommendation_level) + '</td>' +
+          '</tr>';
+      });
+      html2 += '</tbody>';
+      $('tbl-resg').innerHTML = html2;
+    }
+
+    // --- item 表格（unavailable：展示元数据 + 说明） ---
+    else {
+      $('rg-count').textContent = '元数据占位';
+      $('tbl-resg').innerHTML =
+        '<thead><tr><th>⚠️ 装备聚合数据缺口</th></tr></thead>' +
+        '<tbody><tr><td class="hint" style="padding:20px 16px">' +
+        'RESG / hexdata 均未提供装备维度的公开聚合胜率端点。' +
+        '8 种可能端点变体探查均返回 404。数据缺口待数据源出现后接入。' +
+        '<br/><br/>当前项目装备元数据（A12）已覆盖 870 件含模式归属标注的装备，' +
+        '但无聚合胜率。可从 <code>python/etl/fetch_resg.py</code> 抓取扩展，' +
+        '或未来接入 aramgg / blitz.gg 等站的装备排行页面。' +
+        '</td></tr></tbody>';
+    }
+
+    // 表头排序事件绑定（用事件委托，保证重绘后仍生效）
+    var tbl = $('tbl-resg');
+    tbl.onclick = function (e) {
+      var th = e.target.closest('th.sortable');
+      if (!th) { return; }
+      var key = th.getAttribute('data-sort');
+      if (state.resgSortKey === key) {
+        state.resgSortDir = (state.resgSortDir === 'asc') ? 'desc' : 'asc';
+      } else {
+        state.resgSortKey = key;
+        state.resgSortDir = (key === 'rank' || key === 'games' || key === 'winRate'
+          || key === 'wilson_lower' || key === 'pickRate') ? 'desc' : 'asc';
+      }
+      renderResg();
+    };
+  }
+
   function renderPersonal() {
     var b = state.bundle;
     var p = b.personal || { kind: 'unavailable' };
@@ -666,7 +888,7 @@
     renderChrome();
     renderSearch();
     var fn = { overview: renderOverview, ranking: renderRanking, synergy: renderSynergy,
-      strata: renderStrata, version: renderVersion, personal: renderPersonal }[state.tab];
+      strata: renderStrata, version: renderVersion, resg: renderResg, personal: renderPersonal }[state.tab];
     if (fn) { fn(); }
     // 概览/排名依赖同一批筛选：切换 tab 时已重绘当前面板
   }
@@ -676,7 +898,7 @@
     Array.prototype.forEach.call($('tabs').children, function (b) {
       b.classList.toggle('active', b.getAttribute('data-tab') === name);
     });
-    ['overview', 'ranking', 'synergy', 'strata', 'version', 'personal'].forEach(function (p) {
+    ['overview', 'ranking', 'synergy', 'strata', 'version', 'resg', 'personal'].forEach(function (p) {
       $('panel-' + p).classList.toggle('active', p === name);
     });
     // 面板从 display:none 变可见后容器才有尺寸：强制回流 → 立即绘制 → 再兜一次 resize

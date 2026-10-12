@@ -86,6 +86,7 @@
       <button data-tab="synergy">协同</button>
       <button data-tab="strata">玩家分层</button>
       <button data-tab="version">版本 / 趋势</button>
+      <button data-tab="resg">装备 / 海克斯分析</button>
       <button data-tab="personal">个人战绩</button>
     </div>
 
@@ -183,6 +184,21 @@
           <span class="tag" id="tr-tag">—</span>
         </div>
         <div class="card-bd"><div class="chart tall" id="chart-trend"></div></div>
+      </div>
+    </section>
+
+    <!-- RESG · 装备 / 海克斯分析（完整池 vs hexdata top12） -->
+    <section class="panel" id="panel-resg">
+      <div id="rg-banner"></div>
+      <div class="card">
+        <div class="card-hd">
+          <h2 id="rg-title">完整池排名</h2>
+          <span class="tag">RESG resg.top · 完整英雄/海克斯池</span>
+          <span class="tag" id="rg-count"></span>
+        </div>
+        <div class="card-bd">
+          <div class="scroll resg-scroll"><table class="grid resg-table" id="tbl-resg"></table></div>
+        </div>
       </div>
     </section>
 

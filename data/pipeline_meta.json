@@ -5,6 +5,8 @@
   "tables": [
     "agg_citation",
     "agg_hero_aliases",
+    "agg_resg_augments",
+    "agg_resg_champions",
     "agg_top_augments",
     "agg_top_augments_history",
     "agg_top_heroes",
@@ -37,7 +39,9 @@
     "agg_top_heroes_history": 12,
     "agg_top_augments_history": 12,
     "meta_champion_changes": 7,
-    "personal_matches": 0
+    "personal_matches": 0,
+    "agg_resg_champions": 173,
+    "agg_resg_augments": 211
   },
   "versions": {
     "meta_snapshots": [
@@ -54,6 +58,7 @@
   "source_tiers": {
     "authoritative": "Data Dragon / CommunityDragon（元数据）",
     "aggregate_hexdata": "Hexdata 自建样本（聚合统计，须带四字段溯源）",
+    "aggregate_resg": "RESG resg.top 公开端点（完整英雄/海克斯池聚合）",
     "secondary": "WeGame / LCU 本人对局（局内指标有偏，仅参考）"
   }
 }

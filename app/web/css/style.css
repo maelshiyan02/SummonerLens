@@ -187,6 +187,26 @@ table.grid tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
 .tag-mini.high { background: rgba(232, 178, 58, 0.18); color: var(--tier-high); }
 .tag-mini.medium { background: rgba(74, 158, 255, 0.18); color: var(--tier-medium); }
 .tag-mini.low { background: rgba(123, 132, 150, 0.2); color: #aeb6c4; }
+
+/* ---------------------------------------------------------------- RESG 完整池表格（独立样式，不影响旧表格） */
+.resg-scroll { max-height: calc(100vh - 360px); overflow-y: auto; }
+table.resg-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+table.resg-table th {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--panel-2); color: var(--text); font-weight: 600;
+  padding: 9px 12px; text-align: left; font-size: 12px;
+  border-bottom: 1px solid var(--border-strong); white-space: nowrap;
+}
+table.resg-table th.sortable { cursor: pointer; user-select: none; }
+table.resg-table th.sortable:hover { color: var(--accent); }
+table.resg-table th.sortable.active { color: var(--accent); }
+table.resg-table td {
+  padding: 7px 12px; font-size: 13px;
+  border-bottom: 1px solid var(--border); color: var(--text);
+}
+table.resg-table tr:hover td { background: rgba(74, 158, 255, 0.06); }
+table.resg-table tr.tier-row-low td { color: #6b7484; background: rgba(123, 132, 150, 0.08); }
+table.resg-table tr.tier-row-low b { color: #8a93a6; }
 .pos { color: var(--up); }
 .neg { color: var(--down); }
 

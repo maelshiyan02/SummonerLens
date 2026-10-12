@@ -219,7 +219,7 @@ check('kpis 别名数 > 0', k.aliasCount > 0);
 check('kpis 含 metaVersion', !!k.metaVersion);
 const idx = bundle.dataset_index || {};
 check('每个数据集都标了来源 kind', Object.keys(idx).every(function (kk) {
-  return ['real_aggregate', 'synthetic_fixture'].indexOf(idx[kk].kind) >= 0;
+  return ['real_aggregate', 'real_aggregate_resg', 'synthetic_fixture', 'unavailable'].indexOf(idx[kk].kind) >= 0;
 }));
 check('真实聚合数据集不得标 synthetic_fixture', idx.hero_ranking.kind === 'real_aggregate' &&
   idx.augment_ranking.kind === 'real_aggregate');

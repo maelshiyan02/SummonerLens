@@ -586,6 +586,120 @@ def load_economy_leaders(root: Path):
         return []
 
 
+# ----------------------------------------------------------------------------- RESG（完整聚合，完整池 vs hexdata top12）
+def load_resg_prov(root: Path) -> dict:
+    """RESG citation + prov（来源/可信度/时效标签，A07 分级）。"""
+    resg_root = root / "data" / "agg_resg"
+    latest = resg_root / "LATEST"
+    if not latest.exists():
+        return {"kind": "unavailable"}
+    ver = latest.read_text(encoding="utf-8").strip()
+    cit_fp = resg_root / ver / "citation.json"
+    citation = {}
+    if cit_fp.exists():
+        citation = json.loads(cit_fp.read_text(encoding="utf-8"))
+    return {
+        "kind": "real_aggregate_resg",
+        "source": "RESG (aggregate, resg.top)",
+        "confidence": "aggregate_resg",
+        "asof": ver,
+        "resg_version": ver,
+        "attribution": citation.get("attribution_text", ""),
+    }
+
+
+def load_resg_rankings(root: Path, hero_meta: dict, aug_meta: dict) -> dict:
+    """RESG 完整英雄/海克斯 → Wilson 排名。
+
+    与 load_real_rankings（hexdata top12）的区别：
+      - 英雄 173 位完整池，海克斯 211 位完整池
+      - 含 tier/wr/tm/wm/pr 完整字段
+      - 额外带 RESG 独有字段（quality/topChampions）
+    """
+    resg_root = root / "data" / "agg_resg"
+    latest = resg_root / "LATEST"
+    prov = load_resg_prov(root)
+    if not latest.exists():
+        return {"resg_champions": {"prov": prov, "rows": []},
+                "resg_augments": {"prov": prov, "rows": []}}
+
+    ver = latest.read_text(encoding="utf-8").strip()
+    rdir = resg_root / ver
+
+    out = {}
+    # champions
+    ch_fp = rdir / "champions.json"
+    if ch_fp.exists():
+        items = json.loads(ch_fp.read_text(encoding="utf-8"))
+        src = []
+        for r in items:
+            games = r.get("tm") or 0
+            wins = r.get("wm") or 0
+            wr = r.get("wr") or (wins / games if games else 0.0)
+            src.append({
+                "key": r["id"],
+                "name": r.get("name"),
+                "title": r.get("title", ""),
+                "alias": r.get("alias", ""),
+                "roles": r.get("roles", []),
+                "icon_path": r.get("ip", ""),
+                "games": games,
+                "wins": wins,
+                "winRate": wr,
+                "pickRate": 0.0,  # RESG champions 无登场率字段
+                "tier_hint": r.get("tier", ""),
+            })
+        ranked = wilson.rank_entities(src, RANK_METHOD)
+        # 角色名称本地化
+        role_zh_map = {"fighter": "战士", "tank": "坦克", "mage": "法师",
+                       "assassin": "刺客", "marksman": "射手", "support": "辅助"}
+        for r in ranked:
+            r["roles"] = [role_zh_map.get(x, x) for x in (r.get("roles") or [])]
+        out["resg_champions"] = {"prov": dict(prov), "rows": ranked}
+    else:
+        out["resg_champions"] = {"prov": dict(prov), "rows": []}
+
+    # augments
+    aug_fp = rdir / "augments.json"
+    if aug_fp.exists():
+        items = json.loads(aug_fp.read_text(encoding="utf-8"))
+        src = []
+        for r in items:
+            games = r.get("tm") or 0
+            wins = r.get("wm") or 0
+            wr = r.get("wr") or (wins / games if games else 0.0)
+            src.append({
+                "key": r["id"],
+                "name": r.get("name"),
+                "description": r.get("description", ""),
+                "games": games,
+                "wins": wins,
+                "winRate": wr,
+                "pickRate": r.get("pr", 0.0),
+                "tier_hint": r.get("tier", ""),
+                "quality": r.get("quality", 0),
+                "top_champions": r.get("topChampions", []),
+            })
+        ranked = wilson.rank_entities(src, RANK_METHOD)
+        # 名称回填（用 meta augments 的稀有度）
+        for r in ranked:
+            r["rarity"] = (aug_meta.get(r["key"]) or {}).get("rarity")
+        out["resg_augments"] = {"prov": dict(prov), "rows": ranked}
+    else:
+        out["resg_augments"] = {"prov": dict(prov), "rows": []}
+
+    # items：RESG 无公开聚合端点 → 元数据占位 + 说明
+    out["resg_items"] = {
+        "prov": {"kind": "unavailable", "source": None, "confidence": None,
+                 "reason": "RESG / hexdata 均未提供装备维度的公开聚合胜率端点。"
+                           "当前展示 A12 元数据装备列表（870 件）含模式归属标注，"
+                           "聚合胜率数据缺口待数据源出现后接入。"},
+        "rows": [],
+    }
+
+    return out
+
+
 # ----------------------------------------------------------------------------- fixture（M3 派生）
 FIXTURE_DIR = Path("data") / "derived" / "m3" / "synthetic"
 
@@ -707,6 +821,10 @@ def build_bundle(root: Path = None, ver: str = None, ensure: bool = True) -> dic
     datasets = {}
     datasets.update(real)
     datasets.update({k: v for k, v in fixture.items() if not k.startswith("__")})
+
+    # ---- RESG 完整聚合（完整英雄/海克斯池；装备维度 unavailable 占位）----
+    resg = load_resg_rankings(root, hero_meta, aug_meta)
+    datasets.update({k: v for k, v in resg.items() if not k.startswith("__")})
 
     # ---- M5 版本化维度（离线直接消费，不依赖运行时扫目录）----
     versions = load_versions(root)
