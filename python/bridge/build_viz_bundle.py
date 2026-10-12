@@ -608,7 +608,7 @@ def load_resg_prov(root: Path) -> dict:
     }
 
 
-def load_resg_rankings(root: Path, hero_meta: dict, aug_meta: dict) -> dict:
+def load_resg_rankings(root: Path, hero_meta: dict, aug_meta: dict, ver: str = None) -> dict:
     """RESG 完整英雄/海克斯 → Wilson 排名。
 
     与 load_real_rankings（hexdata top12）的区别：
@@ -623,8 +623,8 @@ def load_resg_rankings(root: Path, hero_meta: dict, aug_meta: dict) -> dict:
         return {"resg_champions": {"prov": prov, "rows": []},
                 "resg_augments": {"prov": prov, "rows": []}}
 
-    ver = latest.read_text(encoding="utf-8").strip()
-    rdir = resg_root / ver
+    resg_ver = latest.read_text(encoding="utf-8").strip()
+    rdir = resg_root / resg_ver
 
     out = {}
     # champions
@@ -688,14 +688,41 @@ def load_resg_rankings(root: Path, hero_meta: dict, aug_meta: dict) -> dict:
     else:
         out["resg_augments"] = {"prov": dict(prov), "rows": []}
 
-    # items：RESG 无公开聚合端点 → 元数据占位 + 说明
-    out["resg_items"] = {
-        "prov": {"kind": "unavailable", "source": None, "confidence": None,
-                 "reason": "RESG / hexdata 均未提供装备维度的公开聚合胜率端点。"
-                           "当前展示 A12 元数据装备列表（870 件）含模式归属标注，"
-                           "聚合胜率数据缺口待数据源出现后接入。"},
-        "rows": [],
-    }
+    # items：RESG/hexdata 均无公开聚合胜率 → 展示 A12 元数据装备列表（870 件含模式归属）
+    item_fp = root / "data" / "meta" / ver / "items_modes.csv"
+    if item_fp.exists():
+        item_rows = []
+        for r in read_csv(item_fp):
+            try:
+                item_rows.append({
+                    "id": int(r["id"]),
+                    "name": r.get("name"),
+                    "gold_total": _num(r.get("gold_total")),
+                    "gold_base": _num(r.get("gold_base")),
+                    "id_family": r.get("id_family", ""),
+                    "modes": [x for x in (r.get("modes") or "").split("|") if x],
+                    "maps": [x for x in (r.get("maps") or "").split("|") if x],
+                    "aram_mode": (r.get("aram_mode") or "").lower() in ("true", "1"),
+                    "tags": [x for x in (r.get("tags") or "").split("|") if x],
+                })
+            except (ValueError, KeyError):
+                continue
+        out["resg_items"] = {
+            "prov": {
+                "kind": "real_metadata",
+                "source": "Data Dragon / CommunityDragon (A12)",
+                "confidence": "authoritative",
+                "asof": ver,
+                "note": "装备聚合胜率数据源缺失（RESG/hexdata 均无公开端点），当前展示 A12 元数据装备列表（870 件）含模式归属标注；聚合胜率待数据源出现后接入。",
+            },
+            "rows": item_rows,
+        }
+    else:
+        out["resg_items"] = {
+            "prov": {"kind": "unavailable", "source": None, "confidence": None,
+                     "reason": "items_modes.csv 未找到"},
+            "rows": [],
+        }
 
     return out
 
@@ -823,7 +850,7 @@ def build_bundle(root: Path = None, ver: str = None, ensure: bool = True) -> dic
     datasets.update({k: v for k, v in fixture.items() if not k.startswith("__")})
 
     # ---- RESG 完整聚合（完整英雄/海克斯池；装备维度 unavailable 占位）----
-    resg = load_resg_rankings(root, hero_meta, aug_meta)
+    resg = load_resg_rankings(root, hero_meta, aug_meta, ver)
     datasets.update({k: v for k, v in resg.items() if not k.startswith("__")})
 
     # ---- M5 版本化维度（离线直接消费，不依赖运行时扫目录）----

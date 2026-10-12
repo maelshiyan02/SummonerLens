@@ -674,18 +674,71 @@
       $('tbl-resg').innerHTML = html2;
     }
 
-    // --- item 表格（unavailable：展示元数据 + 说明） ---
+    // --- item 表格（元数据：870 件装备 + 模式归属；无聚合胜率） ---
     else {
-      $('rg-count').textContent = '元数据占位';
-      $('tbl-resg').innerHTML =
-        '<thead><tr><th>⚠️ 装备聚合数据缺口</th></tr></thead>' +
-        '<tbody><tr><td class="hint" style="padding:20px 16px">' +
-        'RESG / hexdata 均未提供装备维度的公开聚合胜率端点。' +
-        '8 种可能端点变体探查均返回 404。数据缺口待数据源出现后接入。' +
-        '<br/><br/>当前项目装备元数据（A12）已覆盖 870 件含模式归属标注的装备，' +
-        '但无聚合胜率。可从 <code>python/etl/fetch_resg.py</code> 抓取扩展，' +
-        '或未来接入 aramgg / blitz.gg 等站的装备排行页面。' +
-        '</td></tr></tbody>';
+      var items = (datasets.resg_items && datasets.resg_items.rows) || [];
+      $('rg-count').textContent = items.length + ' 件';
+
+      // 模式标签颜色
+      var modeColor = {
+        'SR': '#4a9eff', 'ARAM': '#ffb04a', 'ClassicRift': '#4a9eff',
+        'Arena': '#a78bfa', 'Swiftplay': '#22d3ee', 'TFT': '#00d664'
+      };
+      function modeTag(m) {
+        var bg = modeColor[m] || '#666';
+        return '<span class="tag" style="background:' + bg + ';color:#fff;font-size:11px;padding:1px 5px;border-radius:8px;margin-right:2px">' + m + '</span>';
+      }
+
+      var header = '<thead><tr>' +
+        '<th data-key="name">装备</th>' +
+        '<th data-key="gold_base" data-num>基础价</th>' +
+        '<th data-key="gold_total" data-num>总价</th>' +
+        '<th data-key="id_family">分类</th>' +
+        '<th>模式归属</th>' +
+        '<th>ARAM 可用</th>' +
+        '</tr></thead>';
+
+      var sorted = items.slice();
+      if (state.resgSortKey) {
+        var sk = state.resgSortKey;
+        var sd = state.resgSortDir === 'asc' ? 1 : -1;
+        sorted.sort(function (a, b) {
+          var av = sk === 'gold_base' || sk === 'gold_total' || sk === 'id'
+            ? (a[sk] || 0) : (a[sk] || '');
+          var bv = sk === 'gold_base' || sk === 'gold_total' || sk === 'id'
+            ? (b[sk] || 0) : (b[sk] || '');
+          return (av > bv ? 1 : av < bv ? -1 : 0) * sd;
+        });
+      } else {
+        sorted.sort(function (a, b) { return (a.id || 0) - (b.id || 0); });
+      }
+
+      var body = sorted.map(function (r) {
+        var modes = (r.modes || []).map(modeTag).join('');
+        var aramOk = r.aram_mode
+          ? '<span style="color:#00d664">✓</span>'
+          : '<span style="color:#555">—</span>';
+        return '<tr>' +
+          '<td><b>' + (r.name || '—') + '</b>' +
+          ' <span style="color:#555;font-size:11px">#' + r.id + '</span></td>' +
+          '<td class="num">' + (r.gold_base || 0) + '</td>' +
+          '<td class="num">' + (r.gold_total || 0) + '</td>' +
+          '<td>' + (r.id_family || '') + '</td>' +
+          '<td>' + modes + '</td>' +
+          '<td>' + aramOk + '</td>' +
+          '</tr>';
+      }).join('');
+
+      // 顶部说明条
+      $('rg-banner').innerHTML =
+        '<div style="background:rgba(74,158,255,0.08);border-left:3px solid #4a9eff;' +
+        'padding:8px 12px;font-size:12px;color:#aeb6c2">' +
+        'ℹ️ 装备聚合胜率数据源缺失（RESG/hexdata 均无公开端点）。' +
+        '当前展示 A12 装备元数据（' + items.length + ' 件）含模式归属标注；' +
+        '聚合胜率待数据源出现后接入。' +
+        '</div>';
+
+      $('tbl-resg').innerHTML = header + '<tbody>' + body + '</tbody>';
     }
 
     // 表头排序事件绑定（用事件委托，保证重绘后仍生效）

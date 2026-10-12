@@ -181,7 +181,9 @@ def sec_b(env: Env):
     check("数据集索引非空", len(idx) > 0)
     check("所有数据集 kind 取值合法",
           all(v.get("kind") in ("real_aggregate", "real_aggregate_resg",
-                                 "synthetic_fixture", "unavailable") for v in idx.values()),
+                                 "real_metadata", "real_versioned",
+                                 "synthetic_fixture", "unavailable")
+              for v in idx.values()),
           str({k: v.get("kind") for k, v in idx.items()}))
     check("真实数据集标注为 real_aggregate",
           idx.get("hero_ranking", {}).get("kind") == "real_aggregate"
