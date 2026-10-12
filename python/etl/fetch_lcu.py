@@ -40,6 +40,27 @@ LOCKFILE_CANDIDATES = [
     "D:/WeGameApps/League of Legends/lockfile",
 ]
 
+# 国服经 WeGame 启动：客户端装在 WeGame 目录下，lockfile 由 LeagueClient 子进程写出。
+# 常见变体（含中文目录名、自定义盘符）——固定候选没命中时按这些前缀扫描。
+WEGAME_INSTALL_PREFIXES = [
+    "Riot Games/League of Legends",
+    "WeGameApps/League of Legends",
+    "WeGame/League of Legends",
+    "Games/League of Legends",
+    "Program Files/Riot Games/League of Legends",
+    "Program Files (x86)/Riot Games/League of Legends",
+    "Program Files/WeGameApps/League of Legends",
+    "Program Files (x86)/WeGameApps/League of Legends",
+    "Program Files/英雄联盟",
+    "Program Files (x86)/英雄联盟",
+    "游戏/League of Legends",
+    "英雄联盟",
+]
+SCAN_DRIVES = ("C:", "D:", "E:", "F:")
+# 扫描时跳过的顶层目录（系统/用户资料，既慢也不太可能装游戏）
+SCAN_SKIP_TOP = {"windows", "users", "programdata", "$recycle.bin",
+                 "system volume information", "perflogs", "recovery", "boot", "intel"}
+
 # 海克斯大乱斗 = ARAM，queueId 450
 DEFAULT_QUEUE = 450
 
@@ -58,6 +79,55 @@ def find_lockfile(explicit: str | None = None) -> Path | None:
         if Path(c).exists():
             return Path(c)
     return None
+
+
+def _looks_like_league_lockfile(path: str) -> bool:
+    """lockfile 内容首段固定为进程名 'LeagueClient'（国服/外服一致）。"""
+    try:
+        head = open(path, encoding="utf-8", errors="ignore").read(80)
+    except OSError:
+        return False
+    return "LeagueClient" in head or "riot" in head.lower()
+
+
+def discover_lockfiles(roots=None, max_depth: int = 5, limit: int = 8) -> list:
+    """深度受限扫描磁盘，寻找 LeagueClient 的 lockfile。
+
+    为什么需要：国服 LOL 经 WeGame 发行，安装目录随用户/盘符/版本变化（自定义盘、
+    WeGameApps、中文目录名等），固定候选经常打偏。客户端运行时 lockfile 必在盘上，
+    扫到即可连，不依赖用户手填路径。
+    roots 默认为各盘根；测试可传入临时目录。
+    """
+    if roots is None:
+        roots = [d + "/" for d in SCAN_DRIVES]
+    game_dirs = {"league of legends", "leagueclient", "riot games", "wegame",
+                 "wegameapps", "英雄联盟", "league of legends (tm)"}
+    hits: list = []
+    for drive_root in roots:
+        try:
+            tops = [os.path.join(drive_root, d) for d in os.listdir(drive_root)]
+        except OSError:
+            continue
+        for top in tops:
+            if not os.path.isdir(top):
+                continue
+            if os.path.basename(top).lower() in SCAN_SKIP_TOP:
+                continue
+            for root, dirs, files in os.walk(top):
+                depth = root[len(top):].count(os.sep)
+                # 前两层放开（安装根层级不定），更深只沿游戏相关目录收敛，保证快
+                dirs[:] = [d for d in dirs if depth < 2 or d.lower() in game_dirs]
+                if depth >= max_depth:
+                    dirs[:] = []
+                    continue
+                low = {f.lower() for f in files}
+                if "lockfile" in low:
+                    p = os.path.join(root, "lockfile")
+                    if _looks_like_league_lockfile(p):
+                        hits.append(p)
+                        if len(hits) >= limit:
+                            return hits
+    return hits
 
 
 def read_lockfile(path: Path):
@@ -291,6 +361,25 @@ def self_check() -> int:
         print(f"[lcu] ❌ stats 缺失时崩溃：{type(e).__name__}: {e}")
         ok = False
 
+    # 3) lockfile 自动发现：命中 LeagueClient 内容 + 无关 lockfile 不误判
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        lc = os.path.join(td, "WeGameApps", "League of Legends", "LeagueClient")
+        os.makedirs(lc, exist_ok=True)
+        with open(os.path.join(lc, "lockfile"), "w", encoding="utf-8") as f:
+            f.write("LeagueClient:12345:55999:abc-secret:https\n")
+        # 无关 lockfile（内容不是 LeagueClient）——必须被排除
+        other = os.path.join(td, "SomeApp")
+        os.makedirs(other, exist_ok=True)
+        with open(os.path.join(other, "lockfile"), "w", encoding="utf-8") as f:
+            f.write("OtherApp:1:2:3:4\n")
+        found = discover_lockfiles(roots=[td])
+        if len(found) != 1 or not found[0].endswith("LeagueClient" + os.sep + "lockfile"):
+            print(f"[lcu] ❌ lockfile 自动发现异常（应恰好命中 1 个 LeagueClient）：{found}")
+            ok = False
+        else:
+            print("[lcu] ✅ lockfile 自动发现正常（命中 LeagueClient、排除无关 lockfile）")
+
     if ok:
         print("[lcu] ✅ 自检通过")
         return 0
@@ -305,19 +394,25 @@ def main() -> None:
     if "--self-check" in args:
         sys.exit(self_check())
 
-    # 定位 lockfile
+    # 定位 lockfile：显式/env/固定候选 → 全盘深度扫描（国服 WeGame 版路径不定）
     lf = None
     if "--lockfile" in args:
         i = args.index("--lockfile")
         if i + 1 < len(args):
             lf = args[i + 1]
     lf = find_lockfile(lf)
-    if lf is None or not lf.exists():
+    if lf is None and "--no-scan" not in args:
+        print("[lcu] 固定候选未命中，正在扫描磁盘寻找 LeagueClient lockfile（约数秒）...")
+        hits = discover_lockfiles()
+        if hits:
+            for h in hits:
+                print(f"[lcu]   发现：{h}")
+            lf = Path(hits[0])
+    if lf is None or not Path(lf).exists():
         print("[lcu] ⚠️ 未找到英雄联盟客户端 lockfile（客户端未运行？）。")
-        print("         请确认客户端已启动；或指定：--lockfile <路径>")
-        print("         候选路径：")
-        for c in LOCKFILE_CANDIDATES:
-            print(f"           - {c}")
+        print("         说明：国服 LOL 经 WeGame 启动，客户端运行（含大厅）时 lockfile 必在盘上；")
+        print("         请通过 WeGame 正常启动英雄联盟客户端后重试。")
+        print("         或手动指定：--lockfile <路径>（加 --no-scan 可跳过磁盘扫描）")
         sys.exit(3)
 
     port, password = read_lockfile(lf)

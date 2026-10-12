@@ -41,6 +41,18 @@ python python/etl/fetch_lcu.py
 > 与 WeGame 采集结果**共用同一文件、同一 `personal_matches` 表**，按 `source` 列区分。
 > 客户端未运行时脚本会提示找不到 lockfile 并安全退出，不访问网络。
 
+### 国服 / WeGame 现实说明
+
+- 国服 LOL **经 WeGame 启动**，这不影响 LCU 采集：客户端进程由 WeGame 拉起的**仍是同一个
+  LeagueClient**，运行时一样在盘上写 `lockfile`（`LeagueClient:<pid>:<port>:<password>:<protocol>`）。
+  所以**通过 WeGame 正常启动客户端（进大厅即可，不必开局）**后就能采集，无需「绕过 WeGame」。
+- 安装目录随用户/盘符/版本漂移（自定义盘、`WeGameApps`、中文目录名等），脚本因此：
+  1. 先查固定候选；2. 未命中则**深度受限扫描 C:/D:/E:/F:**（跳过 `Windows`/`Users` 等系统顶层），
+     按内容识别（首段必须是 `LeagueClient`）——不误判其他软件的 lockfile。
+- 可用 `--lockfile <路径>` 手动指定、`--no-scan` 跳过扫描。
+- 若沙盒/远端环境与客户端不在同一 loopback 命名空间，采集可能连不上 `127.0.0.1:<port>`；
+  此时在**本机**跑同一条命令即可，产出同样落 `data/personal/matches.jsonl`（gitignore）。
+
 ## 数据模型（详细对局 schema v2 · LCU / WeGame 共用）
 
 `matches.jsonl` 每条一行，是**完整对局**而非仅本人一行。统一结构如下（LCU 由
