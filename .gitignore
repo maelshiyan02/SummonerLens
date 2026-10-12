@@ -26,6 +26,8 @@ data/meta/*/raw/
 data/meta/*/champions_full.json
 # hexdata 聚合原始 JSON（大，可由 fetch_hexdata.py 重抓）
 data/agg/*/raw/
+# RESG 聚合原始 ES module（大，可由 fetch_resg.py 重抓）
+data/agg_resg/*/raw/
 # 本地落库（派生物，可由 build_duckdb.py 重建）
 *.duckdb
 *.db
