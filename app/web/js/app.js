@@ -451,6 +451,190 @@
     }
   }
 
+  // ---------------------------------------------------------------- 个人战绩
+  function buildPersonalChampionOption(bc) {
+    var picked = bc.slice().sort(function (a, b) { return b.games - a.games; })
+      .slice(0, 12).reverse();
+    var names = picked.map(function (r) { return r.champion_name || ('#' + r.champion_id); });
+    var data = picked.map(function (r) {
+      var wr = r.win_rate || 0;
+      return { value: r.games, itemStyle: { color: wr >= 0.5 ? '#ff5b5b' : '#3fc76a' } };
+    });
+    return {
+      backgroundColor: 'transparent',
+      grid: { left: 120, right: 40, top: 10, bottom: 24 },
+      tooltip: {
+        trigger: 'axis', axisPointer: { type: 'shadow' },
+        formatter: function (ps) {
+          var r = picked[ps[0].dataIndex];
+          return '<b>' + (r.champion_name || r.champion_id) + '</b><br/>对局 ' + r.games +
+            '<br/>胜率 ' + C.pct(r.win_rate);
+        }
+      },
+      xAxis: { type: 'value', axisLabel: { color: '#8a93a6' },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } } },
+      yAxis: { type: 'category', data: names, axisLabel: { color: '#c8d0de', fontSize: 12 },
+        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.12)' } }, axisTick: { show: false } },
+      series: [{
+        type: 'bar', data: data, barWidth: 15,
+        label: { show: true, position: 'right', color: '#c8d0de',
+          formatter: function (p) { return picked[p.dataIndex].games; } }
+      }]
+    };
+  }
+
+  function renderPersonal() {
+    var b = state.bundle;
+    var p = b.personal || { kind: 'unavailable' };
+    var el = $('ps-banner');
+    if (p.kind === 'unavailable') {
+      el.innerHTML = '<div class="banner">⚠️ <div><b>暂无本人对局数据</b>—— 运行 ' +
+        '<code>python python/etl/fetch_lcu.py</code>（英雄联盟客户端开着时）或 ' +
+        '<code>fetch_wegame.py</code> 采集后，本页自动填充。</div></div>';
+      $('ps-kpis').innerHTML = '';
+      $('ps-dmg-breakdown').innerHTML = '';
+      drawEmpty('chart-personal-champ', '暂无本人对局');
+      var emptyChamp = '<thead><tr><th>英雄</th><th>对局</th><th>胜率</th><th>KDA</th>' +
+        '<th>平均伤害</th><th>平均金</th><th>平均视野</th><th>平均CS</th></tr></thead>' +
+        '<tbody><tr><td colspan="8" class="hint">无数据</td></tr></tbody>';
+      $('tbl-personal-champ').innerHTML = emptyChamp;
+      var emptyRec = '<thead><tr><th>时间</th><th>英雄</th><th>结果</th><th>K/D/A</th>' +
+        '<th>金</th><th>视野</th><th>CS</th><th>来源</th><th>详情</th></tr></thead>' +
+        '<tbody><tr><td colspan="9" class="hint">无数据</td></tr></tbody>';
+      $('tbl-personal-recent').innerHTML = emptyRec;
+      $('ps-recent-tag').textContent = '—';
+      return;
+    }
+    el.innerHTML = '<div class="banner real">✅ <div><b>本人对局数据</b>（LCU/WeGame 自采）—— ' +
+      '仅次级佐证，隐藏战绩取不到，不得与群体聚合混同为因果。</div></div>';
+
+    var s = p.summary || {};
+    var cards = [
+      ['总对局', C.fmtInt(s.games)],
+      ['胜率', C.pct(s.win_rate)],
+      ['平均 KDA', s.kda != null ? s.kda.toFixed(2) : '—'],
+      ['平均击杀', s.avg_kills != null ? s.avg_kills.toFixed(1) : '—'],
+      ['平均死亡', s.avg_deaths != null ? s.avg_deaths.toFixed(1) : '—'],
+      ['平均助攻', s.avg_assists != null ? s.avg_assists.toFixed(1) : '—'],
+      ['平均伤害', s.avg_damage != null ? C.fmtInt(Math.round(s.avg_damage)) : '—'],
+      ['平均承伤', s.avg_damage_taken != null ? C.fmtInt(Math.round(s.avg_damage_taken)) : '—'],
+      ['平均金', s.avg_gold != null ? C.fmtInt(Math.round(s.avg_gold)) : '—'],
+      ['平均视野', s.avg_vision != null ? s.avg_vision.toFixed(1) : '—'],
+      ['平均CS', s.avg_cs != null ? s.avg_cs.toFixed(1) : '—'],
+    ];
+    $('ps-kpis').innerHTML = cards.map(function (c) {
+      return '<div class="kpi"><div class="k">' + c[0] + '</div><div class="v">' + c[1] + '</div></div>';
+    }).join('');
+
+    // 伤害构成（魔/物/真）
+    var db = p.damage_breakdown || { magic: 0, physical: 0, true: 0 };
+    var tot = (db.magic + db.physical + db.true) || 1;
+    var pct = function (x) { return (x * 100).toFixed(1) + '%'; };
+    $('ps-dmg-breakdown').innerHTML =
+      '<div class="bar3">' +
+        '<span class="seg m" style="width:' + (db.magic * 100 / tot) + '%" title="魔法 ' + pct(db.magic) + '"></span>' +
+        '<span class="seg p" style="width:' + (db.physical * 100 / tot) + '%" title="物理 ' + pct(db.physical) + '"></span>' +
+        '<span class="seg t" style="width:' + (db.true * 100 / tot) + '%" title="真实 ' + pct(db.true) + '"></span>' +
+      '</div>' +
+      '<div class="legend">' +
+        '<i class="m"></i>魔法 ' + pct(db.magic) +
+        ' <i class="p"></i>物理 ' + pct(db.physical) +
+        ' <i class="t"></i>真实 ' + pct(db.true) + '</div>';
+
+    var bc = p.by_champion || [];
+    if (!bc.length) {
+      drawEmpty('chart-personal-champ', '无英雄维度数据');
+    } else {
+      draw('chart-personal-champ', buildPersonalChampionOption(bc));
+    }
+    var champHead = '<thead><tr><th>英雄</th><th>对局</th><th>胜率</th><th>KDA</th>' +
+      '<th>平均伤害</th><th>平均金</th><th>平均视野</th><th>平均CS</th></tr></thead>';
+    var champBody = bc.length ? bc.map(function (r) {
+      return '<tr><td><b>' + (r.champion_name || ('#' + r.champion_id)) + '</b></td>' +
+        '<td class="num">' + C.fmtInt(r.games) + '</td>' +
+        '<td class="num ' + (r.win_rate >= 0.5 ? 'pos' : 'neg') + '">' + C.pct(r.win_rate) + '</td>' +
+        '<td class="num">' + (r.kda != null ? r.kda.toFixed(2) : '—') + '</td>' +
+        '<td class="num">' + (r.avg_damage != null ? C.fmtInt(Math.round(r.avg_damage)) : '—') + '</td>' +
+        '<td class="num">' + (r.avg_gold != null ? C.fmtInt(Math.round(r.avg_gold)) : '—') + '</td>' +
+        '<td class="num">' + (r.avg_vision != null ? r.avg_vision.toFixed(1) : '—') + '</td>' +
+        '<td class="num">' + (r.avg_cs != null ? r.avg_cs.toFixed(1) : '—') + '</td></tr>';
+    }).join('') : '<tr><td colspan="8" class="hint">无</td></tr>';
+    $('tbl-personal-champ').innerHTML = champHead + '<tbody>' + champBody + '</tbody>';
+
+    var rec = p.recent || [];
+    $('ps-recent-tag').textContent = rec.length + ' 局';
+    var recHead = '<thead><tr><th>时间</th><th>英雄</th><th>结果</th><th>K/D/A</th>' +
+      '<th>金</th><th>视野</th><th>CS</th><th>来源</th><th>详情</th></tr></thead>';
+    var recBody = rec.length ? rec.map(function (r, idx) {
+      var d = r.game_creation ? new Date(r.game_creation * 1000) : null;
+      var ds = d ? (d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' +
+        ('0' + d.getDate()).slice(-2)) : '—';
+      var sf = r.self || {};
+      var kda = [sf.kills, sf.deaths, sf.assists].map(function (x) { return x == null ? '—' : x; }).join('/');
+      return '<tr class="clickable" onclick="__psToggle(' + idx + ')">' +
+        '<td>' + ds + '</td>' +
+        '<td><b>' + (sf.champion_name || ('#' + (sf.champion_id || '?'))) + '</b></td>' +
+        '<td class="num ' + (r.win ? 'pos' : 'neg') + '">' + (r.win ? '胜' : '负') + '</td>' +
+        '<td class="num">' + kda + '</td>' +
+        '<td class="num">' + (sf.gold != null ? C.fmtInt(sf.gold) : '—') + '</td>' +
+        '<td class="num">' + (sf.vision != null ? sf.vision.toFixed(0) : '—') + '</td>' +
+        '<td class="num">' + (sf.cs != null ? sf.cs.toFixed(0) : '—') + '</td>' +
+        '<td>' + (r.source || '—') + '</td>' +
+        '<td class="num"><span class="lnk">展开 ▾</span></td></tr>' +
+        '<tr id="ps-detail-' + idx + '" style="display:none"><td colspan="9">' +
+        renderPsDetail(r) + '</td></tr>';
+    }).join('') : '<tr><td colspan="9" class="hint">无</td></tr>';
+    $('tbl-personal-recent').innerHTML = recHead + '<tbody>' + recBody + '</tbody>';
+  }
+
+  function renderPsDetail(r) {
+    var sf = r.self || {};
+    var mk = function (label, val) {
+      return '<div class="kv"><span>' + label + '</span><b>' + val + '</b></div>';
+    };
+    var html = '<div class="ps-detail">';
+    html += '<div class="ps-self">';
+    html += '<h4>本人 · ' + (sf.champion_name || '') + ' · ' + (r.win ? '胜利' : '失败') + '</h4>';
+    html += mk('K/D/A', [sf.kills, sf.deaths, sf.assists].join('/') +
+      (sf.kda != null ? '（KDA ' + sf.kda + '）' : ''));
+    html += mk('对英雄伤害', sf.dmg_champ != null ? C.fmtInt(sf.dmg_champ) : '—');
+    html += mk('伤害构成', '魔 ' + (sf.magic != null ? C.fmtInt(sf.magic) : '—') + ' / 物 ' +
+      (sf.phys != null ? C.fmtInt(sf.phys) : '—') + ' / 真 ' + (sf.true != null ? C.fmtInt(sf.true) : '—'));
+    html += mk('承伤/减伤', (sf.dmg_taken != null ? C.fmtInt(sf.dmg_taken) : '—') + ' / ' +
+      (sf.dmg_mitigated != null ? C.fmtInt(sf.dmg_mitigated) : '—'));
+    html += mk('金/视野/CS', C.fmtInt(sf.gold != null ? sf.gold : 0) + ' / ' +
+      (sf.vision != null ? sf.vision.toFixed(0) : '—') + ' / ' + (sf.cs != null ? sf.cs.toFixed(0) : '—'));
+    html += mk('治疗', sf.heal != null ? C.fmtInt(sf.heal) : '—');
+    html += mk('装备', (sf.items && sf.items.length) ? sf.items.join(', ') : '—');
+    html += mk('海克斯', (sf.augments && sf.augments.length) ? sf.augments.join(', ') : '—');
+    html += mk('符文', (sf.primary_style != null ? '主' + sf.primary_style : '') +
+      (sf.secondary_style != null ? ' / 副' + sf.secondary_style : '') +
+      ((sf.perks && sf.perks.length) ? ' / ' + sf.perks.join(',') : ''));
+    html += mk('多杀', '双' + (sf.multikills ? sf.multikills.double : 0) + ' 三' +
+      (sf.multikills ? sf.multikills.triple : 0) + ' 四' + (sf.multikills ? sf.multikills.quadra : 0) +
+      ' 五' + (sf.multikills ? sf.multikills.penta : 0) + (sf.first_blood ? ' 一血' : ''));
+    html += '</div>';
+    html += '<div class="ps-teams">';
+    (r.participants || []).forEach(function (pp) {
+      html += '<div class="ps-p ' + (pp.win ? 'win' : 'lose') + '">' +
+        '<span class="t' + (pp.team_id == 100 ? ' b' : ' r') + '">' +
+        (pp.team_id == 100 ? '蓝' : '红') + '</span> ' +
+        '<b>' + (pp.champion_name || '?') + '</b> ' +
+        '<span class="nm">' + (pp.summoner_name || '') + '</span> ' +
+        '<span class="num">' + [pp.kills, pp.deaths, pp.assists].join('/') + '</span> ' +
+        '<span class="dim">伤害 ' + (pp.dmg_champ != null ? C.fmtInt(pp.dmg_champ) : '—') +
+        ' · 金 ' + (pp.gold != null ? C.fmtInt(pp.gold) : '—') + '</span></div>';
+    });
+    html += '</div>';
+    html += '</div>';
+    return html;
+  }
+
+  window.__psToggle = function (idx) {
+    var row = document.getElementById('ps-detail-' + idx);
+    if (row) { row.style.display = (row.style.display === 'none') ? '' : 'none'; }
+  };
+
   // ---------------------------------------------------------------- 搜索
   function renderSearch() {
     var el = $('search-result');
@@ -482,7 +666,7 @@
     renderChrome();
     renderSearch();
     var fn = { overview: renderOverview, ranking: renderRanking, synergy: renderSynergy,
-      strata: renderStrata, version: renderVersion }[state.tab];
+      strata: renderStrata, version: renderVersion, personal: renderPersonal }[state.tab];
     if (fn) { fn(); }
     // 概览/排名依赖同一批筛选：切换 tab 时已重绘当前面板
   }
@@ -492,7 +676,7 @@
     Array.prototype.forEach.call($('tabs').children, function (b) {
       b.classList.toggle('active', b.getAttribute('data-tab') === name);
     });
-    ['overview', 'ranking', 'synergy', 'strata', 'version'].forEach(function (p) {
+    ['overview', 'ranking', 'synergy', 'strata', 'version', 'personal'].forEach(function (p) {
       $('panel-' + p).classList.toggle('active', p === name);
     });
     // 面板从 display:none 变可见后容器才有尺寸：强制回流 → 立即绘制 → 再兜一次 resize

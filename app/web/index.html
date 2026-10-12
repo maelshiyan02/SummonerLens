@@ -86,6 +86,7 @@
       <button data-tab="synergy">协同</button>
       <button data-tab="strata">玩家分层</button>
       <button data-tab="version">版本 / 趋势</button>
+      <button data-tab="personal">个人战绩</button>
     </div>
 
     <!-- 概览 -->
@@ -182,6 +183,30 @@
           <span class="tag" id="tr-tag">—</span>
         </div>
         <div class="card-bd"><div class="chart tall" id="chart-trend"></div></div>
+      </div>
+    </section>
+
+    <!-- 个人战绩 -->
+    <section class="panel" id="panel-personal">
+      <div id="ps-banner"></div>
+      <div class="kpis" id="ps-kpis"></div>
+      <div class="cards two">
+        <div class="card">
+          <div class="card-hd"><h2>常用英雄（按对局数）</h2><span class="tag">红=胜率≥50%</span></div>
+          <div class="card-bd"><div class="chart short" id="chart-personal-champ"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h2>伤害构成（魔/物/真）</h2><span class="tag">对英雄</span></div>
+          <div class="card-bd" id="ps-dmg-breakdown"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-hd"><h2>英雄维度汇总</h2><span class="tag">本人自采</span></div>
+        <div class="card-bd"><div class="scroll"><table class="grid" id="tbl-personal-champ"></table></div></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-hd"><h2>最近对局</h2><span class="tag" id="ps-recent-tag">—</span></div>
+        <div class="card-bd"><div class="scroll"><table class="grid" id="tbl-personal-recent"></table></div></div>
       </div>
     </section>
   </main>

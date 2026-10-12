@@ -302,6 +302,220 @@ def load_risk_notes(root: Path) -> list:
     return rn if isinstance(rn, list) else []
 
 
+# ----------------------------------------------------------------------------- 本人对局（personal，次级佐证 · 详细对局模型）
+def build_personal(root: Path) -> dict:
+    """读 data/personal/matches.jsonl（fetch_lcu.py / fetch_wegame.py 产出的「详细对局」schema），
+    聚成本人 ARAM 战绩摘要（伤害构成 / 金 / 视野 / 补刀 / 装备 / 符文 / 海克斯 / 双方队伍上下文）。
+
+    兼容两种 schema：新（含 participants/teams 数组）与旧（扁平 self 字段），
+    本人行由 self_puuid 在 participants 中定位。无数据 → kind='unavailable'。
+
+    合规：来源/可信度来自采集行（source=wegame/lcu，confidence=secondary/primary），
+    本人自采、隐藏战绩取不到，仅次级佐证（A02/A07）。
+    """
+    from collections import defaultdict, Counter
+    fp = root / "data" / "personal" / "matches.jsonl"
+    if not fp.exists() or fp.stat().st_size < 5:
+        return {"kind": "unavailable",
+                "reason": "暂无本人对局数据。运行 python/etl/fetch_lcu.py（英雄联盟客户端开着时）"
+                          "或 fetch_wegame.py 采集后，本页自动填充。",
+                "prov": {"kind": "unavailable", "source": None, "confidence": None,
+                          "asof": None, "note": "本人自采，仅次级佐证"}}
+
+    rows = []
+    for line in fp.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rows.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    if not rows:
+        return {"kind": "unavailable", "reason": "matches.jsonl 为空",
+                "prov": {"kind": "unavailable", "source": None, "confidence": None,
+                         "asof": None, "note": "本人自采，仅次级佐证"}}
+
+    def _extract_self(row):
+        """从一行取出本人 participant（新 schema）或兼容旧扁平 schema。"""
+        parts = row.get("participants")
+        if parts:
+            sp = row.get("self_puuid")
+            for p in parts:
+                if sp and str(p.get("puuid")) == str(sp):
+                    return p, parts, row.get("teams") or []
+        # 旧扁平 schema 兼容
+        pseudo = {
+            "champion_id": row.get("champion_id"), "champion_name": row.get("champion_name"),
+            "team_id": None, "win": row.get("win"), "kills": row.get("kills"),
+            "deaths": row.get("deaths"), "assists": row.get("assists"),
+            "damage_to_champions": row.get("damage_dealt"), "damage_taken": row.get("damage_taken"),
+            "gold_earned": row.get("gold_earned"), "vision_score": row.get("vision_score"),
+            "total_minions_killed": row.get("cs"), "neutral_minions_killed": 0,
+            "items": row.get("items") or [], "augments": row.get("augments") or [],
+        }
+        return pseudo, None, None
+
+    def _n(v):
+        return v if isinstance(v, (int, float)) else None
+
+    def _avg(vals):
+        vs = [v for v in vals if isinstance(v, (int, float))]
+        return sum(vs) / len(vs) if vs else None
+
+    def _sum(vals):
+        return sum(v for v in vals if isinstance(v, (int, float)))
+
+    def _top_ids(ids, top=3):
+        return [i for i, _ in Counter(x for x in ids if x).most_common(top)]
+
+    matches = []
+    for r in rows:
+        me, parts, teams = _extract_self(r)
+        cs = (_n(me.get("total_minions_killed")) or 0) + (_n(me.get("neutral_minions_killed")) or 0)
+        dmg = _n(me.get("damage_to_champions")) or 0
+        m = _n(me.get("magic_dmg_champ")) or 0
+        p = _n(me.get("physical_dmg_champ")) or 0
+        t = _n(me.get("true_dmg_champ")) or 0
+        matches.append({
+            "row": r, "me": me, "parts": parts, "teams": teams,
+            "win": bool(me.get("win")),
+            "kills": _n(me.get("kills")) or 0, "deaths": _n(me.get("deaths")) or 0,
+            "assists": _n(me.get("assists")) or 0,
+            "gold": _n(me.get("gold_earned")) or 0,
+            "dmg": dmg, "magic": m, "phys": p, "true": t,
+            "dmg_taken": _n(me.get("damage_taken")) or 0,
+            "dmg_mit": _n(me.get("damage_self_mitigated")) or 0,
+            "heal": _n(me.get("total_heal")) or 0,
+            "vision": _n(me.get("vision_score")) or 0,
+            "cs": cs,
+            "level": _n(me.get("champ_level")) or 0,
+            "duration": _n(r.get("game_duration")) or 0,
+            "augments": me.get("augments") or [], "items": me.get("items") or [],
+            "double": _n(me.get("double_kills")) or 0, "triple": _n(me.get("triple_kills")) or 0,
+            "quadra": _n(me.get("quadra_kills")) or 0, "penta": _n(me.get("penta_kills")) or 0,
+            "first_blood": bool(me.get("first_blood_kill")),
+        })
+
+    n = len(matches)
+    wins = sum(1 for x in matches if x["win"])
+    losses = n - wins
+    win_rate = wins / n if n else 0.0
+    tot_k = sum(x["kills"] for x in matches)
+    tot_d = sum(x["deaths"] for x in matches)
+    tot_a = sum(x["assists"] for x in matches)
+    kda = (tot_k + tot_a) / tot_d if tot_d else None
+    sum_magic = _sum(x["magic"] for x in matches)
+    sum_phys = _sum(x["phys"] for x in matches)
+    sum_true = _sum(x["true"] for x in matches)
+    tot_dmg = sum_magic + sum_phys + sum_true
+    dmg_break = {
+        "magic": round(sum_magic / tot_dmg, 4) if tot_dmg else 0.0,
+        "physical": round(sum_phys / tot_dmg, 4) if tot_dmg else 0.0,
+        "true": round(sum_true / tot_dmg, 4) if tot_dmg else 0.0,
+    }
+
+    cg = defaultdict(list)
+    for x in matches:
+        cg[x["me"].get("champion_id")].append(x)
+    by_champion = []
+    for cid, xs in cg.items():
+        cw = sum(1 for y in xs if y["win"])
+        ck = sum(y["kills"] for y in xs)
+        cd = sum(y["deaths"] for y in xs)
+        ca = sum(y["assists"] for y in xs)
+        by_champion.append({
+            "champion_id": cid,
+            "champion_name": xs[0]["me"].get("champion_name"),
+            "games": len(xs), "wins": cw,
+            "win_rate": cw / len(xs),
+            "kda": (ck + ca) / cd if cd else None,
+            "avg_damage": _avg([y["dmg"] for y in xs]),
+            "avg_gold": _avg([y["gold"] for y in xs]),
+            "avg_vision": _avg([y["vision"] for y in xs]),
+            "avg_cs": _avg([y["cs"] for y in xs]),
+            "top_augments": _top_ids([a for y in xs for a in y["augments"]]),
+        })
+    by_champion.sort(key=lambda z: -z["games"])
+
+    recent_raw = sorted(matches, key=lambda x: x["row"].get("game_creation") or 0, reverse=True)[:15]
+    recent = []
+    for x in recent_raw:
+        r = x["row"]
+        me = x["me"]
+        recent.append({
+            "match_id": r.get("match_id"),
+            "game_creation": r.get("game_creation"),
+            "game_mode": r.get("game_mode"), "queue_id": r.get("queue_id"),
+            "game_version": r.get("game_version"), "duration": x["duration"],
+            "win": x["win"],
+            "source": r.get("source"),
+            "self": {
+                "champion_id": me.get("champion_id"), "champion_name": me.get("champion_name"),
+                "kills": x["kills"], "deaths": x["deaths"], "assists": x["assists"],
+                "kda": round((x["kills"] + x["assists"]) / x["deaths"], 2) if x["deaths"] else None,
+                "gold": x["gold"], "dmg_champ": x["dmg"],
+                "magic": x["magic"], "phys": x["phys"], "true": x["true"],
+                "dmg_taken": x["dmg_taken"], "dmg_mitigated": x["dmg_mit"], "heal": x["heal"],
+                "vision": x["vision"], "cs": x["cs"],
+                "items": me.get("items") or [], "augments": me.get("augments") or [],
+                "primary_style": me.get("primary_style"), "secondary_style": me.get("secondary_style"),
+                "perks": me.get("perks") or [],
+                "multikills": {"double": x["double"], "triple": x["triple"],
+                               "quadra": x["quadra"], "penta": x["penta"]},
+                "first_blood": x["first_blood"],
+            },
+            "teams": [{"team_id": t.get("team_id"), "win": t.get("win"),
+                       "tower_kills": t.get("tower_kills"), "dragon_kills": t.get("dragon_kills"),
+                       "baron_kills": t.get("baron_kills"), "inhibitor_kills": t.get("inhibitor_kills"),
+                       "nexus_kills": t.get("nexus_kills")} for t in (x["teams"] or [])],
+            "participants": [
+                {"summoner_name": p.get("summoner_name"), "champion_name": p.get("champion_name"),
+                 "team_id": p.get("team_id"), "win": p.get("win"),
+                 "kills": p.get("kills"), "deaths": p.get("deaths"), "assists": p.get("assists"),
+                 "dmg_champ": p.get("damage_to_champions"), "gold": p.get("gold_earned")}
+                for p in (x["parts"] or [])
+            ],
+        })
+
+    sources = sorted({r.get("source") for r in rows if r.get("source")})
+    confs = sorted({r.get("confidence") for r in rows if r.get("confidence")})
+    asof = max((r.get("collected_at") or "") for r in rows)
+    return {
+        "kind": "real_personal",
+        "prov": {"kind": "real_personal",
+                 "source": "/".join(sources) or "self",
+                 "confidence": "/".join(confs) or "secondary",
+                 "asof": asof,
+                 "note": "本人自采（LCU/WeGame），仅次级佐证；隐藏战绩取不到"},
+        "summary": {
+            "games": n, "wins": wins, "losses": losses, "win_rate": win_rate,
+            "avg_kills": _avg([x["kills"] for x in matches]),
+            "avg_deaths": _avg([x["deaths"] for x in matches]),
+            "avg_assists": _avg([x["assists"] for x in matches]),
+            "kda": kda,
+            "avg_gold": _avg([x["gold"] for x in matches]),
+            "avg_damage": _avg([x["dmg"] for x in matches]),
+            "avg_damage_taken": _avg([x["dmg_taken"] for x in matches]),
+            "avg_damage_mitigated": _avg([x["dmg_mit"] for x in matches]),
+            "avg_heal": _avg([x["heal"] for x in matches]),
+            "avg_vision": _avg([x["vision"] for x in matches]),
+            "avg_cs": _avg([x["cs"] for x in matches]),
+            "avg_champ_level": _avg([x["level"] for x in matches]),
+            "avg_duration": _avg([x["duration"] for x in matches]),
+            "aram_games": sum(1 for x in matches if x["row"].get("queue_id") == 450),
+            "total_double": _sum(x["double"] for x in matches),
+            "total_triple": _sum(x["triple"] for x in matches),
+            "total_quadra": _sum(x["quadra"] for x in matches),
+            "total_penta": _sum(x["penta"] for x in matches),
+            "first_blood_count": sum(1 for x in matches if x["first_blood"]),
+        },
+        "damage_breakdown": dmg_break,
+        "by_champion": by_champion,
+        "recent": recent,
+    }
+
+
 # ----------------------------------------------------------------------------- real（hexdata 聚合）
 def _hexdata_prov(citation: dict, ver: str):
     return {"kind": "real_aggregate", "source": "Hexdata (aggregate)",
@@ -500,12 +714,14 @@ def build_bundle(root: Path = None, ver: str = None, ensure: bool = True) -> dic
     version_changes = build_version_changes(root)
     agg_trend = build_aggregate_trend(root)
     risk_notes = load_risk_notes(root)
+    personal = build_personal(root)
 
     warnings = [
         "hexdata 聚合为群体样本关联，非因果；引用须标注来源+buildId+patch+日期。",
         "fixture_* 为合成夹具（synthetic_fixture），仅用于引擎校验，绝非真实数据，不得用于对外结论。",
         "聚合趋势（trend）在 agg 快照不足 2 份时以 synthetic_fixture 合成演示序列展示，非真实趋势；"
         "真实趋势随定时抓取积累后自动替换。",
+        "本人对局（personal）为 LCU/WeGame 自采，仅次级佐证，隐藏战绩取不到，不得与群体聚合混同为因果。",
     ]
 
     bundle = {
@@ -534,6 +750,8 @@ def build_bundle(root: Path = None, ver: str = None, ensure: bool = True) -> dic
         "version_changes": version_changes,
         "trend": agg_trend,
         "risk_notes": risk_notes,
+        # 本人对局（LCU/WeGame 自采，次级佐证；无数据时为 unavailable 占位）
+        "personal": personal,
         "alias_index": build_alias_index(hero_meta, hex_pool),
         "heroes": [{"key": k, "name": v["name"], "title": v["title"],
                     "roles": v["roles"], "aliases": v["aliases"]}

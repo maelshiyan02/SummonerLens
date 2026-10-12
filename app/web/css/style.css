@@ -211,3 +211,36 @@ footer.foot {
 .center-msg code { background: var(--panel-2); padding: 3px 8px; border-radius: 6px; color: #ffd479; }
 .spinner { width: 34px; height: 34px; border: 3px solid rgba(255,255,255,0.15); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* 个人战绩 · 伤害构成条 */
+.bar3 { display: flex; height: 22px; border-radius: 6px; overflow: hidden; background: var(--panel-2); margin-top: 6px; }
+.bar3 .seg { display: block; height: 100%; }
+.bar3 .seg.m { background: linear-gradient(180deg,#7b6bff,#5b4bd6); }
+.bar3 .seg.p { background: linear-gradient(180deg,#ff9f43,#e8821f); }
+.bar3 .seg.t { background: linear-gradient(180deg,#ff6b8b,#e24f70); }
+.legend { margin-top: 8px; font-size: 12px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: middle; }
+.legend i.m { background: #7b6bff; }
+.legend i.p { background: #ff9f43; }
+.legend i.t { background: #ff6b8b; }
+
+/* 个人战绩 · 详情展开 */
+.clickable { cursor: pointer; }
+.clickable:hover { background: var(--panel-2); }
+.lnk { color: var(--accent); font-size: 12px; }
+.ps-detail { display: grid; grid-template-columns: 280px 1fr; gap: 16px; padding: 10px 4px 14px; }
+@media (max-width: 720px) { .ps-detail { grid-template-columns: 1fr; } }
+.ps-self h4 { margin: 0 0 8px; font-size: 13px; color: var(--text); }
+.ps-self .kv { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px dashed var(--border); font-size: 12px; }
+.ps-self .kv span { color: var(--muted-2); }
+.ps-self .kv b { color: var(--text); font-weight: 600; text-align: right; }
+.ps-teams { display: flex; flex-direction: column; gap: 3px; }
+.ps-p { font-size: 12px; padding: 4px 8px; border-radius: 6px; background: var(--panel-2); }
+.ps-p.win { border-left: 3px solid var(--up); }
+.ps-p.lose { border-left: 3px solid var(--down); opacity: 0.82; }
+.ps-p .t { font-size: 11px; padding: 1px 6px; border-radius: 4px; }
+.ps-p .t.b { background: rgba(74,158,255,0.2); color: #9cc6ff; }
+.ps-p .t.r { background: rgba(232,78,78,0.2); color: #ff9b9b; }
+.ps-p .nm { color: var(--muted-2); margin: 0 4px; }
+.ps-p .dim { color: var(--muted-2); font-size: 11px; }
+

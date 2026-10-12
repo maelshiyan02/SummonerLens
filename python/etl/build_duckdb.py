@@ -141,8 +141,8 @@ def build_personal_table(con, personal_dir: Path) -> int:
         return 0
     con.execute(f"""
         CREATE OR REPLACE TABLE personal_matches AS
-        SELECT *, 'WeGame / LCU (self, authorized)' AS _source,
-               'secondary' AS _confidence,
+        SELECT *, COALESCE(source, 'WeGame / LCU (self, authorized)') AS _source,
+               COALESCE(confidence, 'secondary') AS _confidence,
                strftime(now(), '%Y-%m-%dT%H:%M:%S') AS _collected_at
         FROM read_json_auto('{q(fp)}', format='newline_delimited', union_by_name=true)
     """)

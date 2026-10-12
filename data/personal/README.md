@@ -22,6 +22,67 @@ python python/etl/fetch_wegame.py --dry-run
 python python/etl/fetch_wegame.py
 ```
 
+## LCU 本地客户端采集（推荐，无需 token / 抓包）
+
+英雄联盟客户端运行时，本地 `127.0.0.1` 暴露 LCU API，可直接拉**本人**全部对局；
+不需要任何 WeGame / 掌盟凭证，也不需要抓包，合规最稳、字段最全（A07 评「中高」）。
+
+```bash
+# 1) 逻辑自检（含故障注入：非本人对局不冒领）
+python python/etl/fetch_lcu.py --self-check
+# 2) 干跑（确认客户端已启动、lockfile 端口可读）
+python python/etl/fetch_lcu.py --dry-run
+# 3) 正式采集本人 ARAM 对局（默认 queue=450 / 限 20 条）
+python python/etl/fetch_lcu.py
+#   指定数量：python python/etl/fetch_lcu.py --queue 450 --limit 50
+```
+
+> 落库后 `matches.jsonl` 的 `source` 标 `lcu`、`confidence` 标 `primary`（高于 WeGame 的 `secondary`）；
+> 与 WeGame 采集结果**共用同一文件、同一 `personal_matches` 表**，按 `source` 列区分。
+> 客户端未运行时脚本会提示找不到 lockfile 并安全退出，不访问网络。
+
+## 数据模型（详细对局 schema v2 · LCU / WeGame 共用）
+
+`matches.jsonl` 每条一行，是**完整对局**而非仅本人一行。统一结构如下（LCU 由
+`fetch_lcu.parse_lcu_game` 产出，WeGame 的 `fetch_wegame.parse_battle` 须对齐同 shape）：
+
+```jsonc
+{
+  "match_id": 12345, "game_creation": 1750000000, "game_duration": 1300,
+  "queue_id": 450, "game_mode": "ARAM", "map_id": 12, "game_version": "16.20.1",
+  "self_puuid": "<本人puuid>",          // 用于在 participants 中定位本人行
+  "is_self": true,                       // 非本人对局为 false（不冒领）
+  "source": "lcu", "confidence": "primary", "collected_at": "2026-10-12T...",
+  "participants": [                       // 全部 10 名参与者（详细）
+    {
+      "puuid","summoner_name","champion_id","champion_name","team_id",
+      "spell1_id","spell2_id","win",
+      "kills","deaths","assists","champ_level","gold_earned",
+      "damage_to_champions","magic_dmg_champ","physical_dmg_champ","true_dmg_champ",
+      "damage_taken","damage_self_mitigated","total_heal",
+      "vision_score","wards_placed","wards_killed",
+      "total_minions_killed","neutral_minions_killed",        // CS = 小兵 + 野怪
+      "items":[1,2,3,4,5,6],"trinket":3340,
+      "primary_style":8000,"secondary_style":8300,"perks":[8112,8124,...],
+      "augments":[10,20,30],                                  // ARAM 海克斯（3 槽）
+      "double_kills","triple_kills","quadra_kills","penta_kills",
+      "first_blood_kill","first_tower_kill"
+    }
+  ],
+  "teams": [                             // 双方队伍目标
+    {"team_id":100,"win":true,"tower_kills":3,"inhibitor_kills":0,
+     "dragon_kills":2,"baron_kills":0,"rift_herald_kills":0,"nexus_kills":0}
+  ],
+  "raw_excerpt": "{}"                    // 截断原始响应，便于排障
+}
+```
+
+下游消费：
+- `python/etl/build_duckdb.py` → `personal_matches` 表（`read_json_auto` 自动摄入嵌套 participants/teams）。
+- `python/bridge/build_viz_bundle.py → build_personal()` → `dashboard.json.personal`
+  （summary / damage_breakdown 魔物真 / by_champion / recent 含 self 详情 + 双方队伍），
+  前端「个人战绩」页渲染；**兼容旧扁平 schema**（无 participants 时按顶层字段兜底）。
+
 ## 红线
 
 - **仅采集本人 / 已获授权账号**；脚本内置「仅本人」强校验（`assert_self`），非本人 id 一律拒绝。
