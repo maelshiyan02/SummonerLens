@@ -5,7 +5,7 @@
 ## 1. 为什么是 `.agent` 而非单 `.workbuddy`
 
 - 本项目将**多个 AI Agent 交替开发**，不靠单个 `.workbuddy` 文件夹集中记忆/技能/文件。
-- 各 Agent 的上下文与产出靠**工作区内的项目记忆文件**（`.agent/`）承接，范式参考 mangrove 的 `.agent`（见 `D:\Mangrove_Windows\.agent` 作样本，但内容独立）。
+- 各 Agent 的上下文与产出靠**工作区内的项目记忆文件**（`.agent/`）承接，范式参考 mangrove 的 `.agent`（见大工作区内同级目录 `../Mangrove/.agent` 作样本，但内容独立）。
 - WorkBuddy 的 `.workbuddy/` 仅作本工具运行目录，**不**作为项目记忆载体（已写入 `.gitignore`）。
 
 ## 2. 防截断规则（硬性）

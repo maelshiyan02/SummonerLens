@@ -9,7 +9,7 @@
 - **正式中文名（唯一）**：`召唤师数据分析助手`
 - **简略称呼（均指本项目）**：数据分析软件、本项目数据分析助手、本项目、这个工具、我们的工具
 - **GitHub 仓库**：`git@github.com:maelshiyan02/SummonerLens.git`（SSH，public）
-- **工作区根目录**：`D:\SummonerLens_Windows`
+- **工作区根目录**：`<项目根>`（位于「AI Coding Project Management」大工作区内；路径可能改名，一律用相对路径）
 
 ## 技术栈（详见 `.agent` 记忆）
 
@@ -24,7 +24,7 @@ Flutter Desktop（壳） + Python（pandas/polars/duckdb/scipy 数据层） + EC
 5. 查历史决策来龙去脉，看 `.agent/memory/appendices/W00-工作日志索引.md`。
 
 > 记忆真身唯一在 **`.agent/`**，其余（`.workbuddy` 等）是工具自身运行目录，**不**作为项目记忆载体。
-> 与 mangrove 项目（D:\Mangrove_Windows）严格隔离：禁止互相改文件。
+> 与 mangrove 项目（大工作区内同级目录 `../Mangrove`）严格隔离：禁止互相改文件。
 
 ## 快速开始（打开仪表板）
 
@@ -43,7 +43,7 @@ Flutter Desktop（壳） + Python（pandas/polars/duckdb/scipy 数据层） + EC
 ## 目录结构
 
 ```
-SummonerLens_Windows/
+SummonerLens/
 ├─ .agent/                 # 项目记忆唯一真身（见下）
 ├─ README.md               # 本文件
 └─ （后续）源码 / 数据 / 构建产物

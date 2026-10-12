@@ -4,7 +4,7 @@
 
 ## 1. 工作空间根目录
 
-- **根目录**：`D:\SummonerLens_Windows`（由用户创建；本对话已在此初始化项目结构）。
+- **根目录**：`<项目根>`（项目结构最初在独立目录初始化；2026-10-12 迁入「AI Coding Project Management」大工作区）。
 - 🔴 **根目录将来可能改名** ⇒ 一切引用用**相对路径**（`SummonerLens/…`、`.agent/…`），**绝不写 `D:\…` / `C:\…`**；脚本由自身位置推导根目录。
 
 ## 2. Git 与远程（与 mangrove 严格隔离）
@@ -21,7 +21,7 @@
     ```
     git remote set-url origin git@github-443:maelshiyan02/SummonerLens.git
     ```
-- **隔离**：本项目与 `D:\Mangrove_Windows` 是不同仓库/工作区/记忆体系，禁止互相改文件。
+- **隔离**：本项目与大工作区内同级目录 `../Mangrove` 是不同仓库/工作区/记忆体系，禁止互相改文件。
 
 ## 3. Git 操作纪律
 

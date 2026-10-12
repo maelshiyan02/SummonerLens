@@ -1,9 +1,13 @@
 # SummonerLens 主记忆 · 框架与索引
 
+> 🧭 本项目记忆已与全局共享层分层。开工前先读：
+>   `D:\AI Coding Project Management\_shared\index.md`（共享层入口）
+>   然后读 `.agent/memory/MEMORY.md`（本项目）
+
 > 🔖 **项目正式名 = SummonerLens**（召唤师数据分析助手）。
 > 英文唯一名 `SummonerLens`；中文唯一名 `召唤师数据分析助手`。GitHub：`git@github.com:maelshiyan02/SummonerLens.git`（SSH）。
 > 定位：LOL 数据分析工具；**当前聚焦海克斯大乱斗（ARAM Mayhem）**，未来扩到召唤师峡谷（Summoner's Rift）。命名统合全模式，勿改回 Hex 专属名。
-> 工作区根：`D:\SummonerLens_Windows`（**可能改名 ⇒ 一律用相对路径**）。
+> 工作区根：`<项目根>`（2026-10-12 迁入「AI Coding Project Management」大工作区；**可能改名 ⇒ 一律用相对路径**）。
 
 > 本文件是**唯一被自动注入**的记忆 ⇒ **只放框架与索引，正文在附录**。上一版在 ~7.2K 处被静默截断过 ⇒ 已改为「小主文件 + 编号附录」。
 
@@ -17,7 +21,7 @@
 
 1. 🔴 **不急编码**：先调研 + 计划书，再动手。M0（记忆体系）已搭；M1（英雄/装备信息 + 技能原型标注）起才落地。→ **A06**
 2. 🔴 **数据从宽、来源分级**：凡有参考价值的数据都应收集；**WeGame / 掌上英雄联盟仅作次级佐证**（局内伤害·承伤统计有偏、玩家隐藏战绩即取不到），需另寻覆盖隐藏战绩的源。引用 hexdata 必带「来源 + buildId + reportPatch + reportDate」。→ **A02 / A07**
-3. 🔴 **与 mangrove 严格隔离**：绝不改 `D:\Mangrove_Windows` 任何文件；本仓库独立。→ **A05**
+3. 🔴 **与 mangrove 严格隔离**：绝不改大工作区内同级目录 `../Mangrove` 的任何文件；本仓库独立。→ **A05**
 
 ## 1. 记忆附录索引（`.agent/memory/appendices/`）
 
